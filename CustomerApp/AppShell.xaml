@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="CustomerApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:CustomerApp"
+    xmlns:view="clr-namespace:CustomerApp.View"
+    Shell.FlyoutBehavior="Flyout"
+    Shell.NavBarIsVisible="False"
+    Title="Fast Food">
+
+    <FlyoutItem
+        Title="MainPage">
+        <Tab>
+            <ShellContent
+                ContentTemplate="{DataTemplate view:MainPage}"
+                Route="MainPage"/>
+        </Tab>
+    </FlyoutItem>
+    
+    <FlyoutItem
+        Title="FoodListPage">
+        <Tab>
+            <ShellContent
+                ContentTemplate="{DataTemplate view:FoodListPage}"
+                Route="FoodListPage"/>
+        </Tab>
+    </FlyoutItem>
+    
+    <FlyoutItem
+        Title="CartPage">
+        <Tab>
+            <ShellContent
+                ContentTemplate="{DataTemplate view:CartPage}"
+                Route="CartPage"/>
+        </Tab>
+    </FlyoutItem>
+
+
+    <FlyoutItem
+        Title="OrderListPage">
+        <Tab>
+            <ShellContent
+                ContentTemplate="{DataTemplate view:OrderListPage}"
+                Route="OrderListPage"/>
+        </Tab>
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="FoodPage">
+        <Tab>
+            <ShellContent
+                ContentTemplate="{DataTemplate view:FoodPage}"
+                Route="FoodPage"/>
+        </Tab>
+    </FlyoutItem>
+    
+    <FlyoutItem
+        Title="LoginPage">
+        <Tab>
+            <ShellContent
+                ContentTemplate="{DataTemplate view:LoginPage}"
+                Route="LoginPage"/>
+        </Tab>
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title="RegisterPage">
+        <Tab>
+            <ShellContent
+                ContentTemplate="{DataTemplate view:RegisterPage}"
+                Route="RegisterPage"/>
+        </Tab>
+    </FlyoutItem>
+
+
+</Shell>

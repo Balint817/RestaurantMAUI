@@ -1,0 +1,240 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CustomerApp.View.FoodListPage"
+             xmlns:vm="clr-namespace:CustomerApp.ViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+
+    <ContentPage.BindingContext>
+        <vm:FoodListPageVM/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Resources>
+
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles/DarkTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+
+        <Style TargetType="Entry">
+            <Setter Property="PlaceholderColor" Value="{DynamicResource TextDark}"/>
+        </Style>
+        <Style TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="{DynamicResource BrandStrong}"/>
+        </Style>
+    </ContentPage.Resources>
+
+
+    <Grid BackgroundColor="{DynamicResource BrandBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <!-- Search Bar Row -->
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!-- Navbar -->
+        <StackLayout BackgroundColor="{DynamicResource NavbarTransparent028}" Grid.Row="0">
+            <Grid Padding="10"  MinimumHeightRequest="60">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Hamburger Menu -->
+                <ImageButton 
+                Source="hamburger_icon.png" 
+                HeightRequest="30" 
+                WidthRequest="30"
+                BackgroundColor="White"
+                Padding="5"
+                Command="{Binding ToggleFlyoutCommand}"
+                Grid.Column="0"/>
+
+                <!-- Logo and Title -->
+                <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                    <Image 
+                    Source="fork_knife_icon.svg" 
+                    HeightRequest="30" 
+                    WidthRequest="30"
+                    VerticalOptions="Center"/>
+                    <Label 
+                    Text="Fast Food" 
+                    FontSize="24" 
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+
+                <!-- User Icon -->
+                <Image 
+                Source="user_icon.svg" 
+                HeightRequest="30" 
+                WidthRequest="30"
+                    
+                Grid.Column="2">
+                    <Image.Behaviors>
+                        <toolkit:IconTintColorBehavior TintColor="{DynamicResource BrandStrong}"/>
+                    </Image.Behaviors>
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnUserTapped"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </Grid>
+        </StackLayout>
+
+        <!-- Fixed Search Bar -->
+        <Grid Grid.Row="1" Margin="10" Padding="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <Image Source="test.png" Aspect="AspectFit"  BackgroundColor="Wheat" HeightRequest="150" Grid.Row="0" Grid.RowSpan="2" x:Name="FeaturedImage">
+                <Image.Clip>
+                    <RoundRectangleGeometry CornerRadius="20">
+
+                    </RoundRectangleGeometry>
+                </Image.Clip>
+            </Image>
+
+            <Frame CornerRadius="20" BackgroundColor="{DynamicResource BrandStrong}" Grid.Row="0" IsClippedToBounds="True">
+                <HorizontalStackLayout>
+                    <Image Source="search_icon.png"
+                                    BackgroundColor="White"
+                                    WidthRequest="40"
+                                    HeightRequest="40">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnSearchTapped"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Entry Placeholder="Keress Ételeink És Italaink Között..."
+                        PlaceholderColor="{DynamicResource TextDark}"
+                        TextColor="{DynamicResource TextDark}"
+                        FontSize="16"
+                        HorizontalOptions="FillAndExpand"
+                        />
+                </HorizontalStackLayout>
+            </Frame>
+        </Grid>
+
+        <!-- Scrollable Content -->
+        <ScrollView Grid.Row="2">
+            <VerticalStackLayout>
+                <!-- Featured Image -->
+                <!-- Categories -->
+                <VerticalStackLayout Padding="0,10,0,0">
+                    <Label Text="Burgerek"
+                        FontSize="22"
+                        FontAttributes="Bold"
+                        HorizontalTextAlignment="Center"
+                        Margin="0,0,0,10"/>
+
+                    <!-- Fixed Horizontal ScrollView for Categories -->
+                    <ScrollView Orientation="Horizontal" HeightRequest="50">
+                        <HorizontalStackLayout>
+                            <HorizontalStackLayout.Resources>
+                                <Style TargetType="Label">
+                                    <Setter Property="TextColor" Value="{DynamicResource TextBrand}"/>
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="WidthRequest" Value="100"/>
+                                </Style>
+                                <Style TargetType="Frame">
+                                    <Setter Property="CornerRadius" Value="15"/>
+                                    <Setter Property="Padding" Value="10"/>
+                                    <Setter Property="BackgroundColor" Value="{DynamicResource ItemListBackground}"/>
+                                    <Setter Property="Margin" Value="0,0,10,0"/>
+                                    <Setter Property="BorderColor" Value="{DynamicResource TextBrand}"/>
+                                </Style>
+                            </HorizontalStackLayout.Resources>
+                            <BindableLayout.ItemsSource>
+                                <Binding Path="Categories"/>
+                            </BindableLayout.ItemsSource>
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame>
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnCategoryTapped"/>
+                                        </Frame.GestureRecognizers>
+                                        <Label Text="{Binding name}"/>
+                                    </Frame>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+
+                            <!--<Frame BackgroundColor="{DynamicResource BrandStrong}">
+                                <Label Text="Burgerek" TextColor="{DynamicResource TextBrandSelected}" />
+                            </Frame>-->
+                        </HorizontalStackLayout>
+                    </ScrollView>
+
+                    <!-- Scrollable Food Items -->
+                    <ScrollView HeightRequest="400">
+                        <FlexLayout Direction="Row" Wrap="Wrap" JustifyContent="Center" AlignItems="Start">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame BackgroundColor="{DynamicResource ItemListBackground}" CornerRadius="25" Margin="5">
+                                        <Grid>
+                                            <Border StrokeThickness="2" 
+                                Stroke="{DynamicResource BrandStrongTransparent070}" 
+                                HeightRequest="130" 
+                                WidthRequest="130" 
+                                StrokeShape="Ellipse">
+                                                <!--Make binding !!!!!! -->
+                                                <Image Source="{Binding imageUrl}" Aspect="AspectFill" MaximumHeightRequest="130" WidthRequest="130">
+                                                    <Image.Clip>
+                                                        <EllipseGeometry Center="65,65" RadiusX="65" RadiusY="65"/>
+                                                    </Image.Clip>
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="OnImageTapped"/>
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </Border>
+
+                                            <Grid VerticalOptions="End" HorizontalOptions="Start" HeightRequest="20" WidthRequest="20">
+                                                <Border 
+                                    StrokeThickness="0" 
+                                    BackgroundColor="{DynamicResource BrandStrong}" 
+                                    StrokeShape="Ellipse"
+                                    HeightRequest="20" 
+                                    WidthRequest="20"/>
+                                                <Label 
+                                    Text="+" 
+                                    FontSize="15" 
+                                    HorizontalOptions="Center" 
+                                    VerticalOptions="Center" 
+                                    TextColor="{DynamicResource ItemListBackground}" >
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="OnPlusTapped"/>
+                                                    </Label.GestureRecognizers>
+                                                </Label>
+                                            </Grid>
+                                        </Grid>
+                                    </Frame>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+
+                            <BindableLayout.ItemsSource>
+                                <!--<x:Array Type="{x:Type x:String}">
+                                    <x:String>/test.png</x:String>
+                                    <x:String>/test.png</x:String>
+                                    <x:String>/test.png</x:String>
+                                    <x:String>/test.png</x:String>
+                                    <x:String>/test.png</x:String>
+                                </x:Array>-->
+                                <Binding Path="FoodItems"/>
+                            </BindableLayout.ItemsSource>
+                        </FlexLayout>
+                    </ScrollView>
+                </VerticalStackLayout>
+
+
+                <!-- Shopping Cart -->
+                <Image Source="shopping_cart_icon.png" HorizontalOptions="End" Margin="20" WidthRequest="30" HeightRequest="30" />
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

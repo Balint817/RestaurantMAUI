@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CustomerApp.Resources.Styles.DarkTheme">
+
+    <Color x:Key="BrandStrong">#FF922C</Color>
+    <Color x:Key="BrandStrongTransparent070">#B3FF922C</Color>
+    <Color x:Key="BrandStrongTransparent047">#2FFF922C</Color>
+    <Color x:Key="BrandLight">#FFF1E5</Color>
+    <Color x:Key="BrandBackground">#2D3336</Color>
+
+    <Color x:Key="ItemListBackground">#161A19</Color>
+    <Color x:Key="ItemButtonsBackground">#505B61</Color>
+
+    <Color x:Key="NavbarTransparent028">#99161A19</Color>
+
+    <Color x:Key="ShadowBlackTransparent025">#40000000</Color>
+
+    <Color x:Key="ShadowBrandTransparent047">#78FF922C</Color>
+
+    <Color x:Key="TextLight">#E0E0E0</Color>
+    <Color x:Key="TextMid">#E0E0E0</Color>
+    <Color x:Key="TextDark">#E0E0E0</Color>
+    <Color x:Key="TextBrand">#FF922C</Color>
+    <Color x:Key="TextBrandSelected">#000</Color>
+
+    <Color x:Key="BlackIcon">#E0E0E0</Color>
+
+    <Color x:Key="CancelColor">#FF4635</Color>
+
+    
+
+    <SolidColorBrush x:Key="BrandStrongBrush" Color="{StaticResource BrandStrong}"/>
+    <SolidColorBrush x:Key="BrandStrongTransparent070Brush" Color="{StaticResource BrandStrongTransparent070}"/>
+    <SolidColorBrush x:Key="BrandStrongTransparent047Brush" Color="{StaticResource BrandStrongTransparent047}"/>
+    <SolidColorBrush x:Key="BrandLightBrush" Color="{StaticResource BrandLight}"/>
+    <SolidColorBrush x:Key="BrandBackgroundBrush" Color="{StaticResource BrandBackground}"/>
+
+    <SolidColorBrush x:Key="ItemListBackgroundBrush" Color="{StaticResource BrandBackground}"/>
+    <SolidColorBrush x:Key="ItemButtonsBackgroundBrush" Color="{StaticResource BrandBackground}"/>
+
+    <SolidColorBrush x:Key="NavbarTransparent028Brush" Color="{StaticResource NavbarTransparent028}"/>
+
+    <SolidColorBrush x:Key="ShadowBlackTransparent025Brush" Color="{StaticResource ShadowBlackTransparent025}"/>
+
+    <SolidColorBrush x:Key="ShadowBrandTransparent047Brush" Color="{StaticResource ShadowBrandTransparent047}"/>
+
+    <SolidColorBrush x:Key="TextLightBrush" Color="{StaticResource TextLight}"/>
+    <SolidColorBrush x:Key="TextMidBrush" Color="{StaticResource TextMid}"/>
+    <SolidColorBrush x:Key="TextDarkBrush" Color="{StaticResource TextDark}"/>
+    <SolidColorBrush x:Key="TextBrandBrush" Color="{StaticResource TextBrand}"/>
+    <SolidColorBrush x:Key="TextBrandSelectedBrush" Color="{StaticResource TextBrandSelected}"/>
+
+    <SolidColorBrush x:Key="BlackIconBrush" Color="{StaticResource BlackIcon}"/>
+
+    <SolidColorBrush x:Key="CancelColorBrush" Color="{StaticResource CancelColor}"/>
+
+</ResourceDictionary>

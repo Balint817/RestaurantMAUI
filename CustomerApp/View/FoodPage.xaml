@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CustomerApp.View.FoodPage"
+             xmlns:vm="clr-namespace:CustomerApp.ViewModel">
+
+    <ContentPage.BindingContext>
+        <vm:FoodPageVM/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles/DarkTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+
+        <Style TargetType="Entry">
+            <Setter Property="PlaceholderColor" Value="{DynamicResource TextDark}"/>
+        </Style>
+        <Style TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="{DynamicResource BrandStrong}"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid BackgroundColor="{DynamicResource BrandBackground}" HorizontalOptions="Fill">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Navbar -->
+            <RowDefinition Height="Auto"/>
+            <!-- Profile image -->
+            <RowDefinition Height="*"/>
+            <!-- ScrollView (expands) -->
+            <RowDefinition Height="Auto"/>
+            <!-- Logout button -->
+        </Grid.RowDefinitions>
+
+
+        <StackLayout BackgroundColor="{DynamicResource NavbarTransparent028}">
+            <Grid Padding="10" MinimumHeightRequest="60">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!--<ImageButton 
+                Source="hamburger_icon.png" 
+                HeightRequest="30" 
+                WidthRequest="30"
+                BackgroundColor="White"
+                Padding="5"
+                Command="{Binding ToggleFlyoutCommand}"
+                Grid.Column="0"/>-->
+
+                <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                    <Image 
+                    Source="fork_knife_icon.svg" 
+                    HeightRequest="30" 
+                    WidthRequest="30"
+                    VerticalOptions="Center"/>
+                    <Label 
+                    Text="Fast Food" 
+                    FontSize="24" 
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+
+                <!--<ImageButton 
+                Source="user_icon.svg" 
+                HeightRequest="30" 
+                WidthRequest="30"
+                Padding="5"
+                Grid.Column="2"/>-->
+            </Grid>
+        </StackLayout>
+
+        <!-- Profile Image (Always on Top) -->
+        <Grid Grid.Row="1" HorizontalOptions="Center" Padding="0,10,0,0">
+            <Border StrokeThickness="4" 
+                Stroke="{DynamicResource BrandStrongTransparent047}" 
+                HeightRequest="200" 
+                WidthRequest="200" 
+                StrokeShape="Ellipse">
+                <Image Source="/Resources/Images/test.png" Aspect="AspectFill" HeightRequest="200">
+                    <Image.Clip>
+                        <EllipseGeometry Center="100,100" RadiusX="100" RadiusY="100"/>
+                    </Image.Clip>
+                </Image>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="2" HorizontalOptions="Fill" VerticalOptions="Start" Padding="20,0,20,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="9*"/>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0"
+                Text="Burger" 
+                FontSize="20"
+                   FontAttributes="None"
+                HorizontalOptions="Start" 
+                VerticalOptions="Center"
+                Opacity="0.5"
+                TextColor="{DynamicResource TextMid}" />
+
+            <Label Grid.Row="1"
+                Padding="0,10,0,0"
+                Text="Dupla húsos burger"
+                FontSize="24"
+                FontAttributes="Bold"
+                HorizontalOptions="Start" 
+                VerticalOptions="Center" 
+                TextColor="{DynamicResource TextDark}" />
+            <Grid Grid.Row="2" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <!-- First column for price (Auto) -->
+                    <ColumnDefinition Width="Auto"/>
+
+                    <!-- Spacer column to push the counter section to the right -->
+                    <ColumnDefinition Width="*" />
+
+                    <!-- Column for counter section (Auto) -->
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Price Label -->
+                <Label 
+                    Padding="0,10,0,0"
+                    Text="1500 Ft"
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Start" 
+                    VerticalOptions="Center" 
+                    TextColor="{DynamicResource BrandStrong}" 
+                    Grid.Column="0" />
+
+                <!-- Counter section -->
+                <Frame 
+                    Grid.Column="2" 
+                    CornerRadius="20" 
+                    BackgroundColor="{DynamicResource ItemButtonsBackground}" 
+                    Padding="5"
+                    HorizontalOptions="End">
+
+                    <Grid Padding="0" RowSpacing="0" ColumnSpacing="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Minus Button -->
+                        <Grid HeightRequest="30" WidthRequest="30" Grid.Column="0" Margin="0,0,5,0">
+                            <Border 
+                    StrokeThickness="0" 
+                    BackgroundColor="{DynamicResource BrandStrong}" 
+                    StrokeShape="Ellipse"
+                    HeightRequest="30" 
+                    WidthRequest="30"/>
+                            <Label 
+                    Text="-" 
+                    FontSize="18" 
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center" 
+                    TextColor="{DynamicResource ItemListBackground}" />
+                        </Grid>
+
+                        <!-- Counter Text -->
+                        <Label 
+                Text="1"
+                FontSize="18"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center"
+                TextColor="{DynamicResource ItemListBackground}"
+                Grid.Column="1"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                             Margin="0,0,5,0"/>
+
+                        <!-- Plus Button -->
+                        <Grid HeightRequest="30" WidthRequest="30" Grid.Column="2">
+                            <Border 
+                    StrokeThickness="0" 
+                    BackgroundColor="{DynamicResource BrandStrong}" 
+                    StrokeShape="Ellipse"
+                    HeightRequest="30" 
+                    WidthRequest="30"/>
+                            <Label
+                    Text="+" 
+                    FontSize="18" 
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center" 
+                    TextColor="{DynamicResource ItemListBackground}" />
+                        </Grid>
+                    </Grid>
+
+                </Frame>
+
+            </Grid>
+
+            <VerticalStackLayout Grid.Row="3" Margin="0,20,0,0">
+                <Label
+                    Text="Leírás" 
+                    FontSize="20" 
+                    HorizontalOptions="Start" 
+                    FontAttributes="Bold"
+                    VerticalOptions="Center" 
+                    TextColor="{DynamicResource TextDark}" />
+                <Label
+                    Margin="0,10,0,0"
+                    Text="Hozzávalók:" 
+                    FontSize="16" 
+                    HorizontalOptions="Start" 
+                    FontAttributes="None"
+                    VerticalOptions="Center" 
+                    Opacity="0.75"
+                    TextColor="{DynamicResource TextDark}" />
+                <CollectionView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Label
+                                Margin="0,0,0,0"
+                                Text="{Binding}" 
+                                FontSize="16"
+                                Opacity="0.75" 
+                                HorizontalOptions="Start" 
+                                FontAttributes="None"
+                                VerticalOptions="Center" 
+                                TextColor="{DynamicResource TextDark}" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>1 db burger zsemle</x:String>
+                            <x:String>2 db burger hús</x:String>
+                            <x:String>1 db sajt</x:String>
+                            <x:String>3 db paradicsom</x:String>
+                            <x:String>4 db uborka</x:String>
+                            <x:String>2 db saláta</x:String>
+                        </x:Array>
+                    </CollectionView.ItemsSource>
+                </CollectionView>
+            </VerticalStackLayout>
+
+            <Frame Grid.Row="4" Margin="0,20,0,0" MaximumWidthRequest="150" CornerRadius="50">
+
+                <Grid>
+                    <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="0" TranslationY="-1" TextColor="{DynamicResource TextBrandSelected}" />
+                    <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="1" TranslationY="-1" TextColor="{DynamicResource TextBrandSelected}" />
+                    <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="-1" TranslationY="0" TextColor="{DynamicResource TextBrandSelected}" />
+                    <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="0" TranslationY="0" TextColor="{DynamicResource TextBrandSelected}" />
+                    <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="1" TranslationY="0" TextColor="{DynamicResource TextBrandSelected}" />
+                    <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="-1" TranslationY="1" TextColor="{DynamicResource TextBrandSelected}" />
+                    <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="0" TranslationY="1" TextColor="{DynamicResource TextBrandSelected}" />
+                </Grid>
+
+            </Frame>
+
+        </Grid>
+
+    </Grid>
+</ContentPage>

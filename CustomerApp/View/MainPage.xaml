@@ -1,0 +1,277 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CustomerApp.View.MainPage"
+             xmlns:vm="clr-namespace:CustomerApp.ViewModel"
+             xmlns:control="clr-namespace:CustomerApp.Controls"
+             >
+    <ContentPage.BindingContext>
+        <vm:MainPageVM/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles/DarkTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+
+        <Style TargetType="Entry">
+            <Setter Property="PlaceholderColor" Value="{DynamicResource TextDark}"/>
+        </Style>
+        <Style TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="{DynamicResource BrandStrong}"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid BackgroundColor="{DynamicResource BrandBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackLayout BackgroundColor="{DynamicResource NavbarTransparent028}">
+            <!-- Custom Navbar -->
+            <Grid Padding="10"  MinimumHeightRequest="60">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Hamburger Menu -->
+                <ImageButton 
+                        Source="hamburger_icon.png" 
+                        HeightRequest="30" 
+                        WidthRequest="30"
+                        BackgroundColor="White"
+                        Padding="5"
+                        Command="{Binding ToggleFlyoutCommand}"
+                        Grid.Column="0"/>
+
+                <!-- Logo and Title -->
+                <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                    <Image 
+                            Source="fork_knife_icon.svg" 
+                            HeightRequest="30" 
+                            WidthRequest="30"
+                            VerticalOptions="Center"/>
+                    <Label 
+                            Text="Fast Food" 
+                            FontSize="24" 
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+
+                <!-- User Icon -->
+                <ImageButton 
+                        Source="user_icon.svg" 
+                        HeightRequest="30" 
+                        WidthRequest="30"
+                        Padding="5"
+                        Grid.Column="2"/>
+            </Grid>
+        </StackLayout>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout>
+
+                <!-- Search Bar -->
+
+
+                <Grid Margin="10" Padding="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Image Source="test.png" Aspect="AspectFit"  BackgroundColor="Wheat" HeightRequest="150" Grid.Row="0" Grid.RowSpan="2" x:Name="FeaturedImage">
+                        <Image.Clip>
+                            <RoundRectangleGeometry CornerRadius="20">
+                                <!--<RoundRectangleGeometry.Rect>
+                                    <Rect Height="200" Width="{Binding Source={x:Reference FeaturedImage}, Path=Width}"/>
+                                </RoundRectangleGeometry.Rect>-->
+                            </RoundRectangleGeometry>
+                        </Image.Clip>
+                    </Image>
+                    
+                    
+                    <!--<Frame CornerRadius="20" BackgroundColor="#00000000" Grid.Row="0" Grid.RowSpan="2" IsClippedToBounds="True">
+                        
+                    </Frame>-->
+
+                    <Frame CornerRadius="20" BackgroundColor="{DynamicResource BrandStrong}" Grid.Row="0" IsClippedToBounds="True">
+                        <HorizontalStackLayout>
+                            <Image Source="search_icon.png"
+                                    BackgroundColor="White"
+                                    WidthRequest="40"
+                                    HeightRequest="40" />
+                            <Entry Placeholder="Keress Ételeink És Italaink Között..."
+                        PlaceholderColor="{DynamicResource TextDark}"
+                        TextColor="{DynamicResource TextDark}"
+                        FontSize="16"
+                        HorizontalOptions="FillAndExpand"
+                        />
+                        </HorizontalStackLayout>
+                    </Frame>
+
+                </Grid>
+
+
+                    <!-- Featured Products Section -->
+                <VerticalStackLayout Padding="5">
+                    <Label Text="Kiemelt Termékeink"
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center" />
+
+                    <Grid ColumnSpacing="20" RowSpacing="20" Padding="15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <VerticalStackLayout Grid.Column="0" >
+                            <Label Text="{Binding FirstThreeItemsOfCategories[0].Key.name}" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                            <Frame CornerRadius="35" BackgroundColor="{DynamicResource ItemListBackground}">
+
+                                <CollectionView ItemsLayout="VerticalList">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="10">
+
+                                                <Border
+                                                StrokeThickness="2" 
+                                                Stroke="{DynamicResource BrandStrongTransparent070}" 
+                                                HeightRequest="80" 
+                                                WidthRequest="80" 
+                                                StrokeShape="Ellipse">
+
+                                                    <Image Source="{Binding imageUrl}" Aspect="AspectFill" HeightRequest="80" WidthRequest="80">
+                                                        <Image.Clip>
+                                                            <EllipseGeometry
+                                                            Center="40,40"
+                                                            RadiusX="40"
+                                                            RadiusY="40"
+                                                            />
+                                                        </Image.Clip>
+                                                    </Image>
+                                                </Border>
+
+                                                <Grid VerticalOptions="End" HorizontalOptions="Start" HeightRequest="20" WidthRequest="20" Margin="0,0,0,0">
+                                                    <Border 
+                                                        StrokeThickness="0" 
+                                                        BackgroundColor="{DynamicResource BrandStrong}" 
+                                                        StrokeShape="Ellipse"
+                                                        HeightRequest="20" 
+                                                        WidthRequest="20">
+                                                    </Border>
+
+                                                    <Label 
+                                                        Text="+" 
+                                                        FontSize="15" 
+                                                        HorizontalOptions="Center" 
+                                                        VerticalOptions="Center" 
+                                                        TextColor="{DynamicResource ItemListBackground}" />
+                                                </Grid>
+
+                                            </Grid>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                    <CollectionView.ItemsSource>
+                                        <Binding Path="FirstThreeItemsOfCategories[0].Value"/>
+                                    </CollectionView.ItemsSource>
+                                </CollectionView>
+                            </Frame>
+                        </VerticalStackLayout>
+                        
+
+
+                        <VerticalStackLayout Grid.Column="1" >
+                            <Label Text="{Binding FirstThreeItemsOfCategories[1].Key.name}" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                            <Frame CornerRadius="35" BackgroundColor="{DynamicResource ItemListBackground}">
+
+                                <CollectionView ItemsLayout="VerticalList">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="10">
+
+                                                <Border
+                                                StrokeThickness="2" 
+                                                Stroke="{DynamicResource BrandStrongTransparent070}" 
+                                                HeightRequest="80" 
+                                                WidthRequest="80" 
+                                                StrokeShape="Ellipse">
+
+                                                    <Image Source="{Binding imageUrl}" Aspect="AspectFill" HeightRequest="80" WidthRequest="80">
+                                                        <Image.Clip>
+                                                            <EllipseGeometry
+                                                            Center="40,40"
+                                                            RadiusX="40"
+                                                            RadiusY="40"
+                                                            />
+                                                        </Image.Clip>
+                                                    </Image>
+                                                </Border>
+
+                                                <Grid VerticalOptions="End" HorizontalOptions="Start" HeightRequest="20" WidthRequest="20" Margin="0,0,0,0">
+                                                    <Border 
+                                                        StrokeThickness="0" 
+                                                        BackgroundColor="{DynamicResource BrandStrong}" 
+                                                        StrokeShape="Ellipse"
+                                                        HeightRequest="20" 
+                                                        WidthRequest="20">
+                                                    </Border>
+
+                                                    <Label 
+                                                        Text="+" 
+                                                        FontSize="15" 
+                                                        HorizontalOptions="Center" 
+                                                        VerticalOptions="Center" 
+                                                        TextColor="{DynamicResource ItemListBackground}" />
+                                                </Grid>
+
+                                            </Grid>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                    <CollectionView.ItemsSource>
+                                        <Binding Path="FirstThreeItemsOfCategories[1].Value"/>
+                                    </CollectionView.ItemsSource>
+                                </CollectionView>
+                            </Frame>
+                        </VerticalStackLayout>
+
+                        <Label Grid.Column="0" Grid.Row="1"
+                                Text="➜" 
+                                FontSize="36" 
+                                HorizontalOptions="Center" 
+                                VerticalOptions="Center" 
+                                TextColor="{DynamicResource BrandStrong}"
+                                Rotation="90" />
+                        
+                        <Label Grid.Column="1" Grid.Row="1"
+                                Text="➜" 
+                                FontSize="36" 
+                                HorizontalOptions="Center" 
+                                VerticalOptions="Center" 
+                                TextColor="{DynamicResource BrandStrong}"
+                                Rotation="90" />
+
+                    </Grid>
+                </VerticalStackLayout>
+
+                <!-- Shopping Cart -->
+                <Image Source="shopping_cart_icon.png" HorizontalOptions="End" Margin="20" WidthRequest="30" HeightRequest="30" />
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

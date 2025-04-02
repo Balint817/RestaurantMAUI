@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CustomerApp.View.OrderListPage"
+             xmlns:vm="clr-namespace:CustomerApp.ViewModel">
+
+    <ContentPage.BindingContext>
+        <vm:OrderListPageVM/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Styles/DarkTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+
+        <Style TargetType="Entry">
+            <Setter Property="PlaceholderColor" Value="{DynamicResource TextDark}"/>
+        </Style>
+        <Style TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="{DynamicResource BrandStrong}"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid BackgroundColor="{DynamicResource BrandBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Navbar -->
+            <RowDefinition Height="Auto"/>
+            <!-- Profile image -->
+            <RowDefinition Height="*"/>
+            <!-- ScrollView (expands) -->
+            <RowDefinition Height="Auto"/>
+            <!-- Logout button -->
+        </Grid.RowDefinitions>
+
+
+        <StackLayout BackgroundColor="{DynamicResource NavbarTransparent028}">
+            <Grid Padding="10" MinimumHeightRequest="60">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ImageButton 
+                Source="hamburger_icon.png" 
+                HeightRequest="30" 
+                WidthRequest="30"
+                BackgroundColor="White"
+                Padding="5"
+                Command="{Binding ToggleFlyoutCommand}"
+                Grid.Column="0"/>
+
+                <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                    <Image 
+                    Source="fork_knife_icon.svg" 
+                    HeightRequest="30" 
+                    WidthRequest="30"
+                    VerticalOptions="Center"/>
+                    <Label 
+                    Text="Fast Food" 
+                    FontSize="24" 
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+
+                <ImageButton 
+                Source="user_icon.svg" 
+                HeightRequest="30" 
+                WidthRequest="30"
+                Padding="5"
+                Grid.Column="2"/>
+            </Grid>
+        </StackLayout>
+
+        <!-- Profile Image (Always on Top) -->
+        <Grid Grid.Row="1" HorizontalOptions="Center" Padding="10">
+            <Border StrokeThickness="4" 
+                Stroke="{DynamicResource BrandStrongTransparent047}" 
+                HeightRequest="200" 
+                WidthRequest="200" 
+                StrokeShape="Ellipse">
+                <Image Source="/Resources/Images/test.png" Aspect="AspectFill" HeightRequest="200">
+                    <Image.Clip>
+                        <EllipseGeometry Center="100,100" RadiusX="100" RadiusY="100"/>
+                    </Image.Clip>
+                </Image>
+            </Border>
+        </Grid>
+
+        <!-- Scrollable Content -->
+        <ScrollView Grid.Row="2">
+            <VerticalStackLayout Padding="10">
+                <Grid IsClippedToBounds="True">
+                    <ScrollView Orientation="Vertical" IsClippedToBounds="True">
+                        <VerticalStackLayout Padding="0,10,0,0">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame BackgroundColor="{DynamicResource ItemListBackground}" 
+                                       CornerRadius="25" 
+                                       Margin="5"
+                                       Padding="10"
+                                       HorizontalOptions="Fill"
+                                       VerticalOptions="Center">
+                                        <Grid HeightRequest="100">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Label Grid.Row="1"
+                                               Text="1552" 
+                                               FontSize="30" 
+                                               FontAttributes="Bold"
+                                               HorizontalOptions="Center" 
+                                               VerticalOptions="Center" 
+                                               TextColor="{DynamicResource BrandStrong}" />
+
+                                            <Grid VerticalOptions="End" 
+                                              HorizontalOptions="End"
+                                              Grid.Row="2">
+                                                <Label Text="Részletek->"
+                                                   FontSize="15" 
+                                                   HorizontalOptions="Center" 
+                                                   VerticalOptions="Center" 
+                                                   TextColor="{DynamicResource BrandStrong}" />
+                                            </Grid>
+                                        </Grid>
+                                    </Frame>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+
+                            <BindableLayout.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>/Resources/Images/test.png</x:String>
+                                    <x:String>/Resources/Images/test.png</x:String>
+                                    <x:String>/Resources/Images/test.png</x:String>
+                                    <x:String>/Resources/Images/test.png</x:String>
+                                    <x:String>/Resources/Images/test.png</x:String>
+                                    <x:String>/Resources/Images/test.png</x:String>
+                                    <x:String>/Resources/Images/test.png</x:String>
+                                    <x:String>/Resources/Images/test.png</x:String>
+                                    <x:String>/Resources/Images/test.png</x:String>
+                                    <x:String>/Resources/Images/test.png</x:String>
+                                </x:Array>
+                            </BindableLayout.ItemsSource>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Logout Section (Always at Bottom) -->
+        <HorizontalStackLayout Grid.Row="3" x:Name="Logout" Padding="10">
+            <Image Source="edit_pencil_icon.png" 
+               HeightRequest="30" 
+               WidthRequest="30" 
+               Margin="5"
+               BackgroundColor="{DynamicResource BrandStrong}"
+               HorizontalOptions="Start" 
+               VerticalOptions="Center"/>
+            <Label Text="Kijelentkezés"
+               FontSize="15" 
+               HorizontalOptions="Center" 
+               VerticalOptions="Center" 
+               TextColor="{DynamicResource BrandStrong}" />
+        </HorizontalStackLayout>
+    </Grid>
+</ContentPage>
