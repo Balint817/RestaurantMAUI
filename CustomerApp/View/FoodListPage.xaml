@@ -106,7 +106,7 @@
                 <!-- Featured Image -->
                 <!-- Categories -->
                 <VerticalStackLayout Padding="0,10,0,0">
-                    <Label Text="Burgerek"
+                    <Label Text="{Binding TargetMainCategory.name}"
                         FontSize="22"
                         FontAttributes="Bold"
                         HorizontalTextAlignment="Center"
