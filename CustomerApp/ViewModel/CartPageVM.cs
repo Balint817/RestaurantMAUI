@@ -18,7 +18,7 @@ namespace CustomerApp.ViewModel
         {
 
         }
-        public List<CartModel>? Items => OrderService.Instance.DisplayedCart;
+        public List<CartModel>? Items => OrderService.Instance.DisplayedCart?.ToList();
 
         private bool _allowEdit;
 
@@ -38,6 +38,7 @@ namespace CustomerApp.ViewModel
         {
             var cartModel = (CartModel)sender.BindingContext;
             OrderService.Instance.DisplayedCart!.Remove(cartModel);
+            OnPropertyChanged(nameof(Items));
         }
 
         internal async void CheckoutTapped()

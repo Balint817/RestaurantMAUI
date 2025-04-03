@@ -138,7 +138,6 @@
                HeightRequest="30" 
                WidthRequest="30" 
                Margin="5"
-               BackgroundColor="{DynamicResource BrandStrong}"
                HorizontalOptions="Start" 
                VerticalOptions="Center"/>
             <Label Text="Kijelentkezés"
