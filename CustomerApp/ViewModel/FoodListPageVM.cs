@@ -130,7 +130,7 @@ namespace CustomerApp.ViewModel
         internal async void Init(CategoryModel category)
         {
             TargetMainCategory = category;
-            
+
             await LoadSubcategoriesAsync();
             await LoadFoodItemsAsync();
             Search();

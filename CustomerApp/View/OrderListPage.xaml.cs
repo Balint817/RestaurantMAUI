@@ -4,11 +4,11 @@ namespace CustomerApp.View;
 
 public partial class OrderListPage : ContentPage
 {
-	OrderListPageVM VM => (OrderListPageVM)BindingContext;
-	public OrderListPage()
-	{
-		InitializeComponent();
-	}
+    OrderListPageVM VM => (OrderListPageVM)BindingContext;
+    public OrderListPage()
+    {
+        InitializeComponent();
+    }
 
-	private void OnDetailsTapped(object sender, TappedEventArgs e) => VM.OnDetailsTapped((Label)sender);
+    private void OnDetailsTapped(object sender, TappedEventArgs e) => VM.OnDetailsTapped((Label)sender);
 }

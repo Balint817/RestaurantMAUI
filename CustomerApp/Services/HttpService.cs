@@ -12,7 +12,7 @@ using System.Globalization;
 
 namespace CustomerApp.Services
 {
-    public sealed class HttpService: Singleton<HttpService>
+    public sealed class HttpService : Singleton<HttpService>
     {
         static HttpService? _instance;
         public static HttpService Instance => _instance ??= new();

@@ -1,19 +1,17 @@
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+<ContentPage
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CustomerApp.View.CartPage"
-             xmlns:vm="clr-namespace:CustomerApp.ViewModel">
-
+	xmlns:vm="clr-namespace:CustomerApp.ViewModel">
     <ContentPage.BindingContext>
         <vm:CartPageVM/>
     </ContentPage.BindingContext>
-
     <ContentPage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Styles/DarkTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
         <Style TargetType="Entry">
             <Setter Property="PlaceholderColor" Value="{DynamicResource TextDark}"/>
         </Style>
@@ -21,21 +19,16 @@
             <Setter Property="BackgroundColor" Value="{DynamicResource BrandStrong}"/>
         </Style>
     </ContentPage.Resources>
-
-    <!-- Outer Grid to position floating button -->
     <Grid BackgroundColor="{DynamicResource BrandBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <!-- Space for the button -->
         </Grid.RowDefinitions>
-
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-
             <StackLayout BackgroundColor="{DynamicResource NavbarTransparent028}">
                 <!-- Custom Navbar -->
                 <Grid Padding="10" MinimumHeightRequest="60">
@@ -44,7 +37,6 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-
                     <!-- Back Button -->
                     <ImageButton 
                         Source="arrow_left.svg" 
@@ -53,7 +45,6 @@
                         Padding="0"
                         Command="{Binding BackCommand}"
                         Grid.Column="0"/>
-
                     <!-- Logo and Title -->
                     <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
                         <Image 
@@ -70,7 +61,6 @@
                     </HorizontalStackLayout>
                 </Grid>
             </StackLayout>
-
             <ScrollView Grid.Row="1">
                 <VerticalStackLayout>
                     <Grid Margin="10" Padding="5">
@@ -78,14 +68,12 @@
                             <Image Source="banner3.jpg" Aspect="AspectFit" />
                         </Frame>
                     </Grid>
-
                     <!-- Cart Items -->
                     <VerticalStackLayout Padding="0,10,0,0">
                         <Label Text="Kosár"
                             FontSize="22"
                             FontAttributes="Bold"
                             HorizontalTextAlignment="Center" Margin="0,0,0,10"/>
-
                         <Grid>
                             <FlexLayout Direction="Row" Wrap="Wrap" JustifyContent="Center">
                                 <BindableLayout.ItemTemplate>
@@ -97,14 +85,12 @@
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-
                                                 <Grid Grid.Row="0">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto"/>
                                                         <ColumnDefinition/>
                                                         <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
-
                                                     <Border Grid.Column="1"
                                                         StrokeThickness="2" 
                                                         Stroke="{DynamicResource BrandStrongTransparent070}" 
@@ -117,7 +103,6 @@
                                                             </Image.Clip>
                                                         </Image>
                                                     </Border>
-
                                                     <Image Grid.Column="0"
                                                         IsVisible="{Binding AllowEdit}"
                                                         Source="edit_pencil_icon.svg" 
@@ -141,7 +126,6 @@
                                                         </Image.GestureRecognizers>
                                                     </Image>
                                                 </Grid>
-
                                                 <Grid Grid.Row="1">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition/>
@@ -152,20 +136,17 @@
                                                         <RowDefinition Height="Auto"/>
                                                         <RowDefinition Height="Auto"/>
                                                     </Grid.RowDefinitions>
-
                                                     <Label Grid.Row="0" Grid.Column="1"
                                                         VerticalOptions="Center"
                                                         HorizontalOptions="Center"
                                                         HorizontalTextAlignment="Center"
                                                         FontSize="20"
                                                         Text="{Binding Food.name}"/>
-
                                                     <Grid Grid.Row="1" Grid.Column="1">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition/>
                                                             <ColumnDefinition/>
                                                         </Grid.ColumnDefinitions>
-
                                                         <Label Grid.Column="0"
                                                             VerticalOptions="Center"
                                                             HorizontalOptions="Start"
@@ -174,7 +155,6 @@
                                                             TextColor="{DynamicResource BrandStrong}"
                                                             FontAttributes="Bold"
                                                             Text="{Binding Count, StringFormat='{0} db'}" Margin="0,0,20,0"/>
-
                                                         <Label Grid.Column="1"
                                                             VerticalOptions="Center"
                                                             HorizontalOptions="End"
@@ -189,7 +169,6 @@
                                         </Frame>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
-
                                 <BindableLayout.ItemsSource>
                                     <Binding Path="Items"/>
                                 </BindableLayout.ItemsSource>
@@ -199,7 +178,6 @@
                 </VerticalStackLayout>
             </ScrollView>
         </Grid>
-
         <!-- Fixed Button at Bottom -->
         <Button Grid.Row="1"
             Text="Rendelés"

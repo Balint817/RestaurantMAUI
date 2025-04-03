@@ -5,10 +5,10 @@ namespace CustomerApp.View;
 
 public partial class FoodListPage : ContentPage
 {
-	FoodListPageVM VM => (FoodListPageVM)this.BindingContext;
-	public FoodListPage(CategoryModel category)
-	{
-		InitializeComponent();
+    FoodListPageVM VM => (FoodListPageVM)this.BindingContext;
+    public FoodListPage(CategoryModel category)
+    {
+        InitializeComponent();
         VM.Init(category);
     }
 

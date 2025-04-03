@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CustomerApp.Services
 {
-    public sealed class MaterialService: Singleton<MaterialService>
+    public sealed class MaterialService : Singleton<MaterialService>
     {
         static MaterialService? _instance;
         public static MaterialService Instance => _instance ??= new();
@@ -20,7 +20,7 @@ namespace CustomerApp.Services
         static HttpService HttpService => HttpService.Instance;
         private MaterialService()
         {
-            
+
         }
         public async Task<MaterialModel[]> GetAllAsync()
         {

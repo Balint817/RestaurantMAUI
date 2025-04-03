@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+<ContentPage
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CustomerApp.View.FoodPage"
-             xmlns:vm="clr-namespace:CustomerApp.ViewModel">
-
+	xmlns:vm="clr-namespace:CustomerApp.ViewModel">
     <ContentPage.BindingContext>
         <vm:FoodPageVM/>
     </ContentPage.BindingContext>
-
     <ContentPage.Resources>
-
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Styles/DarkTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
-
         <Style TargetType="Entry">
             <Setter Property="PlaceholderColor" Value="{DynamicResource TextDark}"/>
         </Style>
@@ -25,7 +20,6 @@
             <Setter Property="BackgroundColor" Value="{DynamicResource BrandStrong}"/>
         </Style>
     </ContentPage.Resources>
-
     <Grid BackgroundColor="{DynamicResource BrandBackground}" HorizontalOptions="Fill">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -37,8 +31,6 @@
             <RowDefinition Height="Auto"/>
             <!-- Logout button -->
         </Grid.RowDefinitions>
-
-
         <StackLayout BackgroundColor="{DynamicResource NavbarTransparent028}">
             <Grid Padding="10" MinimumHeightRequest="60">
                 <Grid.ColumnDefinitions>
@@ -46,8 +38,6 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-
-
                 <!-- Hamburger Menu -->
                 <ImageButton 
                 Source="arrow_left.svg" 
@@ -56,8 +46,6 @@
                         Padding="0"
                 Command="{Binding BackCommand}"
                 Grid.Column="0"/>
-
-
                 <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
                     <Image 
                     Source="fork_knife_icon.svg" 
@@ -71,10 +59,8 @@
                     TextColor="White"
                     VerticalOptions="Center"/>
                 </HorizontalStackLayout>
-
             </Grid>
         </StackLayout>
-
         <!-- Profile Image (Always on Top) -->
         <Grid Grid.Row="1" HorizontalOptions="Center" Padding="0,10,0,0">
             <Border StrokeThickness="4" 
@@ -89,7 +75,6 @@
                 </Image>
             </Border>
         </Grid>
-
         <Grid Grid.Row="2" HorizontalOptions="Fill" VerticalOptions="Start" Padding="20,0,20,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -99,7 +84,6 @@
                 <RowDefinition Height="3*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
             <Label Grid.Row="0"
                 Text="{Binding TargetFoodCategory.name}" 
                 FontSize="20"
@@ -108,7 +92,6 @@
                 VerticalOptions="Center"
                 Opacity="0.5"
                 TextColor="{DynamicResource TextMid}" />
-
             <Label Grid.Row="1"
                 Padding="0,10,0,0"
                 Text="{Binding TargetFood.name}"
@@ -123,7 +106,6 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-
                 <!-- Price Label -->
                 <Label 
                     Padding="0,10,0,0"
@@ -134,7 +116,6 @@
                     VerticalOptions="Center" 
                     TextColor="{DynamicResource BrandStrong}" 
                     Grid.Column="0" />
-
                 <!-- Counter section -->
                 <Frame 
                     Grid.Column="2" 
@@ -142,14 +123,12 @@
                     BackgroundColor="{DynamicResource ItemButtonsBackground}" 
                     Padding="5"
                     HorizontalOptions="End">
-
                     <Grid Padding="0" RowSpacing="0" ColumnSpacing="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-
                         <!-- Minus Button -->
                         <Grid HeightRequest="30" WidthRequest="30" Grid.Column="0" Margin="0,0,5,0">
                             <Border 
@@ -164,12 +143,10 @@
                     HorizontalOptions="Center" 
                     VerticalOptions="Center" 
                     TextColor="{DynamicResource ItemListBackground}" />
-
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="MinusTapped"/>
                             </Grid.GestureRecognizers>
                         </Grid>
-
                         <!-- Counter Text -->
                         <Label 
                 Text="{Binding CartModel.Count}"
@@ -181,7 +158,6 @@
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                              Margin="0,0,5,0"/>
-
                         <!-- Plus Button -->
                         <Grid HeightRequest="30" WidthRequest="30" Grid.Column="2">
                             <Border 
@@ -201,11 +177,8 @@
                             </Grid.GestureRecognizers>
                         </Grid>
                     </Grid>
-
                 </Frame>
-
             </Grid>
-
             <VerticalStackLayout Grid.Row="3" Margin="0,20,0,0">
                 <Label
                     Text="Leírás" 
@@ -224,7 +197,6 @@
                     Opacity="0.75"
                     TextColor="{DynamicResource TextDark}" />
                 <CollectionView ItemsSource="{Binding CountedMaterials}">
-
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Label
@@ -240,9 +212,7 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </VerticalStackLayout>
-
             <Frame Grid.Row="4" Margin="0,20,0,0" MaximumWidthRequest="150" CornerRadius="50" IsVisible="{Binding IsNew}">
-
                 <Grid>
                     <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="0" TranslationY="-1" TextColor="{DynamicResource TextBrandSelected}" />
                     <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="1" TranslationY="-1" TextColor="{DynamicResource TextBrandSelected}" />
@@ -254,12 +224,8 @@
                 </Grid>
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Tapped="AddItemTapped"/>
-
-
                 </Frame.GestureRecognizers>
             </Frame>
-
         </Grid>
-
     </Grid>
 </ContentPage>

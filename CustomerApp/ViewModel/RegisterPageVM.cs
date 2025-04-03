@@ -8,7 +8,7 @@ using CustomerApp.View;
 
 namespace CustomerApp.ViewModel
 {
-    public class RegisterPageVM: BindableObject
+    public class RegisterPageVM : BindableObject
     {
         private void OnGoLoginClicked(object obj)
         {

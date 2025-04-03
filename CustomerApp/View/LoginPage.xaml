@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+<ContentPage
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CustomerApp.View.LoginPage"
-             xmlns:vm="clr-namespace:CustomerApp.ViewModel">
-
+	xmlns:vm="clr-namespace:CustomerApp.ViewModel">
     <ContentPage.BindingContext>
         <vm:LoginPageVM/>
     </ContentPage.BindingContext>
-
     <ContentPage.Resources>
-
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Styles/DarkTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
-
         <Style TargetType="Entry">
             <Setter Property="PlaceholderColor" Value="{DynamicResource TextDark}"/>
         </Style>
@@ -25,15 +20,12 @@
             <Setter Property="BackgroundColor" Value="{DynamicResource BrandStrong}"/>
         </Style>
     </ContentPage.Resources>
-
     <Grid BackgroundColor="{DynamicResource BrandBackground}" HorizontalOptions="Fill">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- Navbar -->
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
-
         <StackLayout BackgroundColor="{DynamicResource NavbarTransparent028}">
             <Grid Padding="10" MinimumHeightRequest="60">
                 <Grid.ColumnDefinitions>
@@ -41,8 +33,6 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-
-
                 <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
                     <Image 
                     Source="fork_knife_icon.svg" 
@@ -56,21 +46,11 @@
                     TextColor="White"
                     VerticalOptions="Center"/>
                 </HorizontalStackLayout>
-
-                <!--<ImageButton 
-                Source="user_icon.svg" 
-                HeightRequest="30" 
-                WidthRequest="30"
-                Padding="5"
-                Grid.Column="2"/>-->
             </Grid>
         </StackLayout>
-
         <Grid Grid.Row="1" HorizontalOptions="Center" Margin="0,20,0,0">
             <VerticalStackLayout>
-
                 <Frame WidthRequest="250" HeightRequest="70" CornerRadius="20" BackgroundColor="{DynamicResource ItemListBackground}" BorderColor="{DynamicResource BrandStrong}" Grid.Row="0" Padding="10" Margin="0,10,0,0">
-
                     <Entry Placeholder="Felhasználónév"
                         Background="{x:Null}"
                         PlaceholderColor="{DynamicResource BrandStrong}"
@@ -82,7 +62,6 @@
                         />
                 </Frame>
                 <Frame WidthRequest="250" HeightRequest="70" CornerRadius="20" BackgroundColor="{DynamicResource ItemListBackground}" BorderColor="{DynamicResource BrandStrong}" Grid.Row="0" Padding="10" Margin="0,10,0,0">
-
                     <Entry Placeholder="Jelszó"
                         Background="{x:Null}"
                         IsPassword="True"
@@ -94,7 +73,6 @@
                         HorizontalOptions="FillAndExpand"
                         />
                 </Frame>
-
                 <Label 
                     Margin="0,5,0,0"
                     Text="Még nincs fiókom->" 
@@ -103,17 +81,11 @@
                     TextColor="{DynamicResource BrandStrong}"
                     VerticalOptions="End"
                     HorizontalOptions="Start">
-
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding GoToRegisterCommand}"/>
-
-
                     </Label.GestureRecognizers>
                 </Label>
-
-
                 <Frame Grid.Row="4" Margin="0,10,0,0" MaximumWidthRequest="150" MaximumHeightRequest="90" Padding="10" CornerRadius="50" BackgroundColor="{DynamicResource BrandStrong}">
-
                     <Grid>
                         <Label Text="Belépés" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="0" TranslationY="-1" TextColor="{DynamicResource TextBrandSelected}" />
                         <Label Text="Belépés" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="1" TranslationY="-1" TextColor="{DynamicResource TextBrandSelected}" />
@@ -123,13 +95,10 @@
                         <Label Text="Belépés" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="-1" TranslationY="1" TextColor="{DynamicResource TextBrandSelected}" />
                         <Label Text="Belépés" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="0" TranslationY="1" TextColor="{DynamicResource TextBrandSelected}" />
                     </Grid>
-
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding LoginCommand}"/>
                     </Frame.GestureRecognizers>
-
                 </Frame>
-                
                 <Label 
                     Text="{Binding ErrorMessage}" 
                     FontSize="16" 
@@ -139,9 +108,7 @@
                     HorizontalOptions="Start" 
                     MaximumWidthRequest="250"
                     LineBreakMode="WordWrap"/>
-
             </VerticalStackLayout>
         </Grid>
-
     </Grid>
 </ContentPage>

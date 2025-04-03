@@ -1,23 +1,19 @@
-﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+﻿<ContentPage
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CustomerApp.View.MainPage"
-             xmlns:vm="clr-namespace:CustomerApp.ViewModel"
-             xmlns:control="clr-namespace:CustomerApp.Controls"
+	xmlns:vm="clr-namespace:CustomerApp.ViewModel"
+	xmlns:control="clr-namespace:CustomerApp.Controls"
              >
     <ContentPage.BindingContext>
         <vm:MainPageVM/>
     </ContentPage.BindingContext>
-
     <ContentPage.Resources>
-
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Styles/DarkTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
-
         <Style TargetType="Entry">
             <Setter Property="PlaceholderColor" Value="{DynamicResource TextDark}"/>
         </Style>
@@ -25,13 +21,11 @@
             <Setter Property="BackgroundColor" Value="{DynamicResource BrandStrong}"/>
         </Style>
     </ContentPage.Resources>
-
     <Grid BackgroundColor="{DynamicResource BrandBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-
         <StackLayout BackgroundColor="{DynamicResource NavbarTransparent028}">
             <!-- Custom Navbar -->
             <Grid Padding="10"  MinimumHeightRequest="60">
@@ -40,7 +34,6 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-
                 <!-- Hamburger Menu -->
                 <ImageButton 
                         Source="shopping_cart_icon.svg" 
@@ -52,7 +45,6 @@
                         <TapGestureRecognizer Tapped="CartTapped"/>
                     </ImageButton.GestureRecognizers>
                 </ImageButton>
-
                 <!-- Logo and Title -->
                 <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
                     <Image 
@@ -67,7 +59,6 @@
                             TextColor="White"
                             VerticalOptions="Center"/>
                 </HorizontalStackLayout>
-
                 <!-- User Icon -->
                 <ImageButton 
                         Source="user_icon.svg" 
@@ -77,35 +68,21 @@
                         Grid.Column="2">
                     <ImageButton.GestureRecognizers>
                         <TapGestureRecognizer Tapped="UserTapped"/>
-
-
                     </ImageButton.GestureRecognizers>
                 </ImageButton>
             </Grid>
         </StackLayout>
-
         <ScrollView Grid.Row="1">
             <VerticalStackLayout>
-
                 <!-- Search Bar -->
-
-
                 <Grid Margin="10" Padding="5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    
                     <Frame BackgroundColor="Transparent" Padding="0" BorderColor="Transparent" HasShadow="False" CornerRadius="50" HeightRequest="150" Grid.Row="0" Grid.RowSpan="2">
                         <Image Source="banner.jpg" Aspect="AspectFit" />
                     </Frame>
-
-
-
-                    <!--<Frame CornerRadius="20" BackgroundColor="#00000000" Grid.Row="0" Grid.RowSpan="2" IsClippedToBounds="True">
-                        
-                    </Frame>-->
-
                     <Frame CornerRadius="20" BackgroundColor="{DynamicResource BrandStrong}" Grid.Row="0" IsClippedToBounds="True">
                         <HorizontalStackLayout>
                             <Image Source="search_icon.svg"
@@ -120,44 +97,35 @@
                         />
                         </HorizontalStackLayout>
                     </Frame>
-
                 </Grid>
-
-
-                    <!-- Featured Products Section -->
+                <!-- Featured Products Section -->
                 <VerticalStackLayout Padding="5">
                     <Label Text="Kiemelt Termékeink"
                        FontSize="22"
                        FontAttributes="Bold"
                        HorizontalTextAlignment="Center" />
-
                     <Grid ColumnSpacing="20" RowSpacing="20" Padding="15" IsVisible="{Binding IsLoaded}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-
                         <VerticalStackLayout Grid.Column="0" IsVisible="{Binding FirstAny}" >
                             <Label Text="{Binding FirstThreeItemsOfCategories[0].Key.name}" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center" />
                             <Frame CornerRadius="35" BackgroundColor="{DynamicResource ItemListBackground}">
-
                                 <CollectionView ItemsLayout="VerticalList">
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate>
                                             <Grid Margin="10">
-
                                                 <Border
                                                 StrokeThickness="2" 
                                                 Stroke="{DynamicResource BrandStrongTransparent070}" 
                                                 HeightRequest="80" 
                                                 WidthRequest="80" 
                                                 StrokeShape="Ellipse">
-
                                                     <Image Source="{Binding imageUrl}" Aspect="AspectFill" HeightRequest="80" WidthRequest="80">
                                                         <Image.Clip>
                                                             <EllipseGeometry
@@ -168,29 +136,23 @@
                                                         </Image.Clip>
                                                     </Image>
                                                 </Border>
-
                                                 <Grid VerticalOptions="End" HorizontalOptions="Start" HeightRequest="20" WidthRequest="20" Margin="0,0,0,0">
                                                     <Border 
                                                         StrokeThickness="0" 
                                                         BackgroundColor="{DynamicResource BrandStrong}" 
                                                         StrokeShape="Ellipse"
                                                         HeightRequest="20" 
-                                                        WidthRequest="20">
-                                                    </Border>
-
+                                                        WidthRequest="20"></Border>
                                                     <Label 
                                                         Text="+" 
                                                         FontSize="15" 
                                                         HorizontalOptions="Center" 
                                                         VerticalOptions="Center" 
                                                         TextColor="{DynamicResource ItemListBackground}" />
-
                                                     <Grid.GestureRecognizers>
                                                         <TapGestureRecognizer Command="{Binding PlusTappedCommand}"/>
                                                     </Grid.GestureRecognizers>
                                                 </Grid>
-
-
                                                 <Grid.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding DetailCommand}"/>
                                                 </Grid.GestureRecognizers>
@@ -203,25 +165,19 @@
                                 </CollectionView>
                             </Frame>
                         </VerticalStackLayout>
-
-
-
                         <VerticalStackLayout Grid.Column="1" IsVisible="{Binding SecondAny}" >
                             <Label Text="{Binding FirstThreeItemsOfCategories[1].Key.name}" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center" />
                             <Frame CornerRadius="35" BackgroundColor="{DynamicResource ItemListBackground}">
-
                                 <CollectionView ItemsLayout="VerticalList">
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate>
                                             <Grid Margin="10">
-
                                                 <Border
                                                 StrokeThickness="2" 
                                                 Stroke="{DynamicResource BrandStrongTransparent070}" 
                                                 HeightRequest="80" 
                                                 WidthRequest="80" 
                                                 StrokeShape="Ellipse">
-
                                                     <Image Source="{Binding imageUrl}" Aspect="AspectFill" HeightRequest="80" WidthRequest="80">
                                                         <Image.Clip>
                                                             <EllipseGeometry
@@ -232,16 +188,13 @@
                                                         </Image.Clip>
                                                     </Image>
                                                 </Border>
-
                                                 <Grid VerticalOptions="End" HorizontalOptions="Start" HeightRequest="20" WidthRequest="20" Margin="0,0,0,0">
                                                     <Border 
                                                         StrokeThickness="0" 
                                                         BackgroundColor="{DynamicResource BrandStrong}" 
                                                         StrokeShape="Ellipse"
                                                         HeightRequest="20" 
-                                                        WidthRequest="20">
-                                                    </Border>
-
+                                                        WidthRequest="20"></Border>
                                                     <Label 
                                                         Text="+" 
                                                         FontSize="15" 
@@ -252,8 +205,6 @@
                                                         <TapGestureRecognizer Command="{Binding PlusTappedCommand}"/>
                                                     </Grid.GestureRecognizers>
                                                 </Grid>
-
-
                                                 <Grid.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding DetailCommand}"/>
                                                 </Grid.GestureRecognizers>
@@ -266,7 +217,6 @@
                                 </CollectionView>
                             </Frame>
                         </VerticalStackLayout>
-
                         <Label Grid.Column="0" Grid.Row="1"
                                 Text="➜" 
                                 FontSize="36" 
@@ -278,7 +228,6 @@
                                 <TapGestureRecognizer Tapped="FirstCategory_Tapped"/>
                             </Label.GestureRecognizers>
                         </Label>
-
                         <Label Grid.Column="1" Grid.Row="1"
                                 Text="➜" 
                                 FontSize="36" 
@@ -290,11 +239,9 @@
                                 <TapGestureRecognizer Tapped="SecondCategory_Tapped"/>
                             </Label.GestureRecognizers>
                         </Label>
-
                     </Grid>
                 </VerticalStackLayout>
             </VerticalStackLayout>
         </ScrollView>
     </Grid>
-
 </ContentPage>

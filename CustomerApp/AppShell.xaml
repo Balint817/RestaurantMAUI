@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Shell
     x:Class="CustomerApp.AppShell"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:CustomerApp"
-    xmlns:view="clr-namespace:CustomerApp.View"
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:local="clr-namespace:CustomerApp"
+	xmlns:view="clr-namespace:CustomerApp.View"
     Shell.FlyoutBehavior="Flyout"
     Shell.NavBarIsVisible="False"
     Title="Fast Food">
-
     <FlyoutItem
         Title="Főoldal">
         <Tab>
@@ -17,8 +16,6 @@
                 Route="MainPage"/>
         </Tab>
     </FlyoutItem>
-
-
     <FlyoutItem
         Title="Rendelések">
         <Tab>
@@ -27,7 +24,6 @@
                 Route="OrderListPage"/>
         </Tab>
     </FlyoutItem>
-
     <FlyoutItem
         Title="RegisterPage">
         <Tab>
@@ -36,6 +32,4 @@
                 Route="RegisterPage"/>
         </Tab>
     </FlyoutItem>
-
-
 </Shell>

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CustomerApp.Services
 {
-    public class AuthService: BindableObject, Singleton<AuthService>
+    public class AuthService : BindableObject, Singleton<AuthService>
     {
         static AuthService? _instance;
         public static AuthService Instance => _instance ??= new();
@@ -87,7 +87,7 @@ namespace CustomerApp.Services
 
         public async Task<bool?> Login(string name, string password)
         {
-            var r = await HttpService.PostJsonAsync($"{HttpService.BaseAPIUrl}/user/login", new AuthObject() { name=name, password=password });
+            var r = await HttpService.PostJsonAsync($"{HttpService.BaseAPIUrl}/user/login", new AuthObject() { name = name, password = password });
             UserObject user;
             string? stringContent = null;
             try
@@ -108,7 +108,7 @@ namespace CustomerApp.Services
             return await Init();
         }
 
-        
+
         public async Task<KeyValuePair<bool?, string?>> Register(string name, string password, string email)
         {
             var r = await HttpService.PostJsonAsync($"{HttpService.BaseAPIUrl}/user/register/customer", new AuthObject() { name = name, password = password, email = email });

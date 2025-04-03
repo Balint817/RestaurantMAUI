@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CustomerApp.Services
 {
-    public sealed class FoodService: Singleton<FoodService>
+    public sealed class FoodService : Singleton<FoodService>
     {
         static FoodService? _instance;
         public static FoodService Instance => _instance ??= new();
@@ -20,7 +20,7 @@ namespace CustomerApp.Services
         static HttpService HttpService => HttpService.Instance;
         private FoodService()
         {
-            
+
         }
         public async Task<FoodItemModel[]> GetAllAsync()
         {

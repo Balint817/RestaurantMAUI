@@ -5,11 +5,11 @@ namespace CustomerApp.View;
 
 public partial class FoodPage : ContentPage
 {
-	FoodPageVM VM => (FoodPageVM)BindingContext;
+    FoodPageVM VM => (FoodPageVM)BindingContext;
     public FoodPage(FoodItemModel model)
-	{
-		InitializeComponent();
-		VM.Init(model);
+    {
+        InitializeComponent();
+        VM.Init(model);
     }
     public FoodPage(CartModel model)
     {
@@ -18,7 +18,7 @@ public partial class FoodPage : ContentPage
     }
     internal static void ShowWindow(FoodItemModel model)
     {
-		App.GetNavigation().PushAsync(new FoodPage(model));
+        App.GetNavigation().PushAsync(new FoodPage(model));
     }
     internal static void ShowWindow(CartModel model)
     {

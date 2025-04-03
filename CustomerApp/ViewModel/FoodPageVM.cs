@@ -9,7 +9,7 @@ using CustomerApp.Services;
 
 namespace CustomerApp.ViewModel
 {
-    public class FoodPageVM: BindableObject
+    public class FoodPageVM : BindableObject
     {
         public Command ToggleFlyoutCommand => AppShell.ToggleFlyoutCommand;
         public Command BackCommand => AppShell.NavigateBackCommand;
@@ -27,7 +27,9 @@ namespace CustomerApp.ViewModel
         public FoodItemModel? TargetFood
         {
             get { return _targetFood; }
-            set { CartModel.Food = _targetFood = value;
+            set
+            {
+                CartModel.Food = _targetFood = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(TargetFoodCategory));
                 OnPropertyChanged(nameof(CartModel));

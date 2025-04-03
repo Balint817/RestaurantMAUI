@@ -1,6 +1,6 @@
 ﻿namespace CustomerApp.Model
 {
-    public class CartModel: BindableObject
+    public class CartModel : BindableObject
     {
         private FoodItemModel? _food;
 

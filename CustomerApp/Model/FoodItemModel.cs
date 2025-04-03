@@ -5,7 +5,7 @@ using CustomerApp.View;
 
 namespace CustomerApp.Model
 {
-    public class FoodItemModel: BindableObject
+    public class FoodItemModel : BindableObject
     {
 #pragma warning disable CS8618
         public class Material

@@ -11,7 +11,7 @@ namespace CustomerApp.ViewModel
         public Command ToggleFlyoutCommand => AppShell.ToggleFlyoutCommand;
         public EmptyPageVM()
         {
-            
+
         }
     }
 }

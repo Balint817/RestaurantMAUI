@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+<ContentPage
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CustomerApp.View.EmptyPage"
-             xmlns:vm="clr-namespace:CustomerApp.ViewModel">
-
+	xmlns:vm="clr-namespace:CustomerApp.ViewModel">
     <ContentPage.BindingContext>
         <vm:EmptyPageVM/>
     </ContentPage.BindingContext>
-
     <ContentPage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -15,14 +14,11 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </ContentPage.Resources>
-
     <Grid BackgroundColor="{DynamicResource BrandBackground}" HorizontalOptions="Fill" VerticalOptions="Fill">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <!-- Navbar Section (Can be left empty or simplified) -->
         <StackLayout BackgroundColor="{DynamicResource NavbarTransparent028}">
             <Grid Padding="10" MinimumHeightRequest="60">
                 <Grid.ColumnDefinitions>
@@ -36,8 +32,6 @@
                 </HorizontalStackLayout>
             </Grid>
         </StackLayout>
-
-        <!-- Main Content (Loading Spinner) -->
         <Grid Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center">
             <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
                 <ActivityIndicator IsRunning="True" Color="{DynamicResource BrandStrong}" HeightRequest="100" WidthRequest="100" HorizontalOptions="Center" VerticalOptions="Center"/>

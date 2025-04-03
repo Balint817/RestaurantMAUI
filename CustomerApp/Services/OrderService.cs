@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CustomerApp.Services
 {
-    public sealed class OrderService: Singleton<OrderService>
+    public sealed class OrderService : Singleton<OrderService>
     {
         static OrderService? _instance;
         public static OrderService Instance => _instance ??= new();
@@ -24,7 +24,7 @@ namespace CustomerApp.Services
         }
         private OrderService()
         {
-            
+
         }
         public async Task<OrderModel[]> GetOrders()
         {
@@ -41,7 +41,7 @@ namespace CustomerApp.Services
             var userId = user!.userId;
             var order = PostOrderModel.FromCart(userId, Cart);
             var response = await HttpService.PostJsonAsync($"{HttpService.BaseAPIUrl}/order", order);
-            
+
         }
     }
 }

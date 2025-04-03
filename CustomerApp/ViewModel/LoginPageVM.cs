@@ -8,7 +8,7 @@ using CustomerApp.View;
 
 namespace CustomerApp.ViewModel
 {
-    public class LoginPageVM: BindableObject
+    public class LoginPageVM : BindableObject
     {
         public Command ToggleFlyoutCommand => AppShell.ToggleFlyoutCommand;
         public LoginPageVM()

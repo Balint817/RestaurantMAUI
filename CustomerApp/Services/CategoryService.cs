@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CustomerApp.Services
 {
-    public sealed class CategoryService: Singleton<CategoryService>
+    public sealed class CategoryService : Singleton<CategoryService>
     {
         static CategoryService? _instance;
         public static CategoryService Instance => _instance ??= new();
@@ -21,7 +21,7 @@ namespace CustomerApp.Services
         static HttpService HttpService => HttpService.Instance;
         private CategoryService()
         {
-            
+
         }
         public async Task<CategoryModel[]> GetAllAsync()
         {

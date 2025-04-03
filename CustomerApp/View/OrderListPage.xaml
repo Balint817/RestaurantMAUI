@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+<ContentPage
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CustomerApp.View.OrderListPage"
-             xmlns:vm="clr-namespace:CustomerApp.ViewModel">
-
+	xmlns:vm="clr-namespace:CustomerApp.ViewModel">
     <ContentPage.BindingContext>
         <vm:OrderListPageVM/>
     </ContentPage.BindingContext>
-
     <ContentPage.Resources>
-
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Styles/DarkTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
-
         <Style TargetType="Entry">
             <Setter Property="PlaceholderColor" Value="{DynamicResource TextDark}"/>
         </Style>
@@ -25,7 +20,6 @@
             <Setter Property="BackgroundColor" Value="{DynamicResource BrandStrong}"/>
         </Style>
     </ContentPage.Resources>
-
     <Grid BackgroundColor="{DynamicResource BrandBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -37,8 +31,6 @@
             <RowDefinition Height="Auto"/>
             <!-- Logout button -->
         </Grid.RowDefinitions>
-
-
         <StackLayout BackgroundColor="{DynamicResource NavbarTransparent028}">
             <Grid Padding="10" MinimumHeightRequest="60">
                 <Grid.ColumnDefinitions>
@@ -46,7 +38,6 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-
                 <ImageButton 
                 Source="arrow_left.svg" 
                         HeightRequest="40" 
@@ -54,7 +45,6 @@
                         Padding="0"
                 Command="{Binding BackCommand}"
                 Grid.Column="0"/>
-
                 <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
                     <Image 
                     Source="fork_knife_icon.svg" 
@@ -68,7 +58,6 @@
                     TextColor="White"
                     VerticalOptions="Center"/>
                 </HorizontalStackLayout>
-
                 <ImageButton 
                 Source="user_icon.svg" 
                 HeightRequest="30" 
@@ -77,7 +66,6 @@
                 Grid.Column="2"/>
             </Grid>
         </StackLayout>
-
         <!-- Profile Image (Always on Top) -->
         <Grid Grid.Row="1" HorizontalOptions="Center" Padding="10">
             <Border StrokeThickness="4" 
@@ -92,7 +80,6 @@
                 </Image>
             </Border>
         </Grid>
-
         <!-- Scrollable Content -->
         <ScrollView Grid.Row="2">
             <VerticalStackLayout Padding="10">
@@ -113,7 +100,6 @@
                                                 <RowDefinition Height="*"/>
                                                 <RowDefinition Height="*"/>
                                             </Grid.RowDefinitions>
-
                                             <Label Grid.Row="1"
                                                Text="{Binding orderNumber}" 
                                                FontSize="30" 
@@ -121,7 +107,6 @@
                                                HorizontalOptions="Center" 
                                                VerticalOptions="Center" 
                                                TextColor="{DynamicResource BrandStrong}" />
-
                                             <Grid VerticalOptions="End" 
                                               HorizontalOptions="End"
                                               Grid.Row="2">
@@ -139,7 +124,6 @@
                                     </Frame>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
-
                             <BindableLayout.ItemsSource>
                                 <Binding Path="Orders" />
                             </BindableLayout.ItemsSource>
@@ -148,8 +132,7 @@
                 </Grid>
             </VerticalStackLayout>
         </ScrollView>
-
-        <!-- Logout Section (Always at Bottom) -->
+        <!-- Logout Section -->
         <HorizontalStackLayout Grid.Row="3" x:Name="Logout" Padding="10">
             <Image Source="exit.svg" 
                HeightRequest="30" 

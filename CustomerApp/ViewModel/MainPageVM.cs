@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CustomerApp.ViewModel
 {
-    public class MainPageVM: BindableObject
+    public class MainPageVM : BindableObject
     {
         public Command ToggleFlyoutCommand => AppShell.ToggleFlyoutCommand;
 
@@ -41,9 +41,12 @@ namespace CustomerApp.ViewModel
         public string? SearchEntry
         {
             get { return _searchEntry; }
-            set { _searchEntry = value;
+            set
+            {
+                _searchEntry = value;
                 OnPropertyChanged();
-                Search(); }
+                Search();
+            }
         }
 
         public MainPageVM()

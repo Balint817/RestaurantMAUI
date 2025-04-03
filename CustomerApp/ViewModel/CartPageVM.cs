@@ -9,7 +9,7 @@ using CustomerApp.View;
 
 namespace CustomerApp.ViewModel
 {
-    public class CartPageVM: BindableObject
+    public class CartPageVM : BindableObject
     {
 
         public Command ToggleFlyoutCommand => AppShell.ToggleFlyoutCommand;
@@ -18,7 +18,7 @@ namespace CustomerApp.ViewModel
         {
 
         }
-        public List<CartModel>? Items =>  OrderService.Instance.DisplayedCart;
+        public List<CartModel>? Items => OrderService.Instance.DisplayedCart;
 
         private bool _allowEdit;
 

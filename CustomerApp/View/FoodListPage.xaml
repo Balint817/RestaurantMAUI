@@ -1,23 +1,18 @@
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+<ContentPage
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CustomerApp.View.FoodListPage"
-             xmlns:vm="clr-namespace:CustomerApp.ViewModel"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
-
+	xmlns:vm="clr-namespace:CustomerApp.ViewModel"
+	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
     <ContentPage.BindingContext>
         <vm:FoodListPageVM/>
     </ContentPage.BindingContext>
-    
     <ContentPage.Resources>
-
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Styles/DarkTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
-
         <Style TargetType="Entry">
             <Setter Property="PlaceholderColor" Value="{DynamicResource TextDark}"/>
         </Style>
@@ -25,8 +20,6 @@
             <Setter Property="BackgroundColor" Value="{DynamicResource BrandStrong}"/>
         </Style>
     </ContentPage.Resources>
-
-
     <Grid BackgroundColor="{DynamicResource BrandBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -34,7 +27,6 @@
             <!-- Search Bar Row -->
             <RowDefinition/>
         </Grid.RowDefinitions>
-
         <!-- Navbar -->
         <StackLayout BackgroundColor="{DynamicResource NavbarTransparent028}" Grid.Row="0">
             <Grid Padding="10"  MinimumHeightRequest="60">
@@ -43,7 +35,6 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-
                 <!-- Hamburger Menu -->
                 <ImageButton 
                 Source="arrow_left.svg" 
@@ -52,7 +43,6 @@
                         Padding="0"
                 Command="{Binding BackCommand}"
                 Grid.Column="0"/>
-
                 <!-- Logo and Title -->
                 <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
                     <Image 
@@ -67,7 +57,6 @@
                     TextColor="White"
                     VerticalOptions="Center"/>
                 </HorizontalStackLayout>
-
                 <!-- User Icon -->
                 <Image 
                 Source="user_icon.svg" 
@@ -84,18 +73,15 @@
                 </Image>
             </Grid>
         </StackLayout>
-
         <!-- Fixed Search Bar -->
         <Grid Grid.Row="1" Margin="10" Padding="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-
             <Frame BackgroundColor="Transparent" Padding="0" BorderColor="Transparent" HasShadow="False" CornerRadius="50" HeightRequest="200" Grid.Row="0" Grid.RowSpan="2">
                 <Image Source="banner2.jpg" Aspect="AspectFit" />
             </Frame>
-
             <Frame CornerRadius="20" BackgroundColor="{DynamicResource BrandStrong}" Grid.Row="0" IsClippedToBounds="True">
                 <HorizontalStackLayout>
                     <Image Source="search_icon.svg"
@@ -114,7 +100,6 @@
                 </HorizontalStackLayout>
             </Frame>
         </Grid>
-
         <!-- Scrollable Content -->
         <ScrollView Grid.Row="2">
             <VerticalStackLayout>
@@ -126,7 +111,6 @@
                         FontAttributes="Bold"
                         HorizontalTextAlignment="Center"
                         Margin="0,0,0,10"/>
-
                     <!-- Fixed Horizontal ScrollView for Categories -->
                     <ScrollView Orientation="Horizontal" HeightRequest="50">
                         <HorizontalStackLayout>
@@ -144,8 +128,6 @@
                                     <Setter Property="BorderColor" Value="{DynamicResource TextBrand}"/>
                                 </Style>
                             </HorizontalStackLayout.Resources>
-                            
-                            
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
                                     <Frame>
@@ -156,17 +138,11 @@
                                     </Frame>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
-                            
                             <BindableLayout.ItemsSource>
                                 <Binding Path="Subcategories"/>
                             </BindableLayout.ItemsSource>
-
-                            <!--<Frame BackgroundColor="{DynamicResource BrandStrong}">
-                                <Label Text="Burgerek" TextColor="{DynamicResource TextBrandSelected}" />
-                            </Frame>-->
                         </HorizontalStackLayout>
                     </ScrollView>
-
                     <!-- Scrollable Food Items -->
                     <ScrollView HeightRequest="400">
                         <FlexLayout Direction="Row" Wrap="Wrap" JustifyContent="Center" AlignItems="Start">
@@ -188,7 +164,6 @@
                                                     </Image.GestureRecognizers>
                                                 </Image>
                                             </Border>
-
                                             <Grid VerticalOptions="End" HorizontalOptions="Start" HeightRequest="20" WidthRequest="20">
                                                 <Border 
                                     StrokeThickness="0" 
@@ -211,22 +186,12 @@
                                     </Frame>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
-
                             <BindableLayout.ItemsSource>
-                                <!--<x:Array Type="{x:Type x:String}">
-                                    <x:String>/test.png</x:String>
-                                    <x:String>/test.png</x:String>
-                                    <x:String>/test.png</x:String>
-                                    <x:String>/test.png</x:String>
-                                    <x:String>/test.png</x:String>
-                                </x:Array>-->
                                 <Binding Path="FoodItems"/>
                             </BindableLayout.ItemsSource>
                         </FlexLayout>
                     </ScrollView>
                 </VerticalStackLayout>
-
-
                 <!-- Shopping Cart -->
                 <Image Source="shopping_cart_icon.svg" HorizontalOptions="End" Margin="20" WidthRequest="30" HeightRequest="30">
                     <Image.GestureRecognizers>
@@ -236,5 +201,4 @@
             </VerticalStackLayout>
         </ScrollView>
     </Grid>
-
 </ContentPage>

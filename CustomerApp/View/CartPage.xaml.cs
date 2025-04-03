@@ -6,16 +6,16 @@ namespace CustomerApp.View;
 
 public partial class CartPage : ContentPage
 {
-	CartPageVM VM => (CartPageVM)BindingContext;
-	public CartPage(bool allowEdit = true)
-	{
-		InitializeComponent();
-		VM.AllowEdit = allowEdit;
-	}
+    CartPageVM VM => (CartPageVM)BindingContext;
+    public CartPage(bool allowEdit = true)
+    {
+        InitializeComponent();
+        VM.AllowEdit = allowEdit;
+    }
 
-	internal static async void ShowWindow()
-	{
-		var navigation = App.GetNavigation();
+    internal static async void ShowWindow()
+    {
+        var navigation = App.GetNavigation();
         OrderService.Instance.DisplayedCart = OrderService.Instance.Cart;
         await navigation.PushAsync(new CartPage(allowEdit: true));
     }
@@ -27,23 +27,23 @@ public partial class CartPage : ContentPage
     }
 
     private void EditTapped(object sender, TappedEventArgs e)
-	{
+    {
         if (!VM.AllowEdit)
         {
-			DisplayAlert("Nincs engedély", "Nem tud egy már leadott rendelést szerkeszteni!", "OK");
-			return;
+            DisplayAlert("Nincs engedély", "Nem tud egy már leadott rendelést szerkeszteni!", "OK");
+            return;
         }
-		VM.EditTapped((Image)sender);
+        VM.EditTapped((Image)sender);
     }
 
-   // protected override void OnDisappearing()
-   // {
-   //     base.OnDisappearing();
-   //     if (VM.AllowEdit)
-   //     {
-			////OrderService.Instance.Cart = OrderService.Instance.DisplayedCart;
-   //     }
-   // }
+    // protected override void OnDisappearing()
+    // {
+    //     base.OnDisappearing();
+    //     if (VM.AllowEdit)
+    //     {
+    ////OrderService.Instance.Cart = OrderService.Instance.DisplayedCart;
+    //     }
+    // }
 
     private void CancelTapped(object sender, TappedEventArgs e) => VM.CancelTapped((Image)sender);
 
