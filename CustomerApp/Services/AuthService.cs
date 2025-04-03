@@ -1,89 +1,168 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CustomerApp.Services
 {
-    internal class AuthService: BindableObject, Singleton<AuthService>
+    public class AuthService: BindableObject, Singleton<AuthService>
     {
-        static AuthService _instance;
+        static AuthService? _instance;
         public static AuthService Instance => _instance ??= new();
         public HttpService HttpService => HttpService.Instance;
 
-        const string AuthTokenKey = "auth_token";
+        const string UserInfoKey = "user_info_key";
 
-        private UserObject _user;
+        private UserObject? _user;
 
-        public PartialUserObject User
+        public UserObject? User
         {
             get { return _user; }
-            set { _user = value as UserObject; OnPropertyChanged(); }
+            private set { _user = value; OnPropertyChanged(); }
         }
 
         public async Task<bool> Init()
         {
-            var token = await SecureStorage.GetAsync(AuthTokenKey);
-            bool isAuth = !string.IsNullOrWhiteSpace(token);
+            bool isAuth = await LoadUser();
             if (isAuth)
             {
-                HttpService.Instance.Authorize(token);
+                HttpService.Instance.Authorize(User!.token);
                 isAuth = await TestAuth();
                 if (!isAuth)
                 {
-                    HttpService.Instance.Unauthorize();
+                    RemoveUser();
                 }
             }
             return isAuth;
         }
 
+        internal void RemoveUser()
+        {
+            this.User = null;
+            HttpService.Instance.Unauthorize();
+            SecureStorage.Remove(UserInfoKey);
+        }
+
+        async Task<bool> LoadUser()
+        {
+            var userString = await SecureStorage.GetAsync(UserInfoKey);
+            if (string.IsNullOrEmpty(userString))
+                return false;
+
+            UserObject user;
+            try
+            {
+                user = JsonSerializer.Deserialize<UserObject>(userString) ?? throw new NullReferenceException();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            await SaveUser(user);
+            return true;
+        }
+
+        async Task SaveUser(UserObject obj)
+        {
+            this.User = obj;
+            HttpService.Instance.Authorize(obj.token);
+            await SecureStorage.SetAsync(UserInfoKey, JsonSerializer.Serialize(obj));
+        }
+
         private async Task<bool> TestAuth()
         {
             var r = await HttpService.GetAsync($"{HttpService.BaseAPIUrl}/token/validate");
-            return r.StatusCode == System.Net.HttpStatusCode.OK;
+            if (r.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                RemoveUser();
+                return false;
+            }
+            return true;
         }
 
-        public async Task Login(string name, string password)
+        public async Task<bool?> Login(string name, string password)
         {
             var r = await HttpService.PostJsonAsync($"{HttpService.BaseAPIUrl}/user/login", new AuthObject() { name=name, password=password });
-            var user = await r.Content.ReadFromJsonAsync<UserObject>();
-            await SecureStorage.SetAsync(AuthTokenKey, user.token);
-            if (await Init())
+            UserObject user;
+            string? stringContent = null;
+            try
             {
-                User = user;
+                stringContent = await r.Content.ReadAsStringAsync();
+                user = JsonSerializer.Deserialize<UserObject>(stringContent)!;
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Got an error during login", ex.ToString());
+                if (ex is JsonException)
+                {
+                    return null;
+                }
+                return false;
+            }
+            await SaveUser(user);
+            return await Init();
         }
 
+        
+        public async Task<KeyValuePair<bool?, string?>> Register(string name, string password, string email)
+        {
+            var r = await HttpService.PostJsonAsync($"{HttpService.BaseAPIUrl}/user/register/customer", new AuthObject() { name = name, password = password, email = email });
+            UserObject user;
+            string? stringContent = null;
+            try
+            {
+                stringContent = await r.Content.ReadAsStringAsync();
+                if (stringContent.ToLower() != "created")
+                {
+                    user = JsonSerializer.Deserialize<UserObject>(stringContent)!;
+                    if (user.message != null)
+                    {
+                        return new(false, user.message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Got an error during login", ex.ToString());
+                if (ex is JsonException)
+                {
+                    return new(null, null);
+                }
+                return new(false, "Hiba történt.");
+            }
+            if (r.StatusCode != System.Net.HttpStatusCode.Created)
+            {
+                return new(false, null);
+            }
+            return new(await Login(name, password), null);
+        }
+
+        public async Task Logout()
+        {
+            var r = await HttpService.PostAsync($"{HttpService.BaseAPIUrl}/user/logout", null);
+            RemoveUser();
+        }
+
+#pragma warning disable CS8618
         class AuthObject
         {
             public required string name { get; set; }
             public required string password { get; set; }
             public string? email { get; set; }
         }
-
-        [JsonPolymorphic]
-        [JsonDerivedType(typeof(UserObject))]
-        public abstract class PartialUserObject
+        public class UserObject
         {
             public string role { get; set; }
             public string profilePicture { get; set; }
             public string userId { get; set; }
-            protected PartialUserObject()
-            {
-                
-            }
+            public string token { get; set; }
+            public string message { get; set; }
         }
-
-        private class UserObject: PartialUserObject
-        {
-            internal string token { get; set; }
-            public UserObject()
-            {
-                
-            }
-        }
+#pragma warning restore CS8618 
     }
 }

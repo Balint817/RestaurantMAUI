@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http.Json;
 using System.Net;
+using System.Globalization;
 
 namespace CustomerApp.Services
 {
@@ -21,6 +22,9 @@ namespace CustomerApp.Services
         private HttpService()
         {
             _httpClient = new HttpClient();
+            _httpClient.DefaultRequestHeaders.AcceptLanguage.Clear();
+            //_httpClient.DefaultRequestHeaders.AcceptLanguage.Add(new(CultureInfo.CurrentCulture.Name));
+            _httpClient.DefaultRequestHeaders.AcceptLanguage.Add(new("hu-HU"));
         }
 
         public void Authorize(string token)
@@ -78,7 +82,7 @@ namespace CustomerApp.Services
             return await _httpClient.SendAsync(message);
         }
 
-        public string FormatQuery(string baseUrl, Dictionary<string, object> queryParams)
+        public string FormatQuery(string baseUrl, Dictionary<string, object?> queryParams)
         {
             if (queryParams.Count == 0)
             {
@@ -110,7 +114,7 @@ namespace CustomerApp.Services
             return sb.ToString();
         }
 
-        public async Task<T[]> GetAllPagedItemsAsync<T>(string baseUrl, Dictionary<string, object> baseQueryParams)
+        public async Task<T[]> GetAllPagedItemsAsync<T>(string baseUrl, Dictionary<string, object?> baseQueryParams)
         {
             var allItems = new List<T>();
             int currentPage = 1;
@@ -118,7 +122,7 @@ namespace CustomerApp.Services
 
             while (currentPage <= pageCount)
             {
-                var queryParams = new Dictionary<string, object>(baseQueryParams)
+                var queryParams = new Dictionary<string, object?>(baseQueryParams)
                 {
                     { "page", currentPage },
                     { "limit", 50 }
@@ -130,6 +134,10 @@ namespace CustomerApp.Services
                 if (!response.IsSuccessStatusCode)
                 {
                     var statusCode = response.StatusCode;
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        return [];
+                    }
                     throw new HttpRequestException($"Request failed with status code {response.StatusCode}");
                 }
 

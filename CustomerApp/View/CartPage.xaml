@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CustomerApp.View.CartPage"
@@ -9,14 +8,11 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Resources>
-
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Styles/DarkTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
 
         <Style TargetType="Entry">
             <Setter Property="PlaceholderColor" Value="{DynamicResource TextDark}"/>
@@ -26,213 +22,199 @@
         </Style>
     </ContentPage.Resources>
 
+    <!-- Outer Grid to position floating button -->
     <Grid BackgroundColor="{DynamicResource BrandBackground}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition/>
+            <!-- Space for the button -->
         </Grid.RowDefinitions>
 
-        <StackLayout BackgroundColor="{DynamicResource NavbarTransparent028}">
-            <!-- Custom Navbar -->
-            <Grid Padding="10"  MinimumHeightRequest="60">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-                <!-- Hamburger Menu --><!--
-                <ImageButton 
-                        Source="hamburger_icon.png" 
-                        HeightRequest="30" 
-                        WidthRequest="30"
-                        BackgroundColor="White"
-                        Padding="5"
-                        Command="{Binding ToggleFlyoutCommand}"
-                        Grid.Column="0"/>-->
+            <StackLayout BackgroundColor="{DynamicResource NavbarTransparent028}">
+                <!-- Custom Navbar -->
+                <Grid Padding="10" MinimumHeightRequest="60">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <!-- Logo and Title -->
-                <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
-                    <Image 
+                    <!-- Back Button -->
+                    <ImageButton 
+                        Source="arrow_left.svg" 
+                        HeightRequest="40" 
+                        WidthRequest="40"
+                        Padding="0"
+                        Command="{Binding BackCommand}"
+                        Grid.Column="0"/>
+
+                    <!-- Logo and Title -->
+                    <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                        <Image 
                             Source="fork_knife_icon.svg" 
                             HeightRequest="30" 
                             WidthRequest="30"
                             VerticalOptions="Center"/>
-                    <Label 
+                        <Label 
                             Text="Fast Food" 
                             FontSize="24" 
                             FontAttributes="Bold"
                             TextColor="White"
                             VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-
-                <!-- User Icon --><!--
-                <ImageButton 
-                        Source="user_icon.svg" 
-                        HeightRequest="30" 
-                        WidthRequest="30"
-                        Padding="5"
-                        Grid.Column="2"/>-->
-            </Grid>
-        </StackLayout>
-
-        <ScrollView Grid.Row="1">
-            <VerticalStackLayout>
-
-                <!-- Search Bar -->
-
-
-                <Grid Margin="10" Padding="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
-                    <Image Source="test.png" Aspect="AspectFit"  BackgroundColor="Wheat" HeightRequest="200" Grid.Row="0" Grid.RowSpan="2" x:Name="FeaturedImage">
-                        <Image.Clip>
-                            <RoundRectangleGeometry CornerRadius="20"/>
-                        </Image.Clip>
-                    </Image>
-
+                    </HorizontalStackLayout>
                 </Grid>
+            </StackLayout>
 
+            <ScrollView Grid.Row="1">
+                <VerticalStackLayout>
+                    <Grid Margin="10" Padding="5">
+                        <Frame BackgroundColor="Transparent" Padding="0" BorderColor="Transparent" HasShadow="False" CornerRadius="50" HeightRequest="200">
+                            <Image Source="banner3.jpg" Aspect="AspectFit" />
+                        </Frame>
+                    </Grid>
 
-                <!-- Featured Products Section -->
-                <VerticalStackLayout Padding="0,10,0,0">
-                    <Label Text="Kosár"
-                       FontSize="22"
-                       FontAttributes="Bold"
-                       HorizontalTextAlignment="Center" Margin="0,0,0,10"/>
+                    <!-- Cart Items -->
+                    <VerticalStackLayout Padding="0,10,0,0">
+                        <Label Text="Kosár"
+                            FontSize="22"
+                            FontAttributes="Bold"
+                            HorizontalTextAlignment="Center" Margin="0,0,0,10"/>
 
-                    <Grid>
-                        <FlexLayout Direction="Row" Wrap="Wrap" JustifyContent="Center">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate>
-                                    <Frame BackgroundColor="{DynamicResource ItemListBackground}" CornerRadius="25" Margin="5">
-                                        <Grid>
-                                            
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                            </Grid.RowDefinitions>
-
-                                            <Grid Grid.Row="0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-
-
-                                                <Border Grid.Column="1"
-                                                StrokeThickness="2" 
-                                                Stroke="{DynamicResource BrandStrongTransparent070}" 
-                                                HeightRequest="200" 
-                                                WidthRequest="200" 
-                                                StrokeShape="Ellipse">
-                                                    <Image Source="{Binding}" Aspect="AspectFill" HeightRequest="200">
-                                                        <Image.Clip>
-                                                            <EllipseGeometry Center="100,100" RadiusX="100" RadiusY="100"/>
-                                                        </Image.Clip>
-                                                    </Image>
-                                                </Border>
-
-                                                <Image Grid.Column="0"
-                                                    BackgroundColor="{DynamicResource BrandStrong}"
-                                                    Source="edit_pencil_icon.png" 
-                                                    HeightRequest="30" 
-                                                    WidthRequest="30"
-                                                    HorizontalOptions="Start" 
-                                                    VerticalOptions="Start"/>
-                                                <Image Grid.Column="2"
-                                                    BackgroundColor="{DynamicResource CancelColor}"
-                                                    Source="cancel_icon.png" 
-                                                    HeightRequest="30" 
-                                                    WidthRequest="30"
-                                                    HorizontalOptions="Start" 
-                                                    VerticalOptions="Start"/>
-                                            </Grid>
-
-
-                                            <Grid Grid.Row="1">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition/>
-                                                </Grid.ColumnDefinitions>
+                        <Grid>
+                            <FlexLayout Direction="Row" Wrap="Wrap" JustifyContent="Center">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <Frame BackgroundColor="{DynamicResource ItemListBackground}" CornerRadius="25" Margin="5">
+                                            <Grid>
                                                 <Grid.RowDefinitions>
+                                                    <RowDefinition/>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
 
-                                                <Label Grid.Row="0" Grid.Column="1"
-                                                   VerticalOptions="Center"
-                                                   HorizontalOptions="Center"
-                                                   HorizontalTextAlignment="Center"
-                                                   FontSize="20"
-                                                   Text="Dupla húsos burger"/>
-
-                                                <Grid Grid.Row="1" Grid.Column="1">
+                                                <Grid Grid.Row="0">
                                                     <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
                                                         <ColumnDefinition/>
-                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
 
-                                                    <Label Grid.Column="0"
-                                                   VerticalOptions="Center"
-                                                   HorizontalOptions="Start"
-                                                   HorizontalTextAlignment="Center"
-                                                   FontSize="20"
-                                                   TextColor="{DynamicResource BrandStrong}"
-                                                   FontAttributes="Bold"
-                                                   Text="2 db" Margin="0,0,20,0"/>
+                                                    <Border Grid.Column="1"
+                                                        StrokeThickness="2" 
+                                                        Stroke="{DynamicResource BrandStrongTransparent070}" 
+                                                        HeightRequest="200" 
+                                                        WidthRequest="200" 
+                                                        StrokeShape="Ellipse">
+                                                        <Image Source="{Binding Food.imageUrl}" Aspect="AspectFill" HeightRequest="200">
+                                                            <Image.Clip>
+                                                                <EllipseGeometry Center="100,100" RadiusX="100" RadiusY="100"/>
+                                                            </Image.Clip>
+                                                        </Image>
+                                                    </Border>
 
-                                                    <Label Grid.Column="1"
-                                                   VerticalOptions="Center"
-                                                   HorizontalOptions="End"
-                                                   HorizontalTextAlignment="Center"
-                                                   FontSize="20"
-                                                   TextColor="{DynamicResource BrandStrong}"
-                                                   FontAttributes="Bold"
-                                                   Text="3000 Ft"/>
+                                                    <Image Grid.Column="0"
+                                                        IsVisible="{Binding AllowEdit}"
+                                                        Source="edit_pencil_icon.svg" 
+                                                        HeightRequest="30" 
+                                                        WidthRequest="30"
+                                                        HorizontalOptions="Start" 
+                                                        VerticalOptions="Start">
+                                                        <Image.GestureRecognizers>
+                                                            <TapGestureRecognizer Tapped="EditTapped"/>
+                                                        </Image.GestureRecognizers>
+                                                    </Image>
+                                                    <Image Grid.Column="2"
+                                                        IsVisible="{Binding AllowEdit}"
+                                                        Source="cancel_icon.png" 
+                                                        HeightRequest="30" 
+                                                        WidthRequest="30"
+                                                        HorizontalOptions="Start" 
+                                                        VerticalOptions="Start">
+                                                        <Image.GestureRecognizers>
+                                                            <TapGestureRecognizer Tapped="CancelTapped"/>
+                                                        </Image.GestureRecognizers>
+                                                    </Image>
+                                                </Grid>
+
+                                                <Grid Grid.Row="1">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <Label Grid.Row="0" Grid.Column="1"
+                                                        VerticalOptions="Center"
+                                                        HorizontalOptions="Center"
+                                                        HorizontalTextAlignment="Center"
+                                                        FontSize="20"
+                                                        Text="{Binding Food.name}"/>
+
+                                                    <Grid Grid.Row="1" Grid.Column="1">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition/>
+                                                            <ColumnDefinition/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <Label Grid.Column="0"
+                                                            VerticalOptions="Center"
+                                                            HorizontalOptions="Start"
+                                                            HorizontalTextAlignment="Center"
+                                                            FontSize="20"
+                                                            TextColor="{DynamicResource BrandStrong}"
+                                                            FontAttributes="Bold"
+                                                            Text="{Binding Count, StringFormat='{0} db'}" Margin="0,0,20,0"/>
+
+                                                        <Label Grid.Column="1"
+                                                            VerticalOptions="Center"
+                                                            HorizontalOptions="End"
+                                                            HorizontalTextAlignment="Center"
+                                                            FontSize="20"
+                                                            TextColor="{DynamicResource BrandStrong}"
+                                                            FontAttributes="Bold"
+                                                            Text="{Binding Food.price, StringFormat='{0} Ft'}"/>
+                                                    </Grid>
                                                 </Grid>
                                             </Grid>
+                                        </Frame>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
 
-
-                                        </Grid>
-                                    </Frame>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-
-                            <BindableLayout.ItemsSource>
-                                <x:Array Type="{x:Type x:String}">
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                </x:Array>
-                            </BindableLayout.ItemsSource>
-                        </FlexLayout>
-
-
-
-                    </Grid>
+                                <BindableLayout.ItemsSource>
+                                    <Binding Path="Items"/>
+                                </BindableLayout.ItemsSource>
+                            </FlexLayout>
+                        </Grid>
+                    </VerticalStackLayout>
                 </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
 
-                <!-- Shopping Cart -->
-                <Image Source="shopping_cart_icon.png" HorizontalOptions="End" Margin="20" WidthRequest="30" HeightRequest="30" />
-            </VerticalStackLayout>
-        </ScrollView>
+        <!-- Fixed Button at Bottom -->
+        <Button Grid.Row="1"
+            Text="Rendelés"
+            BackgroundColor="{DynamicResource BrandStrong}"
+            TextColor="White"
+            FontAttributes="Bold"
+            HeightRequest="50"
+            CornerRadius="25"
+            Margin="20"
+            VerticalOptions="End"
+            IsVisible="{Binding AllowEdit}"
+            HorizontalOptions="FillAndExpand">
+            <Button.GestureRecognizers>
+                <TapGestureRecognizer Tapped="CheckoutTapped"/>
+            </Button.GestureRecognizers>
+        </Button>
     </Grid>
 </ContentPage>

@@ -46,12 +46,11 @@
 
                 <!-- Hamburger Menu -->
                 <ImageButton 
-                Source="hamburger_icon.png" 
-                HeightRequest="30" 
-                WidthRequest="30"
-                BackgroundColor="White"
-                Padding="5"
-                Command="{Binding ToggleFlyoutCommand}"
+                Source="arrow_left.svg" 
+                        HeightRequest="40" 
+                        WidthRequest="40"
+                        Padding="0"
+                Command="{Binding BackCommand}"
                 Grid.Column="0"/>
 
                 <!-- Logo and Title -->
@@ -92,19 +91,14 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            
-            <Image Source="test.png" Aspect="AspectFit"  BackgroundColor="Wheat" HeightRequest="150" Grid.Row="0" Grid.RowSpan="2" x:Name="FeaturedImage">
-                <Image.Clip>
-                    <RoundRectangleGeometry CornerRadius="20">
 
-                    </RoundRectangleGeometry>
-                </Image.Clip>
-            </Image>
+            <Frame BackgroundColor="Transparent" Padding="0" BorderColor="Transparent" HasShadow="False" CornerRadius="50" HeightRequest="200" Grid.Row="0" Grid.RowSpan="2">
+                <Image Source="banner2.jpg" Aspect="AspectFit" />
+            </Frame>
 
             <Frame CornerRadius="20" BackgroundColor="{DynamicResource BrandStrong}" Grid.Row="0" IsClippedToBounds="True">
                 <HorizontalStackLayout>
-                    <Image Source="search_icon.png"
-                                    BackgroundColor="White"
+                    <Image Source="search_icon.svg"
                                     WidthRequest="40"
                                     HeightRequest="40">
                         <Image.GestureRecognizers>
@@ -150,9 +144,8 @@
                                     <Setter Property="BorderColor" Value="{DynamicResource TextBrand}"/>
                                 </Style>
                             </HorizontalStackLayout.Resources>
-                            <BindableLayout.ItemsSource>
-                                <Binding Path="Categories"/>
-                            </BindableLayout.ItemsSource>
+                            
+                            
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
                                     <Frame>
@@ -163,6 +156,10 @@
                                     </Frame>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
+                            
+                            <BindableLayout.ItemsSource>
+                                <Binding Path="Subcategories"/>
+                            </BindableLayout.ItemsSource>
 
                             <!--<Frame BackgroundColor="{DynamicResource BrandStrong}">
                                 <Label Text="Burgerek" TextColor="{DynamicResource TextBrandSelected}" />
@@ -182,13 +179,12 @@
                                 HeightRequest="130" 
                                 WidthRequest="130" 
                                 StrokeShape="Ellipse">
-                                                <!--Make binding !!!!!! -->
                                                 <Image Source="{Binding imageUrl}" Aspect="AspectFill" MaximumHeightRequest="130" WidthRequest="130">
                                                     <Image.Clip>
                                                         <EllipseGeometry Center="65,65" RadiusX="65" RadiusY="65"/>
                                                     </Image.Clip>
                                                     <Image.GestureRecognizers>
-                                                        <TapGestureRecognizer Tapped="OnImageTapped"/>
+                                                        <TapGestureRecognizer Command="{Binding DetailCommand}"/>
                                                     </Image.GestureRecognizers>
                                                 </Image>
                                             </Border>
@@ -207,7 +203,7 @@
                                     VerticalOptions="Center" 
                                     TextColor="{DynamicResource ItemListBackground}" >
                                                     <Label.GestureRecognizers>
-                                                        <TapGestureRecognizer Tapped="OnPlusTapped"/>
+                                                        <TapGestureRecognizer Command="{Binding PlusTappedCommand}"/>
                                                     </Label.GestureRecognizers>
                                                 </Label>
                                             </Grid>
@@ -232,7 +228,11 @@
 
 
                 <!-- Shopping Cart -->
-                <Image Source="shopping_cart_icon.png" HorizontalOptions="End" Margin="20" WidthRequest="30" HeightRequest="30" />
+                <Image Source="shopping_cart_icon.svg" HorizontalOptions="End" Margin="20" WidthRequest="30" HeightRequest="30">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="CartTapped"/>
+                    </Image.GestureRecognizers>
+                </Image>
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

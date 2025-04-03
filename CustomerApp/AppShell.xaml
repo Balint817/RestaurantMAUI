@@ -10,57 +10,21 @@
     Title="Fast Food">
 
     <FlyoutItem
-        Title="MainPage">
+        Title="Főoldal">
         <Tab>
             <ShellContent
                 ContentTemplate="{DataTemplate view:MainPage}"
                 Route="MainPage"/>
         </Tab>
     </FlyoutItem>
-    
-    <FlyoutItem
-        Title="FoodListPage">
-        <Tab>
-            <ShellContent
-                ContentTemplate="{DataTemplate view:FoodListPage}"
-                Route="FoodListPage"/>
-        </Tab>
-    </FlyoutItem>
-    
-    <FlyoutItem
-        Title="CartPage">
-        <Tab>
-            <ShellContent
-                ContentTemplate="{DataTemplate view:CartPage}"
-                Route="CartPage"/>
-        </Tab>
-    </FlyoutItem>
 
 
     <FlyoutItem
-        Title="OrderListPage">
+        Title="Rendelések">
         <Tab>
             <ShellContent
                 ContentTemplate="{DataTemplate view:OrderListPage}"
                 Route="OrderListPage"/>
-        </Tab>
-    </FlyoutItem>
-
-    <FlyoutItem
-        Title="FoodPage">
-        <Tab>
-            <ShellContent
-                ContentTemplate="{DataTemplate view:FoodPage}"
-                Route="FoodPage"/>
-        </Tab>
-    </FlyoutItem>
-    
-    <FlyoutItem
-        Title="LoginPage">
-        <Tab>
-            <ShellContent
-                ContentTemplate="{DataTemplate view:LoginPage}"
-                Route="LoginPage"/>
         </Tab>
     </FlyoutItem>
 

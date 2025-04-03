@@ -48,12 +48,11 @@
                 </Grid.ColumnDefinitions>
 
                 <ImageButton 
-                Source="hamburger_icon.png" 
-                HeightRequest="30" 
-                WidthRequest="30"
-                BackgroundColor="White"
-                Padding="5"
-                Command="{Binding ToggleFlyoutCommand}"
+                Source="arrow_left.svg" 
+                        HeightRequest="40" 
+                        WidthRequest="40"
+                        Padding="0"
+                Command="{Binding BackCommand}"
                 Grid.Column="0"/>
 
                 <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
@@ -86,7 +85,7 @@
                 HeightRequest="200" 
                 WidthRequest="200" 
                 StrokeShape="Ellipse">
-                <Image Source="/Resources/Images/test.png" Aspect="AspectFill" HeightRequest="200">
+                <Image Source="{Binding User.profilePicture}" Aspect="AspectFill" HeightRequest="200">
                     <Image.Clip>
                         <EllipseGeometry Center="100,100" RadiusX="100" RadiusY="100"/>
                     </Image.Clip>
@@ -116,7 +115,7 @@
                                             </Grid.RowDefinitions>
 
                                             <Label Grid.Row="1"
-                                               Text="1552" 
+                                               Text="{Binding orderNumber}" 
                                                FontSize="30" 
                                                FontAttributes="Bold"
                                                HorizontalOptions="Center" 
@@ -130,7 +129,11 @@
                                                    FontSize="15" 
                                                    HorizontalOptions="Center" 
                                                    VerticalOptions="Center" 
-                                                   TextColor="{DynamicResource BrandStrong}" />
+                                                   TextColor="{DynamicResource BrandStrong}" >
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="OnDetailsTapped"/>
+                                                    </Label.GestureRecognizers>
+                                                </Label>
                                             </Grid>
                                         </Grid>
                                     </Frame>
@@ -138,18 +141,7 @@
                             </BindableLayout.ItemTemplate>
 
                             <BindableLayout.ItemsSource>
-                                <x:Array Type="{x:Type x:String}">
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                    <x:String>/Resources/Images/test.png</x:String>
-                                </x:Array>
+                                <Binding Path="Orders" />
                             </BindableLayout.ItemsSource>
                         </VerticalStackLayout>
                     </ScrollView>
@@ -159,7 +151,7 @@
 
         <!-- Logout Section (Always at Bottom) -->
         <HorizontalStackLayout Grid.Row="3" x:Name="Logout" Padding="10">
-            <Image Source="edit_pencil_icon.png" 
+            <Image Source="exit.svg" 
                HeightRequest="30" 
                WidthRequest="30" 
                Margin="5"

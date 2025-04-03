@@ -42,14 +42,6 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!--<ImageButton 
-                Source="hamburger_icon.png" 
-                HeightRequest="30" 
-                WidthRequest="30"
-                BackgroundColor="White"
-                Padding="5"
-                Command="{Binding ToggleFlyoutCommand}"
-                Grid.Column="0"/>-->
 
                 <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
                     <Image 
@@ -76,13 +68,6 @@
 
         <Grid Grid.Row="1" HorizontalOptions="Center" Margin="0,20,0,0">
             <VerticalStackLayout>
-                <Label 
-                    Text="Sikertelen bejelentkezés" 
-                    FontSize="16" 
-                    FontAttributes="Bold"
-                    TextColor="{DynamicResource CancelColor}"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Start"/>
 
                 <Frame WidthRequest="250" HeightRequest="70" CornerRadius="20" BackgroundColor="{DynamicResource ItemListBackground}" BorderColor="{DynamicResource BrandStrong}" Grid.Row="0" Padding="10" Margin="0,10,0,0">
 
@@ -90,6 +75,7 @@
                         Background="{x:Null}"
                         PlaceholderColor="{DynamicResource BrandStrong}"
                         TextColor="{DynamicResource BrandStrong}"
+                        Text="{Binding UsernameEntry}"
 
                         FontSize="16"
                         HorizontalOptions="FillAndExpand"
@@ -102,12 +88,13 @@
                         IsPassword="True"
                         PlaceholderColor="{DynamicResource BrandStrong}"
                         TextColor="{DynamicResource BrandStrong}"
+                        Text="{Binding PasswordEntry}"
 
                         FontSize="16"
                         HorizontalOptions="FillAndExpand"
                         />
                 </Frame>
-                
+
                 <Label 
                     Margin="0,5,0,0"
                     Text="Még nincs fiókom->" 
@@ -115,10 +102,17 @@
                     FontAttributes="Bold"
                     TextColor="{DynamicResource BrandStrong}"
                     VerticalOptions="End"
-                    HorizontalOptions="Start"/>
+                    HorizontalOptions="Start">
+
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoToRegisterCommand}"/>
 
 
-                <Frame Grid.Row="4" Margin="0,10,0,0" MaximumWidthRequest="150" MaximumHeightRequest="90" Padding="10" CornerRadius="50">
+                    </Label.GestureRecognizers>
+                </Label>
+
+
+                <Frame Grid.Row="4" Margin="0,10,0,0" MaximumWidthRequest="150" MaximumHeightRequest="90" Padding="10" CornerRadius="50" BackgroundColor="{DynamicResource BrandStrong}">
 
                     <Grid>
                         <Label Text="Belépés" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="0" TranslationY="-1" TextColor="{DynamicResource TextBrandSelected}" />
@@ -130,7 +124,21 @@
                         <Label Text="Belépés" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="0" TranslationY="1" TextColor="{DynamicResource TextBrandSelected}" />
                     </Grid>
 
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LoginCommand}"/>
+                    </Frame.GestureRecognizers>
+
                 </Frame>
+                
+                <Label 
+                    Text="{Binding ErrorMessage}" 
+                    FontSize="16" 
+                    FontAttributes="Bold"
+                    TextColor="{DynamicResource CancelColor}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start" 
+                    MaximumWidthRequest="250"
+                    LineBreakMode="WordWrap"/>
 
             </VerticalStackLayout>
         </Grid>

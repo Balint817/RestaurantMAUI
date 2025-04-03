@@ -1,9 +1,16 @@
-namespace CustomerApp.View;
+using CustomerApp.Services;
+using System;
+using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
+using CustomerApp.ViewModel;
 
-public partial class LoginPage : ContentPage
+namespace CustomerApp.View
 {
-	public LoginPage()
-	{
-		InitializeComponent();
-	}
+    public partial class LoginPage : ContentPage
+    {
+        public LoginPage()
+        {
+            InitializeComponent();
+        }
+    }
 }

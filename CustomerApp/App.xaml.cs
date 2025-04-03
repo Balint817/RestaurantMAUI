@@ -1,17 +1,17 @@
 ﻿using CustomerApp.Resources.Styles;
 using CustomerApp.Services;
 using CustomerApp.View;
-using CustomerApp.ViewModel;
 
 namespace CustomerApp
 {
     public partial class App : Application
     {
+        public static INavigation GetNavigation() => ((App)App.Current!).MainPage!.Navigation;
         public App()
         {
             InitializeComponent();
 
-            Application.Current.RequestedThemeChanged += (s, a) =>
+            Application.Current!.RequestedThemeChanged += (s, a) =>
             {
                 var mergedDictionaries = Application.Current.Resources.MergedDictionaries;
                 if (mergedDictionaries is null)
@@ -32,20 +32,16 @@ namespace CustomerApp
                 }
             };
 
-            MainPage = new LoginPage();
+            MainPage = new EmptyPage();
 
             Init();
         }
 
-        private async void Init()
+        public async Task Init()
         {
-            var authService = AuthService.Instance;
-
-            var isAuth = await authService.Init();
-            if (isAuth)
-            {
-                MainPage = new AppShell();
-            }
+            MainPage = await AuthService.Instance.Init()
+                ? new AppShell()
+                : new LoginPage();
         }
     }
 }

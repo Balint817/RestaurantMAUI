@@ -43,13 +43,15 @@
 
                 <!-- Hamburger Menu -->
                 <ImageButton 
-                        Source="hamburger_icon.png" 
+                        Source="shopping_cart_icon.svg" 
                         HeightRequest="30" 
                         WidthRequest="30"
-                        BackgroundColor="White"
-                        Padding="5"
-                        Command="{Binding ToggleFlyoutCommand}"
-                        Grid.Column="0"/>
+                        Padding="0"
+                        Grid.Column="0">
+                    <ImageButton.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="CartTapped"/>
+                    </ImageButton.GestureRecognizers>
+                </ImageButton>
 
                 <!-- Logo and Title -->
                 <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
@@ -72,7 +74,13 @@
                         HeightRequest="30" 
                         WidthRequest="30"
                         Padding="5"
-                        Grid.Column="2"/>
+                        Grid.Column="2">
+                    <ImageButton.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="UserTapped"/>
+
+
+                    </ImageButton.GestureRecognizers>
+                </ImageButton>
             </Grid>
         </StackLayout>
 
@@ -87,31 +95,26 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
+                    
+                    <Frame BackgroundColor="Transparent" Padding="0" BorderColor="Transparent" HasShadow="False" CornerRadius="50" HeightRequest="150" Grid.Row="0" Grid.RowSpan="2">
+                        <Image Source="banner.jpg" Aspect="AspectFit" />
+                    </Frame>
 
-                    <Image Source="test.png" Aspect="AspectFit"  BackgroundColor="Wheat" HeightRequest="150" Grid.Row="0" Grid.RowSpan="2" x:Name="FeaturedImage">
-                        <Image.Clip>
-                            <RoundRectangleGeometry CornerRadius="20">
-                                <!--<RoundRectangleGeometry.Rect>
-                                    <Rect Height="200" Width="{Binding Source={x:Reference FeaturedImage}, Path=Width}"/>
-                                </RoundRectangleGeometry.Rect>-->
-                            </RoundRectangleGeometry>
-                        </Image.Clip>
-                    </Image>
-                    
-                    
+
+
                     <!--<Frame CornerRadius="20" BackgroundColor="#00000000" Grid.Row="0" Grid.RowSpan="2" IsClippedToBounds="True">
                         
                     </Frame>-->
 
                     <Frame CornerRadius="20" BackgroundColor="{DynamicResource BrandStrong}" Grid.Row="0" IsClippedToBounds="True">
                         <HorizontalStackLayout>
-                            <Image Source="search_icon.png"
-                                    BackgroundColor="White"
+                            <Image Source="search_icon.svg"
                                     WidthRequest="40"
                                     HeightRequest="40" />
                             <Entry Placeholder="Keress Ételeink És Italaink Között..."
                         PlaceholderColor="{DynamicResource TextDark}"
                         TextColor="{DynamicResource TextDark}"
+                        Text="{Binding SearchEntry}"
                         FontSize="16"
                         HorizontalOptions="FillAndExpand"
                         />
@@ -128,7 +131,7 @@
                        FontAttributes="Bold"
                        HorizontalTextAlignment="Center" />
 
-                    <Grid ColumnSpacing="20" RowSpacing="20" Padding="15">
+                    <Grid ColumnSpacing="20" RowSpacing="20" Padding="15" IsVisible="{Binding IsLoaded}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
@@ -139,7 +142,7 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <VerticalStackLayout Grid.Column="0" >
+                        <VerticalStackLayout Grid.Column="0" IsVisible="{Binding FirstAny}" >
                             <Label Text="{Binding FirstThreeItemsOfCategories[0].Key.name}" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center" />
                             <Frame CornerRadius="35" BackgroundColor="{DynamicResource ItemListBackground}">
 
@@ -181,8 +184,16 @@
                                                         HorizontalOptions="Center" 
                                                         VerticalOptions="Center" 
                                                         TextColor="{DynamicResource ItemListBackground}" />
+
+                                                    <Grid.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding PlusTappedCommand}"/>
+                                                    </Grid.GestureRecognizers>
                                                 </Grid>
 
+
+                                                <Grid.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding DetailCommand}"/>
+                                                </Grid.GestureRecognizers>
                                             </Grid>
                                         </DataTemplate>
                                     </CollectionView.ItemTemplate>
@@ -192,10 +203,10 @@
                                 </CollectionView>
                             </Frame>
                         </VerticalStackLayout>
-                        
 
 
-                        <VerticalStackLayout Grid.Column="1" >
+
+                        <VerticalStackLayout Grid.Column="1" IsVisible="{Binding SecondAny}" >
                             <Label Text="{Binding FirstThreeItemsOfCategories[1].Key.name}" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center" />
                             <Frame CornerRadius="35" BackgroundColor="{DynamicResource ItemListBackground}">
 
@@ -237,8 +248,15 @@
                                                         HorizontalOptions="Center" 
                                                         VerticalOptions="Center" 
                                                         TextColor="{DynamicResource ItemListBackground}" />
+                                                    <Grid.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding PlusTappedCommand}"/>
+                                                    </Grid.GestureRecognizers>
                                                 </Grid>
 
+
+                                                <Grid.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding DetailCommand}"/>
+                                                </Grid.GestureRecognizers>
                                             </Grid>
                                         </DataTemplate>
                                     </CollectionView.ItemTemplate>
@@ -255,21 +273,26 @@
                                 HorizontalOptions="Center" 
                                 VerticalOptions="Center" 
                                 TextColor="{DynamicResource BrandStrong}"
-                                Rotation="90" />
-                        
+                                Rotation="90">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="FirstCategory_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+
                         <Label Grid.Column="1" Grid.Row="1"
                                 Text="➜" 
                                 FontSize="36" 
                                 HorizontalOptions="Center" 
                                 VerticalOptions="Center" 
                                 TextColor="{DynamicResource BrandStrong}"
-                                Rotation="90" />
+                                Rotation="90">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="SecondCategory_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
 
                     </Grid>
                 </VerticalStackLayout>
-
-                <!-- Shopping Cart -->
-                <Image Source="shopping_cart_icon.png" HorizontalOptions="End" Margin="20" WidthRequest="30" HeightRequest="30" />
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

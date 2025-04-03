@@ -47,14 +47,16 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!--<ImageButton 
-                Source="hamburger_icon.png" 
-                HeightRequest="30" 
-                WidthRequest="30"
-                BackgroundColor="White"
-                Padding="5"
-                Command="{Binding ToggleFlyoutCommand}"
-                Grid.Column="0"/>-->
+
+                <!-- Hamburger Menu -->
+                <ImageButton 
+                Source="arrow_left.svg" 
+                        HeightRequest="40" 
+                        WidthRequest="40"
+                        Padding="0"
+                Command="{Binding BackCommand}"
+                Grid.Column="0"/>
+
 
                 <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
                     <Image 
@@ -70,12 +72,6 @@
                     VerticalOptions="Center"/>
                 </HorizontalStackLayout>
 
-                <!--<ImageButton 
-                Source="user_icon.svg" 
-                HeightRequest="30" 
-                WidthRequest="30"
-                Padding="5"
-                Grid.Column="2"/>-->
             </Grid>
         </StackLayout>
 
@@ -86,7 +82,7 @@
                 HeightRequest="200" 
                 WidthRequest="200" 
                 StrokeShape="Ellipse">
-                <Image Source="/Resources/Images/test.png" Aspect="AspectFill" HeightRequest="200">
+                <Image Source="{Binding TargetFood.imageUrl}" Aspect="AspectFill" HeightRequest="200">
                     <Image.Clip>
                         <EllipseGeometry Center="100,100" RadiusX="100" RadiusY="100"/>
                     </Image.Clip>
@@ -105,7 +101,7 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0"
-                Text="Burger" 
+                Text="{Binding TargetFoodCategory.name}" 
                 FontSize="20"
                    FontAttributes="None"
                 HorizontalOptions="Start" 
@@ -115,7 +111,7 @@
 
             <Label Grid.Row="1"
                 Padding="0,10,0,0"
-                Text="Dupla húsos burger"
+                Text="{Binding TargetFood.name}"
                 FontSize="24"
                 FontAttributes="Bold"
                 HorizontalOptions="Start" 
@@ -123,20 +119,15 @@
                 TextColor="{DynamicResource TextDark}" />
             <Grid Grid.Row="2" ColumnSpacing="0">
                 <Grid.ColumnDefinitions>
-                    <!-- First column for price (Auto) -->
                     <ColumnDefinition Width="Auto"/>
-
-                    <!-- Spacer column to push the counter section to the right -->
                     <ColumnDefinition Width="*" />
-
-                    <!-- Column for counter section (Auto) -->
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Price Label -->
                 <Label 
                     Padding="0,10,0,0"
-                    Text="1500 Ft"
+                    Text="{Binding TargetFood.price, StringFormat='{0} Ft'}"
                     FontSize="20"
                     FontAttributes="Bold"
                     HorizontalOptions="Start" 
@@ -173,11 +164,15 @@
                     HorizontalOptions="Center" 
                     VerticalOptions="Center" 
                     TextColor="{DynamicResource ItemListBackground}" />
+
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="MinusTapped"/>
+                            </Grid.GestureRecognizers>
                         </Grid>
 
                         <!-- Counter Text -->
                         <Label 
-                Text="1"
+                Text="{Binding CartModel.Count}"
                 FontSize="18"
                 HorizontalTextAlignment="Center"
                 VerticalTextAlignment="Center"
@@ -201,6 +196,9 @@
                     HorizontalOptions="Center" 
                     VerticalOptions="Center" 
                     TextColor="{DynamicResource ItemListBackground}" />
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="PlusTapped"/>
+                            </Grid.GestureRecognizers>
                         </Grid>
                     </Grid>
 
@@ -225,7 +223,7 @@
                     VerticalOptions="Center" 
                     Opacity="0.75"
                     TextColor="{DynamicResource TextDark}" />
-                <CollectionView>
+                <CollectionView ItemsSource="{Binding CountedMaterials}">
 
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -240,20 +238,10 @@
                                 TextColor="{DynamicResource TextDark}" />
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-                    <CollectionView.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>1 db burger zsemle</x:String>
-                            <x:String>2 db burger hús</x:String>
-                            <x:String>1 db sajt</x:String>
-                            <x:String>3 db paradicsom</x:String>
-                            <x:String>4 db uborka</x:String>
-                            <x:String>2 db saláta</x:String>
-                        </x:Array>
-                    </CollectionView.ItemsSource>
                 </CollectionView>
             </VerticalStackLayout>
 
-            <Frame Grid.Row="4" Margin="0,20,0,0" MaximumWidthRequest="150" CornerRadius="50">
+            <Frame Grid.Row="4" Margin="0,20,0,0" MaximumWidthRequest="150" CornerRadius="50" IsVisible="{Binding IsNew}">
 
                 <Grid>
                     <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="0" TranslationY="-1" TextColor="{DynamicResource TextBrandSelected}" />
@@ -264,7 +252,11 @@
                     <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="-1" TranslationY="1" TextColor="{DynamicResource TextBrandSelected}" />
                     <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="0" TranslationY="1" TextColor="{DynamicResource TextBrandSelected}" />
                 </Grid>
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="AddItemTapped"/>
 
+
+                </Frame.GestureRecognizers>
             </Frame>
 
         </Grid>

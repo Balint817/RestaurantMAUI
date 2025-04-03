@@ -12,15 +12,17 @@ using CustomerApp.Resources.Styles;
 using System.Text.Json.Serialization;
 using CustomerApp.Model;
 using CustomerApp.Services;
+using CustomerApp.View;
 
 namespace CustomerApp.ViewModel
 {
     public class FoodListPageVM : BindableObject
     {
-        private ObservableCollection<FoodItemModel> _foodItems;
-        private ObservableCollection<CategoryModel> _categories;
+        private FoodItemModel[]? _allFoodItems;
 
-        public ObservableCollection<FoodItemModel> FoodItems
+
+        private ObservableCollection<FoodItemModel>? _foodItems;
+        public ObservableCollection<FoodItemModel>? FoodItems
         {
             get => _foodItems;
             set
@@ -30,47 +32,110 @@ namespace CustomerApp.ViewModel
             }
         }
 
-        public ObservableCollection<CategoryModel> Categories
+        private ObservableCollection<CategoryModel>? _subcategories;
+        public ObservableCollection<CategoryModel>? Subcategories
         {
-            get => _categories;
+            get => _subcategories;
             set
             {
-                _categories = value;
+                _subcategories = value;
                 OnPropertyChanged();
             }
         }
 
+        private string? _searchEntry;
+        public string? SearchEntry
+        {
+            get { return _searchEntry; }
+            set { _searchEntry = value; }
+        }
+
+
         public ICommand ToggleFlyoutCommand => AppShell.ToggleFlyoutCommand;
+        public ICommand BackCommand => AppShell.NavigateBackCommand;
 
         public FoodListPageVM()
         {
             FoodItems = new ObservableCollection<FoodItemModel>();
-            Categories = new ObservableCollection<CategoryModel>();
-            LoadCategoriesAsync();
-            LoadFoodItemsAsync();
+            Subcategories = new ObservableCollection<CategoryModel>();
         }
 
-        private async Task LoadFoodItemsAsync(string? categoryId = null)
+        private async Task LoadFoodItemsAsync()
         {
-            FoodItems = new((await FoodService.Instance.GetAllAsync())
-                .Where(x => categoryId is null || x.categoryId == categoryId));
+            var foodItems = await FoodService.Instance.GetAllAsync();
+            _allFoodItems =
+                foodItems.Where(f =>
+                    f.categoryId == TargetMainCategory!._id
+                    || f.subCategoryId
+                    .Any(sc_id =>
+                        _subcategories!
+                        .Any(c => c._id == sc_id)))
+                .ToArray();
+
+            foreach (var item in _allFoodItems)
+            {
+                item.OnAction += FoodItemModel.GenericOnFoodAction;
+            }
         }
 
-        private async Task LoadCategoriesAsync()
+        private void Search(string? subcategoryId = null)
         {
-            Categories = new(await CategoryService.Instance.GetAllAsync());
+            if (_allFoodItems is null)
+            {
+                return;
+            }
+
+            bool SearchPredicate(FoodItemModel food)
+            {
+
+                var categoryMatches =
+                    subcategoryId is null
+                    || food.categoryId == subcategoryId
+                    || food.subCategoryId.Contains(subcategoryId);
+
+                var nameMatches =
+                    SearchEntry is null
+                    || food.name.Trim().ToLower().Contains(SearchEntry.Trim().ToLower());
+
+                return categoryMatches && nameMatches;
+            }
+
+            FoodItems = new(_allFoodItems.Where(SearchPredicate));
+        }
+
+        private async Task LoadSubcategoriesAsync()
+        {
+            var tree = await CategoryService.Instance.GetAllAsTreeAsync();
+            var targetCategoryAsTree = tree.First(x => x.Category._id == TargetMainCategory!._id);
+            var subcategories = targetCategoryAsTree.Flatten();
+            Subcategories = new(subcategories);
         }
 
         Frame? selectedCategoryFrame;
-        private CategoryModel? selectedCategory;
+        private CategoryModel? selectedSubcategory;
 
-        public CategoryModel? SelectedCategory
+        public CategoryModel? SelectedSubcategory
         {
-            get { return selectedCategory; }
-            set { selectedCategory = value; OnPropertyChanged(); }
+            get { return selectedSubcategory; }
+            set { selectedSubcategory = value; OnPropertyChanged(); Search(SelectedSubcategory?._id); }
         }
 
-        internal void OnCategoryTapped(object sender)
+        private CategoryModel? _targetMainCategory;
+
+        public CategoryModel? TargetMainCategory
+        {
+            get { return _targetMainCategory; }
+            set { _targetMainCategory = value; OnPropertyChanged(); }
+        }
+        internal async void Init(CategoryModel category)
+        {
+            TargetMainCategory = category;
+            
+            await LoadSubcategoriesAsync();
+            await LoadFoodItemsAsync();
+            Search();
+        }
+        internal void OnSubCategoryTapped(object sender)
         {
             selectedCategoryFrame?.SetDynamicResource(Frame.BackgroundColorProperty, "ItemListBackground");
 
@@ -79,7 +144,7 @@ namespace CustomerApp.ViewModel
 
             if (sender == selectedCategoryFrame)
             {
-                selectedCategory = null;
+                SelectedSubcategory = null;
                 selectedCategoryFrame = null;
                 return;
             }
@@ -91,7 +156,7 @@ namespace CustomerApp.ViewModel
             selectedCategoryLabel.SetDynamicResource(Label.TextColorProperty, "ItemListBackground");
 
             selectedCategoryFrame = f;
-            SelectedCategory = f.BindingContext as CategoryModel;
+            SelectedSubcategory = f.BindingContext as CategoryModel;
         }
 
         internal void OnPlusTapped(object sender)
@@ -101,17 +166,36 @@ namespace CustomerApp.ViewModel
 
         internal void OnImageTapped(object sender)
         {
-            throw new NotImplementedException();
+            if (sender is not FoodItemModel f)
+            {
+                return;
+            }
+        }
+
+        ~FoodListPageVM()
+        {
+            if (_allFoodItems != null)
+            {
+                foreach (var item in _allFoodItems)
+                {
+                    item.OnAction -= FoodItemModel.GenericOnFoodAction;
+                }
+            }
         }
 
         internal void OnSearchTapped(object sender)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         internal void OnUserTapped(object sender)
         {
-            throw new NotImplementedException();
+            App.GetNavigation().PushAsync(new OrderListPage());
+        }
+
+        internal void CartTapped()
+        {
+            CartPage.ShowWindow();
         }
     }
 }
