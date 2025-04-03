@@ -11,4 +11,11 @@ public partial class OrderListPage : ContentPage
     }
 
     private void OnDetailsTapped(object sender, TappedEventArgs e) => VM.OnDetailsTapped((Label)sender);
+
+    private void OnLogoutTapped(object sender, TappedEventArgs e) => VM.OnLogout();
+
+    private async void BackTapped(object sender, TappedEventArgs e)
+    {
+        await AppShell.NavigateBack();
+    }
 }

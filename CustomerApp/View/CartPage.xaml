@@ -7,11 +7,6 @@
         <vm:CartPageVM/>
     </ContentPage.BindingContext>
     <ContentPage.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Styles/DarkTheme.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
         <Style TargetType="Entry">
             <Setter Property="PlaceholderColor" Value="{DynamicResource TextDark}"/>
         </Style>

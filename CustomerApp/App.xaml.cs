@@ -6,10 +6,27 @@ namespace CustomerApp
 {
     public partial class App : Application
     {
+        void AddTheme(AppTheme requestedTheme)
+        {
+            var mergedDictionaries = Application.Current.Resources.MergedDictionaries;
+            switch (requestedTheme)
+            {
+                case AppTheme.Dark:
+                    mergedDictionaries.Add(new DarkTheme());
+                    break;
+                case AppTheme.Unspecified:
+                case AppTheme.Light:
+                default:
+                    mergedDictionaries.Add(new LightTheme());
+                    break;
+            }
+        }
         public static INavigation GetNavigation() => ((App)App.Current!).MainPage!.Navigation;
         public App()
         {
             InitializeComponent();
+
+            AddTheme(Application.Current.RequestedTheme);
 
             Application.Current!.RequestedThemeChanged += (s, a) =>
             {
@@ -19,17 +36,7 @@ namespace CustomerApp
                     return;
                 }
                 mergedDictionaries.Remove(mergedDictionaries.First(x => x is Dummy_ThemeColorInterface));
-                switch (a.RequestedTheme)
-                {
-                    case AppTheme.Dark:
-                        mergedDictionaries.Add(new DarkTheme());
-                        break;
-                    case AppTheme.Unspecified:
-                    case AppTheme.Light:
-                    default:
-                        mergedDictionaries.Add(new LightTheme());
-                        break;
-                }
+                AddTheme(a.RequestedTheme);
             };
 
             MainPage = new EmptyPage();

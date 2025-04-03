@@ -4,32 +4,50 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using CustomerApp.Model;
 using CustomerApp.Services;
 using CustomerApp.View;
 
 namespace CustomerApp.ViewModel
 {
-    public class OrderListPageVM
+    public class OrderListPageVM: BindableObject
     {
+        private bool _isRefreshing;
+        public bool IsRefreshing
+        {
+            get => _isRefreshing;
+            set
+            {
+                if (_isRefreshing != value)
+                {
+                    _isRefreshing = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        //public Command RefreshCommand => new Command(OnRefresh);
+
+        //private async void OnRefresh()
+        //{
+        //    await Refresh();
+        //}
         public Command ToggleFlyoutCommand => AppShell.ToggleFlyoutCommand;
         public Command BackCommand => AppShell.NavigateBackCommand;
 
         public AuthService.UserObject User => AuthService.Instance.User!;
         public ObservableCollection<OrderModel> Orders { get; set; } = new();
-
-        bool loading;
         public OrderListPageVM()
         {
             Refresh();
         }
         public async Task Refresh()
         {
-            if (loading)
+            if (IsRefreshing)
             {
                 return;
             }
-            loading = true;
+            IsRefreshing = true;
             try
             {
                 var orders = await OrderService.Instance.GetOrders();
@@ -41,7 +59,7 @@ namespace CustomerApp.ViewModel
             }
             finally
             {
-                loading = false;
+                IsRefreshing = false;
             }
         }
 
@@ -52,6 +70,23 @@ namespace CustomerApp.ViewModel
                 return;
             }
             CartPage.ShowWindow(order);
+        }
+
+        internal async void OnLogout()
+        {
+            if (IsRefreshing)
+            {
+                return;
+            }
+            IsRefreshing = true;
+            try
+            {
+                await AuthService.Instance.Logout();
+            }
+            finally
+            {
+                IsRefreshing = false;
+            }
         }
     }
 }

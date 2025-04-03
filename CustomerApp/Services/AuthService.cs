@@ -146,6 +146,7 @@ namespace CustomerApp.Services
         {
             var r = await HttpService.PostAsync($"{HttpService.BaseAPIUrl}/user/logout", null);
             RemoveUser();
+            ((App)App.Current).Init();
         }
 
 #pragma warning disable CS8618

@@ -8,11 +8,6 @@
         <vm:OrderListPageVM/>
     </ContentPage.BindingContext>
     <ContentPage.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Styles/DarkTheme.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
         <Style TargetType="Entry">
             <Setter Property="PlaceholderColor" Value="{DynamicResource TextDark}"/>
         </Style>
@@ -63,7 +58,8 @@
                 HeightRequest="30" 
                 WidthRequest="30"
                 Padding="5"
-                Grid.Column="2"/>
+                Grid.Column="2"
+                    IsVisible="False"/>
             </Grid>
         </StackLayout>
         <!-- Profile Image (Always on Top) -->
@@ -144,7 +140,12 @@
                FontSize="15" 
                HorizontalOptions="Center" 
                VerticalOptions="Center" 
-               TextColor="{DynamicResource BrandStrong}" />
+               TextColor="{DynamicResource BrandStrong}"
+                   >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnLogoutTapped"/>
+                </Label.GestureRecognizers>
+            </Label>
         </HorizontalStackLayout>
     </Grid>
 </ContentPage>

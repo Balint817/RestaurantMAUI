@@ -8,11 +8,6 @@
         <vm:EmptyPageVM/>
     </ContentPage.BindingContext>
     <ContentPage.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Styles/DarkTheme.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
     </ContentPage.Resources>
     <Grid BackgroundColor="{DynamicResource BrandBackground}" HorizontalOptions="Fill" VerticalOptions="Fill">
         <Grid.RowDefinitions>
