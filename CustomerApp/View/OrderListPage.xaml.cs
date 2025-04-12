@@ -1,3 +1,4 @@
+using CustomerApp.Helpers;
 using CustomerApp.ViewModel;
 
 namespace CustomerApp.View;
@@ -10,12 +11,12 @@ public partial class OrderListPage : ContentPage
         InitializeComponent();
     }
 
-    private void OnDetailsTapped(object sender, TappedEventArgs e) => VM.OnDetailsTapped((Label)sender);
+    private async void OnDetailsTapped(object sender, TappedEventArgs e) => await VM.OnDetailsTapped((Label)sender).MakeTaskBlocking(this);
 
-    private void OnLogoutTapped(object sender, TappedEventArgs e) => VM.OnLogout();
+    private async void OnLogoutTapped(object sender, TappedEventArgs e) => await VM.OnLogout().MakeTaskBlocking(this);
 
     private async void BackTapped(object sender, TappedEventArgs e)
     {
-        await AppShell.NavigateBack();
+        await AppShell.NavigateBack().MakeTaskBlocking(this);
     }
 }

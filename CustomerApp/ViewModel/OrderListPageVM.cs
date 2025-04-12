@@ -5,14 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CustomerApp.Helpers;
 using CustomerApp.Model;
 using CustomerApp.Services;
 using CustomerApp.View;
 
 namespace CustomerApp.ViewModel
 {
-    public class OrderListPageVM: BindableObject
+    public partial class OrderListPageVM : BindableObject
     {
+        public LanguageService LanguageService => LanguageService.Instance;
         private bool _isRefreshing;
         public bool IsRefreshing
         {
@@ -57,22 +59,27 @@ namespace CustomerApp.ViewModel
                     Orders.Add(item);
                 }
             }
+            catch
+            {
+                Orders.Clear();
+                await App.ShowGenericNetworkError();
+            }
             finally
             {
                 IsRefreshing = false;
             }
         }
 
-        internal void OnDetailsTapped(Label sender)
+        internal async Task OnDetailsTapped(Label sender)
         {
             if (sender.BindingContext is not OrderModel order)
             {
                 return;
             }
-            CartPage.ShowWindow(order);
+            await CartPage.ShowWindow(order);
         }
 
-        internal async void OnLogout()
+        internal async Task OnLogout()
         {
             if (IsRefreshing)
             {

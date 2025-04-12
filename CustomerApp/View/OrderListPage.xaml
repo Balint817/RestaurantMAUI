@@ -3,7 +3,8 @@
 	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CustomerApp.View.OrderListPage"
-	xmlns:vm="clr-namespace:CustomerApp.ViewModel">
+	xmlns:vm="clr-namespace:CustomerApp.ViewModel"
+    xmlns:local="clr-namespace:CustomerApp">
     <ContentPage.BindingContext>
         <vm:OrderListPageVM/>
     </ContentPage.BindingContext>
@@ -47,7 +48,7 @@
                     WidthRequest="30"
                     VerticalOptions="Center"/>
                     <Label 
-                    Text="Fast Food" 
+                    Text="{Binding LanguageService[Title].Current}" 
                     FontSize="24" 
                     FontAttributes="Bold"
                     TextColor="White"
@@ -106,7 +107,7 @@
                                             <Grid VerticalOptions="End" 
                                               HorizontalOptions="End"
                                               Grid.Row="2">
-                                                <Label Text="Részletek->"
+                                                <Label Text="{Binding LanguageService[OrderDetails].Current}"
                                                    FontSize="15" 
                                                    HorizontalOptions="Center" 
                                                    VerticalOptions="Center" 
@@ -136,7 +137,7 @@
                Margin="5"
                HorizontalOptions="Start" 
                VerticalOptions="Center"/>
-            <Label Text="Kijelentkezés"
+            <Label Text="{Binding LanguageService[LogOut].Current}"
                FontSize="15" 
                HorizontalOptions="Center" 
                VerticalOptions="Center" 

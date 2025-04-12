@@ -1,4 +1,5 @@
-﻿using CustomerApp.Model;
+﻿using CustomerApp.Helpers;
+using CustomerApp.Model;
 using CustomerApp.Services;
 using CustomerApp.View;
 using System;
@@ -9,8 +10,9 @@ using System.Threading.Tasks;
 
 namespace CustomerApp.ViewModel
 {
-    public class MainPageVM : BindableObject
+    public partial class MainPageVM : BindableObject
     {
+        public LanguageService LanguageService => LanguageService.Instance;
         public Command ToggleFlyoutCommand => AppShell.ToggleFlyoutCommand;
 
         KeyValuePair<CategoryModel, FoodItemModel[]>[]? _array;
@@ -49,34 +51,37 @@ namespace CustomerApp.ViewModel
             }
         }
 
+        public MainPage Page { get; internal set; }
+#pragma warning disable CS8618
         public MainPageVM()
+#pragma warning restore CS8618
         {
             IsLoaded = false;
             CategoryService.Instance.GetAllAsTreeAsync()
-                .ContinueWith(categoriesTask =>
+                .ContinueWith(async categoriesTask =>
                 {
-                    FoodService.Instance.GetAllAsync()
-                        .ContinueWith(foodsTask =>
-                        {
-                            var categoriesDict = categoriesTask.Result.ToDictionary(x => x.Category._id, x => x.Category);
-                            var foods = foodsTask.Result;
+                    try
+                    {
+                        var categoriesDict = (await categoriesTask).ToDictionary(x => x.Category._id, x => x.Category);
+                        var foods = await FoodService.Instance.GetAllAsync();
 
-                            //var g1 = foods.GroupBy(x => x.categoryId).ToArray();
+                        //var g1 = foods.GroupBy(x => x.categoryId).ToArray();
 
-                            //var g2 = g1.ToDictionary(x => categoriesDict[x.Key], x => x.ToArray()).ToArray();
+                        //var g2 = g1.ToDictionary(x => categoriesDict[x.Key], x => x.ToArray()).ToArray();
 
-                            ItemsByCategory = foods
-                                .GroupBy(x => x.categoryId)
-                                .ToDictionary(x => categoriesDict[x.Key], x => x.ToArray())
-                                .ToArray();
+                        ItemsByCategory = foods
+                            .GroupBy(x => x.categoryId)
+                            .ToDictionary(x => categoriesDict[x.Key], x => x.ToArray())
+                            .ToArray();
 
-                            foreach (var item in foods)
-                            {
-                                item.OnAction += FoodItemModel.GenericOnFoodAction;
-                            }
-                            SearchEntry = "";
-                            IsLoaded = true;
-                        });
+                        SearchEntry = "";
+                        IsLoaded = true;
+                    }
+                    catch (Exception)
+                    {
+                        await App.ShowGenericNetworkError();
+                        ItemsByCategory = [];
+                    }
                 });
         }
         void Search()
@@ -86,20 +91,24 @@ namespace CustomerApp.ViewModel
                 .ToArray();
         }
 
-        internal async void CategoryTapped(int idx)
+        internal async Task CategoryTapped(int idx)
         {
+            if (!IsLoaded)
+            {
+                return;
+            }
             var category = FirstThreeItemsOfCategories![idx].Key;
-            await Application.Current!.MainPage!.Navigation.PushAsync(new FoodListPage(category));
+            await App.GetNavigation().PushAsync(new FoodListPage(category), true).MakeTaskBlocking(Page);
         }
 
-        internal void CartTapped()
+        internal async Task CartTapped()
         {
-            CartPage.ShowWindow();
+            await CartPage.ShowWindow().MakeTaskBlocking(Page);
         }
 
-        internal void UserTapped()
+        internal async Task UserTapped()
         {
-            App.GetNavigation().PushAsync(new OrderListPage());
+            await App.GetNavigation().PushAsync(new OrderListPage(), true).MakeTaskBlocking(Page);
         }
     }
 }

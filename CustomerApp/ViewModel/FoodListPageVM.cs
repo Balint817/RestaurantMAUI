@@ -13,11 +13,13 @@ using System.Text.Json.Serialization;
 using CustomerApp.Model;
 using CustomerApp.Services;
 using CustomerApp.View;
+using CustomerApp.Helpers;
 
 namespace CustomerApp.ViewModel
 {
-    public class FoodListPageVM : BindableObject
+    public partial class FoodListPageVM : BindableObject
     {
+        public LanguageService LanguageService => LanguageService.Instance;
         private FoodItemModel[]? _allFoodItems;
 
 
@@ -54,11 +56,13 @@ namespace CustomerApp.ViewModel
         public ICommand ToggleFlyoutCommand => AppShell.ToggleFlyoutCommand;
         public ICommand BackCommand => AppShell.NavigateBackCommand;
 
+#pragma warning disable CS8618
         public FoodListPageVM()
         {
             FoodItems = new ObservableCollection<FoodItemModel>();
             Subcategories = new ObservableCollection<CategoryModel>();
         }
+#pragma warning restore CS8618
 
         private async Task LoadFoodItemsAsync()
         {
@@ -71,11 +75,6 @@ namespace CustomerApp.ViewModel
                         _subcategories!
                         .Any(c => c._id == sc_id)))
                 .ToArray();
-
-            foreach (var item in _allFoodItems)
-            {
-                item.OnAction += FoodItemModel.GenericOnFoodAction;
-            }
         }
 
         private void Search(string? subcategoryId = null)
@@ -127,13 +126,29 @@ namespace CustomerApp.ViewModel
             get { return _targetMainCategory; }
             set { _targetMainCategory = value; OnPropertyChanged(); }
         }
-        internal async void Init(CategoryModel category)
+
+        public FoodListPage Page { get; internal set; }
+
+        internal async void Init(CategoryModel category, FoodListPage page)
         {
+            Page = page;
             TargetMainCategory = category;
 
-            await LoadSubcategoriesAsync();
-            await LoadFoodItemsAsync();
-            Search();
+            try
+            {
+                await LoadSubcategoriesAsync().ContinueWith(async t =>
+                {
+                    await LoadFoodItemsAsync();
+                    Search();
+                }).MakeTaskBlocking(page);
+            }
+            catch (Exception)
+            {
+                await App.ShowGenericNetworkError();
+                Subcategories = [];
+                FoodItems = [];
+                Search();
+            }
         }
         internal void OnSubCategoryTapped(object sender)
         {
@@ -159,11 +174,6 @@ namespace CustomerApp.ViewModel
             SelectedSubcategory = f.BindingContext as CategoryModel;
         }
 
-        internal void OnPlusTapped(object sender)
-        {
-            throw new NotImplementedException();
-        }
-
         internal void OnImageTapped(object sender)
         {
             if (sender is not FoodItemModel f)
@@ -172,30 +182,19 @@ namespace CustomerApp.ViewModel
             }
         }
 
-        ~FoodListPageVM()
+        //internal void OnSearchTapped(object sender)
+        //{
+        //    //throw new NotImplementedException();
+        //}
+
+        internal async Task OnUserTapped(object sender)
         {
-            if (_allFoodItems != null)
-            {
-                foreach (var item in _allFoodItems)
-                {
-                    item.OnAction -= FoodItemModel.GenericOnFoodAction;
-                }
-            }
+            await App.GetNavigation().PushAsync(new OrderListPage(), true).MakeTaskBlocking(Page);
         }
 
-        internal void OnSearchTapped(object sender)
+        internal async void CartTapped()
         {
-            //throw new NotImplementedException();
-        }
-
-        internal void OnUserTapped(object sender)
-        {
-            App.GetNavigation().PushAsync(new OrderListPage());
-        }
-
-        internal void CartTapped()
-        {
-            CartPage.ShowWindow();
+            await CartPage.ShowWindow().MakeTaskBlocking(Page);
         }
     }
 }

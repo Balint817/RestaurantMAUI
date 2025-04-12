@@ -1,3 +1,4 @@
+using CustomerApp.Helpers;
 using CustomerApp.Model;
 using CustomerApp.Services;
 using CustomerApp.ViewModel;
@@ -11,29 +12,25 @@ public partial class CartPage : ContentPage
     {
         InitializeComponent();
         VM.AllowEdit = allowEdit;
+        VM.Page = this;
     }
 
-    internal static async void ShowWindow()
+    internal static async Task ShowWindow()
     {
         var navigation = App.GetNavigation();
         OrderService.Instance.DisplayedCart = OrderService.Instance.Cart;
-        await navigation.PushAsync(new CartPage(allowEdit: true));
+        await navigation.PushAsync(new CartPage(allowEdit: true), true);
     }
-    internal static async void ShowWindow(OrderModel orderModel)
+    internal static async Task ShowWindow(OrderModel orderModel)
     {
         var navigation = App.GetNavigation();
         OrderService.Instance.DisplayedCart = orderModel.ToCartModels();
-        await navigation.PushAsync(new CartPage(allowEdit: false));
+        await navigation.PushAsync(new CartPage(allowEdit: false), true);
     }
 
-    private void EditTapped(object sender, TappedEventArgs e)
+    private async void EditTapped(object sender, TappedEventArgs e)
     {
-        if (!VM.AllowEdit)
-        {
-            DisplayAlert("Nincs engedély", "Nem tud egy már leadott rendelést szerkeszteni!", "OK");
-            return;
-        }
-        VM.EditTapped((Image)sender);
+        await VM.EditTapped((Image)sender);
     }
 
     // protected override void OnDisappearing()

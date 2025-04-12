@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CustomerApp.Helpers;
 using CustomerApp.Model;
 using CustomerApp.Services;
 using CustomerApp.View;
 
 namespace CustomerApp.ViewModel
 {
-    public class CartPageVM : BindableObject
+    public partial class CartPageVM : BindableObject
     {
+        public LanguageService LanguageService => LanguageService.Instance;
 
         public Command ToggleFlyoutCommand => AppShell.ToggleFlyoutCommand;
         public Command BackCommand => AppShell.NavigateBackCommand;
+#pragma warning disable CS8618
         public CartPageVM()
+#pragma warning restore CS8618
         {
 
         }
@@ -28,14 +32,24 @@ namespace CustomerApp.ViewModel
             set { _allowEdit = value; OnPropertyChanged(); }
         }
 
-        internal void EditTapped(Image sender)
+        public CartPage Page { get; internal set; }
+
+        internal async Task EditTapped(Image sender)
         {
+            if (!AllowEdit)
+            {
+                return;
+            }
             var cartModel = (CartModel)sender.BindingContext;
-            FoodPage.ShowWindow(cartModel);
+            await FoodPage.ShowWindow(cartModel).MakeTaskBlocking(Page);
         }
 
         internal void CancelTapped(Image sender)
         {
+            if (!AllowEdit)
+            {
+                return;
+            }
             var cartModel = (CartModel)sender.BindingContext;
             OrderService.Instance.DisplayedCart!.Remove(cartModel);
             OnPropertyChanged(nameof(Items));
@@ -49,7 +63,7 @@ namespace CustomerApp.ViewModel
             }
             var orderService = OrderService.Instance;
             orderService.Cart = orderService.DisplayedCart!;
-            await orderService.PlaceOrder();
+            await orderService.PlaceOrder().MakeTaskBlocking(Page);
             BackCommand.Execute(null);
         }
     }

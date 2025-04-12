@@ -22,12 +22,12 @@ namespace CustomerApp
             var navigation = App.GetNavigation();
             if (navigation.NavigationStack.Count != 0)
             {
-                await navigation.PopAsync();
+                await navigation.PopAsync(true);
                 return;
             }
             if (AppShell.Current.CurrentPage is not MainPage)
             {
-                await AppShell.Current.GoToAsync("//MainPage");
+                await AppShell.Current.GoToAsync("//MainPage", true);
             }
         }
         public AppShell()

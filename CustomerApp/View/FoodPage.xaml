@@ -3,7 +3,8 @@
 	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CustomerApp.View.FoodPage"
-	xmlns:vm="clr-namespace:CustomerApp.ViewModel">
+	xmlns:vm="clr-namespace:CustomerApp.ViewModel"
+    xmlns:local="clr-namespace:CustomerApp">
     <ContentPage.BindingContext>
         <vm:FoodPageVM/>
     </ContentPage.BindingContext>
@@ -48,7 +49,7 @@
                     WidthRequest="30"
                     VerticalOptions="Center"/>
                     <Label 
-                    Text="Fast Food" 
+                    Text="{Binding LanguageService[Title].Current}" 
                     FontSize="24" 
                     FontAttributes="Bold"
                     TextColor="White"
@@ -104,7 +105,7 @@
                 <!-- Price Label -->
                 <Label 
                     Padding="0,10,0,0"
-                    Text="{Binding TargetFood.price, StringFormat='{0} Ft'}"
+                    Text="{Binding TargetFood.price, StringFormat='{0} HUF'}"
                     FontSize="20"
                     FontAttributes="Bold"
                     HorizontalOptions="Start" 
@@ -176,7 +177,7 @@
             </Grid>
             <VerticalStackLayout Grid.Row="3" Margin="0,20,0,0">
                 <Label
-                    Text="Leírás" 
+                    Text="{Binding LanguageService[Description].Current}" 
                     FontSize="20" 
                     HorizontalOptions="Start" 
                     FontAttributes="Bold"
@@ -184,7 +185,7 @@
                     TextColor="{DynamicResource TextDark}" />
                 <Label
                     Margin="0,10,0,0"
-                    Text="Hozzávalók:" 
+                    Text="{Binding LanguageService[Ingredients].Current}" 
                     FontSize="16" 
                     HorizontalOptions="Start" 
                     FontAttributes="None"
@@ -209,13 +210,13 @@
             </VerticalStackLayout>
             <Frame Grid.Row="4" Margin="0,20,0,0" MaximumWidthRequest="150" CornerRadius="50" IsVisible="{Binding IsNew}">
                 <Grid>
-                    <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="0" TranslationY="-1" TextColor="{DynamicResource TextBrandSelected}" />
-                    <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="1" TranslationY="-1" TextColor="{DynamicResource TextBrandSelected}" />
-                    <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="-1" TranslationY="0" TextColor="{DynamicResource TextBrandSelected}" />
-                    <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="0" TranslationY="0" TextColor="{DynamicResource TextBrandSelected}" />
-                    <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="1" TranslationY="0" TextColor="{DynamicResource TextBrandSelected}" />
-                    <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="-1" TranslationY="1" TextColor="{DynamicResource TextBrandSelected}" />
-                    <Label Text="Kosárba" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="0" TranslationY="1" TextColor="{DynamicResource TextBrandSelected}" />
+                    <Label Text="{Binding LanguageService[ToCart].Current}" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="0" TranslationY="-1" TextColor="{DynamicResource TextBrandSelected}" />
+                    <Label Text="{Binding LanguageService[ToCart].Current}" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="1" TranslationY="-1" TextColor="{DynamicResource TextBrandSelected}" />
+                    <Label Text="{Binding LanguageService[ToCart].Current}" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="-1" TranslationY="0" TextColor="{DynamicResource TextBrandSelected}" />
+                    <Label Text="{Binding LanguageService[ToCart].Current}" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="0" TranslationY="0" TextColor="{DynamicResource TextBrandSelected}" />
+                    <Label Text="{Binding LanguageService[ToCart].Current}" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="1" TranslationY="0" TextColor="{DynamicResource TextBrandSelected}" />
+                    <Label Text="{Binding LanguageService[ToCart].Current}" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="-1" TranslationY="1" TextColor="{DynamicResource TextBrandSelected}" />
+                    <Label Text="{Binding LanguageService[ToCart].Current}" FontSize="20" HorizontalOptions="Center" FontAttributes="Bold" VerticalOptions="Center" TranslationX="0" TranslationY="1" TextColor="{DynamicResource TextBrandSelected}" />
                 </Grid>
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Tapped="AddItemTapped"/>

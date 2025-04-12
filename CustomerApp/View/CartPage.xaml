@@ -2,7 +2,8 @@
 	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CustomerApp.View.CartPage"
-	xmlns:vm="clr-namespace:CustomerApp.ViewModel">
+	xmlns:vm="clr-namespace:CustomerApp.ViewModel"
+    xmlns:local="clr-namespace:CustomerApp">
     <ContentPage.BindingContext>
         <vm:CartPageVM/>
     </ContentPage.BindingContext>
@@ -48,7 +49,7 @@
                             WidthRequest="30"
                             VerticalOptions="Center"/>
                         <Label 
-                            Text="Fast Food" 
+                            Text="{Binding LanguageService[Title].Current}" 
                             FontSize="24" 
                             FontAttributes="Bold"
                             TextColor="White"
@@ -65,12 +66,12 @@
                     </Grid>
                     <!-- Cart Items -->
                     <VerticalStackLayout Padding="0,10,0,0">
-                        <Label Text="Kosár"
+                        <Label Text="{Binding LanguageService[CartText].Current}"
                             FontSize="22"
                             FontAttributes="Bold"
                             HorizontalTextAlignment="Center" Margin="0,0,0,10"/>
                         <Grid>
-                            <FlexLayout Direction="Row" Wrap="Wrap" JustifyContent="Center">
+                            <FlexLayout Direction="Row" Wrap="Wrap" JustifyContent="Center" x:Name="RootLayout">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate>
                                         <Frame BackgroundColor="{DynamicResource ItemListBackground}" CornerRadius="25" Margin="5">
@@ -99,7 +100,7 @@
                                                         </Image>
                                                     </Border>
                                                     <Image Grid.Column="0"
-                                                        IsVisible="{Binding AllowEdit}"
+                                                        IsVisible="{Binding Source={x:Reference RootLayout}, Path=BindingContext.AllowEdit}"
                                                         Source="edit_pencil_icon.svg" 
                                                         HeightRequest="30" 
                                                         WidthRequest="30"
@@ -110,7 +111,7 @@
                                                         </Image.GestureRecognizers>
                                                     </Image>
                                                     <Image Grid.Column="2"
-                                                        IsVisible="{Binding AllowEdit}"
+                                                        IsVisible="{Binding Source={x:Reference RootLayout}, Path=BindingContext.AllowEdit}"
                                                         Source="cancel_icon.png" 
                                                         HeightRequest="30" 
                                                         WidthRequest="30"
@@ -175,7 +176,7 @@
         </Grid>
         <!-- Fixed Button at Bottom -->
         <Button Grid.Row="1"
-            Text="Rendelés"
+            Text="{Binding LanguageService[PlaceOrder].Current}"
             BackgroundColor="{DynamicResource BrandStrong}"
             TextColor="White"
             FontAttributes="Bold"

@@ -6,12 +6,50 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CustomerApp.Services
 {
-    public class AuthService : BindableObject, Singleton<AuthService>
+    public partial class AuthService : BindableObject, Singleton<AuthService>
     {
+        public static string? CheckUsername(string name)
+        {
+            if (name.Length < 4)
+            {
+                return LanguageService.Instance["UserTooShort"].Current;
+            }
+            if (!name.All(char.IsLetterOrDigit))
+            {
+                return LanguageService.Instance["InvalidUsername"].Current;
+            }
+            return null;
+        }
+        public static string? CheckPassword(string password)
+        {
+            if (password.Length < 8)
+            {
+                return LanguageService.Instance["PasswordTooShort"].Current;
+            }
+            if (!password.Any(char.IsAsciiLetterLower))
+            {
+                return LanguageService.Instance["PasswordNoLower"].Current;
+            }
+            if (!password.Any(char.IsAsciiLetterUpper))
+            {
+                return LanguageService.Instance["PasswordNoUpper"].Current;
+            }
+            if (!password.Any(char.IsAsciiDigit))
+            {
+                return LanguageService.Instance["PasswordNoDigit"].Current;
+            }
+            if (!password.Any(c => !char.IsAsciiLetterOrDigit(c)))
+            {
+                return LanguageService.Instance["PasswordNoSpecial"].Current;
+            }
+            return null;
+        }
+
         static AuthService? _instance;
         public static AuthService Instance => _instance ??= new();
         public HttpService HttpService => HttpService.Instance;
@@ -94,6 +132,10 @@ namespace CustomerApp.Services
             {
                 stringContent = await r.Content.ReadAsStringAsync();
                 user = JsonSerializer.Deserialize<UserObject>(stringContent)!;
+                if (user?.userId is null)
+                {
+                    return false;
+                }
             }
             catch (Exception ex)
             {
@@ -128,7 +170,7 @@ namespace CustomerApp.Services
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Got an error during login", ex.ToString());
+                Debug.WriteLine("Got an error during register", ex.ToString());
                 if (ex is JsonException)
                 {
                     return new(null, null);
@@ -146,7 +188,14 @@ namespace CustomerApp.Services
         {
             var r = await HttpService.PostAsync($"{HttpService.BaseAPIUrl}/user/logout", null);
             RemoveUser();
-            ((App)App.Current).Init();
+            await ((App)App.Current!).Init();
+        }
+        static Regex emailRegex = EmailRegex();
+        internal static string? CheckEmail(string email)
+        {
+            return emailRegex.IsMatch(email)
+                ? null
+                : LanguageService.Instance["InvalidEmail"].Current;
         }
 
 #pragma warning disable CS8618
@@ -164,6 +213,36 @@ namespace CustomerApp.Services
             public string token { get; set; }
             public string message { get; set; }
         }
-#pragma warning restore CS8618 
+
+        [GeneratedRegex("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")]
+        private static partial Regex EmailRegex();
+
+        public static readonly string ForgetPasswordURL = "http://localhost:3000/forgot-password";
+        internal async Task<bool?> ForgotPassword(string email)
+        {
+            var r = await HttpService.PostJsonAsync($"{HttpService.BaseAPIUrl}/user/forgetPassword", new { email = email, url = ForgetPasswordURL });
+            UserObject user;
+            string? stringContent = null;
+            try
+            {
+                stringContent = await r.Content.ReadAsStringAsync();
+                user = JsonSerializer.Deserialize<UserObject>(stringContent)!;
+                if (user.message is null)
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Got an error during password reset", ex.ToString());
+                if (ex is JsonException)
+                {
+                    return null;
+                }
+                return false;
+            }
+            return r.StatusCode == System.Net.HttpStatusCode.OK;
+        }
+#pragma warning restore CS8618
     }
 }

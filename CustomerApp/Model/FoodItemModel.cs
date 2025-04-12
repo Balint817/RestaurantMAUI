@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Diagnostics;
+using System.Text.Json.Serialization;
 using CustomerApp.Helpers;
 using CustomerApp.Services;
 using CustomerApp.View;
@@ -38,26 +39,13 @@ namespace CustomerApp.Model
 
         [JsonIgnore]
         public ImageSource? imageSource => imageUrl.ToImageSourceFromUrl();
-        [JsonIgnore]
-        public Command PlusTappedCommand { get; }
-        [JsonIgnore]
-        public Command DetailCommand { get; }
         public FoodItemModel()
         {
-            PlusTappedCommand = new Command(() =>
-            {
-                OnAction?.Invoke(this, FoodItemAction.Plus);
-            });
-            DetailCommand = new Command(() =>
-            {
-                OnAction?.Invoke(this, FoodItemAction.Detail);
-            });
-        }
 
-        public event Action<FoodItemModel, FoodItemAction>? OnAction;
+        }
 #pragma warning restore CS8618
 
-        public static void GenericOnFoodAction(FoodItemModel model, FoodItemAction action)
+        public static async Task GenericOnFoodAction(FoodItemModel model, FoodItemAction action)
         {
             switch (action)
             {
@@ -65,7 +53,7 @@ namespace CustomerApp.Model
                     OrderService.Instance.AddToCart(model, 1);
                     break;
                 case FoodItemAction.Detail:
-                    FoodPage.ShowWindow(model);
+                    await FoodPage.ShowWindow(model);
                     break;
                 default:
                     break;

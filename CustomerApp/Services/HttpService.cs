@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Net.Http.Json;
 using System.Net;
 using System.Globalization;
+using CustomerApp.Helpers;
 
 namespace CustomerApp.Services
 {
@@ -40,46 +41,67 @@ namespace CustomerApp.Services
             return token;
         }
 
+        public async Task<HttpResponseMessage> WrapRequest(Task<HttpResponseMessage> request)
+        {
+            try
+            {
+                return await request;
+            }
+            catch (Exception ex)
+            {
+                var cause = ex.GetHttpExceptionCause();
+                if (cause == HttpExceptionCause.NoInternet)
+                {
+                    var task = App.Current?.MainPage?.DisplayAlert(LanguageService.Instance["NoInternetTitle"].Current, LanguageService.Instance["PleaseConnectToInternet"].Current, LanguageService.Instance["OK"].Current);
+                    if (task is not null)
+                    {
+                        await task;
+                    }
+                    Environment.Exit(0);
+                }
+                throw;
+            }
+        }
         public async Task<HttpResponseMessage> GetAsync(string url)
         {
-            return await _httpClient.GetAsync(url);
+            return await WrapRequest(_httpClient.GetAsync(url));
         }
 
         public async Task<HttpResponseMessage> PostAsync(string url, HttpContent? data)
         {
-            return await _httpClient.PostAsync(url, data);
+            return await WrapRequest(_httpClient.PostAsync(url, data));
         }
         public async Task<HttpResponseMessage> PostJsonAsync(string url, object obj)
         {
-            return await _httpClient.PostAsJsonAsync(url, obj);
+            return await WrapRequest(_httpClient.PostAsJsonAsync(url, obj));
         }
 
         public async Task<HttpResponseMessage> PutAsync(string url, HttpContent? data)
         {
-            return await _httpClient.PutAsync(url, data);
+            return await WrapRequest(_httpClient.PutAsync(url, data));
         }
         public async Task<HttpResponseMessage> PutJsonAsync(string url, object obj)
         {
-            return await _httpClient.PutAsJsonAsync(url, obj);
+            return await WrapRequest(_httpClient.PutAsJsonAsync(url, obj));
         }
 
         public async Task<HttpResponseMessage> PatchAsync(string url, HttpContent? data)
         {
-            return await _httpClient.PatchAsync(url, data);
+            return await WrapRequest(_httpClient.PatchAsync(url, data));
         }
         public async Task<HttpResponseMessage> PatchJsonAsync(string url, object obj)
         {
-            return await _httpClient.PatchAsJsonAsync(url, obj);
+            return await WrapRequest(_httpClient.PatchAsJsonAsync(url, obj));
         }
 
         public async Task<HttpResponseMessage> DeleteAsync(string url)
         {
-            return await _httpClient.DeleteAsync(url);
+            return await WrapRequest(_httpClient.DeleteAsync(url));
         }
 
         public async Task<HttpResponseMessage> SendCustomAsync(HttpRequestMessage message)
         {
-            return await _httpClient.SendAsync(message);
+            return await WrapRequest(_httpClient.SendAsync(message));
         }
 
         public string FormatQuery(string baseUrl, Dictionary<string, object?> queryParams)

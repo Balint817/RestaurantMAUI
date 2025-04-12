@@ -9,26 +9,21 @@ using CustomerApp.View;
 
 namespace CustomerApp.ViewModel
 {
-    public partial class LoginPageVM : BindableObject
+    public partial class ForgotPasswordPageVM : BindableObject
     {
         public LanguageService LanguageService => LanguageService.Instance;
         public Command ToggleFlyoutCommand => AppShell.ToggleFlyoutCommand;
 #pragma warning disable CS8618
-        public LoginPageVM()
+        public ForgotPasswordPageVM()
         {
-            LoginCommand = new Command(OnLoginButtonClicked);
-            GoToRegisterCommand = new Command(OnGoRegisterClicked);
-            ForgotPasswordCommand = new Command(OnForgotPasswordClicked);
-        }
-        private void OnForgotPasswordClicked(object obj)
-        {
-            App.Current!.MainPage = new ForgotPasswordPage();
+            ForgotPasswordCommand = new Command(OnButtonClicked);
+            GoToLoginCommand = new Command(OnGoLoginClicked);
         }
 #pragma warning restore CS8618
 
-        private void OnGoRegisterClicked(object obj)
+        private void OnGoLoginClicked(object obj)
         {
-            App.Current!.MainPage = new RegisterPage();
+            App.Current!.MainPage = new LoginPage();
         }
 
         private string? _errorMessage;
@@ -38,32 +33,23 @@ namespace CustomerApp.ViewModel
             set { _errorMessage = value; OnPropertyChanged(); }
         }
 
-        private string? _usernameEntry;
-        public string? UsernameEntry
+        private string? _emailEntry;
+        public string? EmailEntry
         {
-            get { return _usernameEntry; }
-            set { _usernameEntry = value; OnPropertyChanged(); ErrorMessage = null!; }
+            get { return _emailEntry; }
+            set { _emailEntry = value; OnPropertyChanged(); ErrorMessage = null!; }
         }
-
-        private string? _passwordEntry;
-        public string? PasswordEntry
-        {
-            get { return _passwordEntry; }
-            set { _passwordEntry = value; OnPropertyChanged(); ErrorMessage = null!; }
-        }
-
-        public Command LoginCommand { get; }
-        public Command GoToRegisterCommand { get; }
         public Command ForgotPasswordCommand { get; }
-        public LoginPage Page { get; internal set; }
+        public Command GoToLoginCommand { get; }
+        public ForgotPasswordPage Page { get; internal set; }
 
         bool loading;
-        internal async void OnLoginButtonClicked()
+        internal async void OnButtonClicked()
         {
             if (!loading)
             {
                 loading = true;
-                await DoLogin().MakeTaskBlocking(Page);
+                await DoPasswordReset().MakeTaskBlocking(Page);
                 loading = false;
             }
             else
@@ -81,25 +67,19 @@ namespace CustomerApp.ViewModel
             }
         }
 
-        async Task DoLogin()
+        async Task DoPasswordReset()
         {
 
-            var username = UsernameEntry;
-            var password = PasswordEntry;
+            var email = EmailEntry;
 
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(email))
             {
                 ErrorMessage = LanguageService["FillOutAllFields"].Current;
                 return;
             }
-            if (AuthService.CheckUsername(username) is string userError)
+            if (AuthService.CheckEmail(email) is string emailError)
             {
-                ErrorMessage = userError;
-                return;
-            }
-            if (AuthService.CheckPassword(password) is string passError)
-            {
-                ErrorMessage = passError;
+                ErrorMessage = emailError;
                 return;
             }
 
@@ -107,14 +87,15 @@ namespace CustomerApp.ViewModel
 
             try
             {
-                var result = await AuthService.Instance.Login(username, password);
+                var result = await AuthService.Instance.ForgotPassword(email);
                 switch (result)
                 {
                     case true:
-                        await ((App)App.Current!).Init();
+                        await Page.DisplayAlert(LanguageService["Success"].Current, LanguageService["PasswordResetSuccess"].Current, LanguageService["OK"].Current);
+                        GoToLoginCommand.Execute(null);
                         break;
                     case false:
-                        ErrorMessage = LanguageService["IncorrectUser"].Current;
+                        ErrorMessage = LanguageService["InvalidEmail"].Current;
                         break;
                     default:
                         ErrorMessage = LanguageService["ServerError"].Current;

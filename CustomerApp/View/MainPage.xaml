@@ -2,7 +2,8 @@
 	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CustomerApp.View.MainPage"
-	xmlns:vm="clr-namespace:CustomerApp.ViewModel">
+	xmlns:vm="clr-namespace:CustomerApp.ViewModel"
+    xmlns:local="clr-namespace:CustomerApp">
     <ContentPage.BindingContext>
         <vm:MainPageVM/>
     </ContentPage.BindingContext>
@@ -46,7 +47,7 @@
                             WidthRequest="30"
                             VerticalOptions="Center"/>
                     <Label 
-                            Text="Fast Food" 
+                            Text="{Binding LanguageService[Title].Current}" 
                             FontSize="24" 
                             FontAttributes="Bold"
                             TextColor="White"
@@ -81,7 +82,7 @@
                             <Image Source="search_icon.svg"
                                     WidthRequest="40"
                                     HeightRequest="40" />
-                            <Entry Placeholder="Keress Ételeink És Italaink Között..."
+                            <Entry Placeholder="{Binding LanguageService[SearchText].Current}"
                         PlaceholderColor="{DynamicResource TextDark}"
                         TextColor="{DynamicResource TextDark}"
                         Text="{Binding SearchEntry}"
@@ -93,7 +94,7 @@
                 </Grid>
                 <!-- Featured Products Section -->
                 <VerticalStackLayout Padding="5">
-                    <Label Text="Kiemelt Termékeink"
+                    <Label Text="{Binding LanguageService[Highlights].Current}"
                        FontSize="22"
                        FontAttributes="Bold"
                        HorizontalTextAlignment="Center" />
@@ -143,11 +144,11 @@
                                                         VerticalOptions="Center" 
                                                         TextColor="{DynamicResource ItemListBackground}" />
                                                     <Grid.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding PlusTappedCommand}"/>
+                                                        <TapGestureRecognizer Tapped="Food_PlusTapped"/>
                                                     </Grid.GestureRecognizers>
                                                 </Grid>
                                                 <Grid.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding DetailCommand}"/>
+                                                    <TapGestureRecognizer Tapped="Food_DetailTapped"/>
                                                 </Grid.GestureRecognizers>
                                             </Grid>
                                         </DataTemplate>
@@ -195,11 +196,11 @@
                                                         VerticalOptions="Center" 
                                                         TextColor="{DynamicResource ItemListBackground}" />
                                                     <Grid.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding PlusTappedCommand}"/>
+                                                        <TapGestureRecognizer Tapped="Food_PlusTapped"/>
                                                     </Grid.GestureRecognizers>
                                                 </Grid>
                                                 <Grid.GestureRecognizers>
-                                                    <TapGestureRecognizer Command="{Binding DetailCommand}"/>
+                                                    <TapGestureRecognizer Tapped="Food_DetailTapped"/>
                                                 </Grid.GestureRecognizers>
                                             </Grid>
                                         </DataTemplate>

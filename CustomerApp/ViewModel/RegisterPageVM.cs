@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CustomerApp.Helpers;
 using CustomerApp.Services;
 using CustomerApp.View;
 
 namespace CustomerApp.ViewModel
 {
-    public class RegisterPageVM : BindableObject
+    public partial class RegisterPageVM : BindableObject
     {
+        public LanguageService LanguageService => LanguageService.Instance;
         private void OnGoLoginClicked(object obj)
         {
             App.Current!.MainPage = new LoginPage();
@@ -45,30 +47,37 @@ namespace CustomerApp.ViewModel
             set { _passwordEntry = value; OnPropertyChanged(); ErrorMessage = null!; }
         }
         public Command ToggleFlyoutCommand => AppShell.ToggleFlyoutCommand;
+
+        public RegisterPage Page { get; internal set; }
+
+#pragma warning disable CS8618
         public RegisterPageVM()
         {
             GoToLoginCommand = new Command(OnGoLoginClicked);
             RegisterCommand = new Command(OnRegisterButtonClicked);
         }
+#pragma warning restore CS8618
         bool loading;
         internal async void OnRegisterButtonClicked()
         {
             if (!loading)
             {
                 loading = true;
-                await DoRegister();
+                await DoRegister().MakeTaskBlocking(Page);
                 loading = false;
             }
             else
             {
-                if (ErrorMessage?.StartsWith("Kérem várjon!") == true)
-                {
-                    ErrorMessage += "!";
-                }
-                else
-                {
-                    ErrorMessage = "Kérem várjon!";
-                }
+                // OBSOLETE
+
+                //if (ErrorMessage?.StartsWith("Kérem várjon!") == true)
+                //{
+                //    ErrorMessage += "!";
+                //}
+                //else
+                //{
+                //    ErrorMessage = "Kérem várjon!";
+                //}
             }
         }
 
@@ -81,9 +90,25 @@ namespace CustomerApp.ViewModel
 
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(email))
             {
-                ErrorMessage = "Töltsön ki minden mezőt!";
+                ErrorMessage = LanguageService["FillOutAllFields"].Current;
                 return;
             }
+            if (AuthService.CheckUsername(username) is string userError)
+            {
+                ErrorMessage = userError;
+                return;
+            }
+            if (AuthService.CheckPassword(password) is string passError)
+            {
+                ErrorMessage = passError;
+                return;
+            }
+            if (AuthService.CheckEmail(email) is string emailError)
+            {
+                ErrorMessage = emailError;
+                return;
+            }
+            ErrorMessage = "";
 
             try
             {
@@ -91,23 +116,36 @@ namespace CustomerApp.ViewModel
                 switch (result.Key)
                 {
                     case true:
-                        ErrorMessage = "";
                         await ((App)App.Current!).Init();
                         break;
                     case false:
-                        ErrorMessage = result.Value ?? "Hiba történt.";
+                        ErrorMessage = result.Value ?? LanguageService["UnknownError"].Current;
                         break;
                     default:
-                        ErrorMessage = result.Value ?? "Szerver hiba. Próbálja meg újra!";
+                        ErrorMessage = result.Value ?? LanguageService["ServerError"].Current;
                         break;
                 }
             }
             catch (Exception ex)
             {
 #if DEBUG
-                await App.Current!.MainPage!.DisplayAlert("Error", ex.ToString(), "K");
+                await App.Current!.MainPage!.DisplayAlert(LanguageService["ErrorTitle"].Current, ex.ToString(), "OK");
 #endif
-                ErrorMessage = "Hiba történt.";
+                var cause = ex.GetHttpExceptionCause();
+                switch (cause)
+                {
+                    case HttpExceptionCause.NoInternet:
+                        ErrorMessage = LanguageService["NoInternet"].Current;
+                        break;
+                    case HttpExceptionCause.RequestLost:
+                        ErrorMessage = LanguageService["Timeout"].Current;
+                        break;
+                    case HttpExceptionCause.NotAnHttpException:
+                    case HttpExceptionCause.Unknown:
+                    default:
+                        ErrorMessage = LanguageService["UnknownError"].Current;
+                        break;
+                }
             }
         }
     }

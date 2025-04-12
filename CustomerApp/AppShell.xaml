@@ -5,31 +5,15 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:local="clr-namespace:CustomerApp"
 	xmlns:view="clr-namespace:CustomerApp.View"
-    Shell.FlyoutBehavior="Flyout"
+    Shell.FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False"
-    Title="Fast Food">
+    Title="{Binding LanguageService[Title].Current}">
     <FlyoutItem
         Title="Főoldal">
         <Tab>
             <ShellContent
                 ContentTemplate="{DataTemplate view:MainPage}"
                 Route="MainPage"/>
-        </Tab>
-    </FlyoutItem>
-    <FlyoutItem
-        Title="Rendelések">
-        <Tab>
-            <ShellContent
-                ContentTemplate="{DataTemplate view:OrderListPage}"
-                Route="OrderListPage"/>
-        </Tab>
-    </FlyoutItem>
-    <FlyoutItem
-        Title="RegisterPage">
-        <Tab>
-            <ShellContent
-                ContentTemplate="{DataTemplate view:RegisterPage}"
-                Route="RegisterPage"/>
         </Tab>
     </FlyoutItem>
 </Shell>

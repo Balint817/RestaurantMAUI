@@ -3,7 +3,8 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CustomerApp.View.FoodListPage"
 	xmlns:vm="clr-namespace:CustomerApp.ViewModel"
-	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:local="clr-namespace:CustomerApp">
     <ContentPage.BindingContext>
         <vm:FoodListPageVM/>
     </ContentPage.BindingContext>
@@ -46,7 +47,7 @@
                     WidthRequest="30"
                     VerticalOptions="Center"/>
                     <Label 
-                    Text="Fast Food" 
+                    Text="{Binding LanguageService[Title].Current}" 
                     FontSize="24" 
                     FontAttributes="Bold"
                     TextColor="White"
@@ -82,11 +83,11 @@
                     <Image Source="search_icon.svg"
                                     WidthRequest="40"
                                     HeightRequest="40">
-                        <Image.GestureRecognizers>
+                        <!--<Image.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnSearchTapped"/>
-                        </Image.GestureRecognizers>
+                        </Image.GestureRecognizers>-->
                     </Image>
-                    <Entry Placeholder="Keress Ételeink És Italaink Között..."
+                    <Entry Placeholder="{Binding LanguageService[SearchText].Current}"
                         PlaceholderColor="{DynamicResource TextDark}"
                         TextColor="{DynamicResource TextDark}"
                         FontSize="16"
@@ -96,18 +97,23 @@
             </Frame>
         </Grid>
         <!-- Scrollable Content -->
-        <ScrollView Grid.Row="2">
-            <VerticalStackLayout>
-                <!-- Featured Image -->
+        <Grid Grid.Row="2">
+            <!-- Featured Image -->
                 <!-- Categories -->
-                <VerticalStackLayout Padding="0,10,0,0">
-                    <Label Text="{Binding TargetMainCategory.name}"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Text="{Binding TargetMainCategory.name}" Grid.Row="0"
                         FontSize="22"
                         FontAttributes="Bold"
                         HorizontalTextAlignment="Center"
                         Margin="0,0,0,10"/>
-                    <!-- Fixed Horizontal ScrollView for Categories -->
-                    <ScrollView Orientation="Horizontal" HeightRequest="50">
+            <!-- Fixed Horizontal ScrollView for Categories -->
+                    <ScrollView Orientation="Horizontal" Grid.Row="1">
                         <HorizontalStackLayout>
                             <HorizontalStackLayout.Resources>
                                 <Style TargetType="Label">
@@ -125,11 +131,11 @@
                             </HorizontalStackLayout.Resources>
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <Frame>
+                                    <Frame VerticalOptions="Fill">
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="OnCategoryTapped"/>
                                         </Frame.GestureRecognizers>
-                                        <Label Text="{Binding name}"/>
+                                        <Label Text="{Binding name}" VerticalOptions="Center"/>
                                     </Frame>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
@@ -139,61 +145,59 @@
                         </HorizontalStackLayout>
                     </ScrollView>
                     <!-- Scrollable Food Items -->
-                    <ScrollView HeightRequest="400">
-                        <FlexLayout Direction="Row" Wrap="Wrap" JustifyContent="Center" AlignItems="Start">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate>
-                                    <Frame BackgroundColor="{DynamicResource ItemListBackground}" CornerRadius="25" Margin="5">
-                                        <Grid>
-                                            <Border StrokeThickness="2" 
+            <ScrollView Grid.Row="2">
+                <FlexLayout Direction="Row" Wrap="Wrap" JustifyContent="Center" AlignItems="Start">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="{DynamicResource ItemListBackground}" CornerRadius="25" Margin="5">
+                                <Grid>
+                                    <Border StrokeThickness="2" 
                                 Stroke="{DynamicResource BrandStrongTransparent070}" 
                                 HeightRequest="130" 
                                 WidthRequest="130" 
                                 StrokeShape="Ellipse">
-                                                <Image Source="{Binding imageUrl}" Aspect="AspectFill" MaximumHeightRequest="130" WidthRequest="130">
-                                                    <Image.Clip>
-                                                        <EllipseGeometry Center="65,65" RadiusX="65" RadiusY="65"/>
-                                                    </Image.Clip>
-                                                    <Image.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding DetailCommand}"/>
-                                                    </Image.GestureRecognizers>
-                                                </Image>
-                                            </Border>
-                                            <Grid VerticalOptions="End" HorizontalOptions="Start" HeightRequest="20" WidthRequest="20">
-                                                <Border 
+                                        <Image Source="{Binding imageUrl}" Aspect="AspectFill" MaximumHeightRequest="130" WidthRequest="130">
+                                            <Image.Clip>
+                                                <EllipseGeometry Center="65,65" RadiusX="65" RadiusY="65"/>
+                                            </Image.Clip>
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="Food_DetailTapped"/>
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                    </Border>
+                                    <Grid VerticalOptions="End" HorizontalOptions="Start" HeightRequest="20" WidthRequest="20">
+                                        <Border 
                                     StrokeThickness="0" 
                                     BackgroundColor="{DynamicResource BrandStrong}" 
                                     StrokeShape="Ellipse"
                                     HeightRequest="20" 
                                     WidthRequest="20"/>
-                                                <Label 
+                                        <Label 
                                     Text="+" 
                                     FontSize="15" 
                                     HorizontalOptions="Center" 
                                     VerticalOptions="Center" 
                                     TextColor="{DynamicResource ItemListBackground}" >
-                                                    <Label.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding PlusTappedCommand}"/>
-                                                    </Label.GestureRecognizers>
-                                                </Label>
-                                            </Grid>
-                                        </Grid>
-                                    </Frame>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                            <BindableLayout.ItemsSource>
-                                <Binding Path="FoodItems"/>
-                            </BindableLayout.ItemsSource>
-                        </FlexLayout>
-                    </ScrollView>
-                </VerticalStackLayout>
-                <!-- Shopping Cart -->
-                <Image Source="shopping_cart_icon.svg" HorizontalOptions="End" Margin="20" WidthRequest="30" HeightRequest="30">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="Food_PlusTapped"/>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </Grid>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                    <BindableLayout.ItemsSource>
+                        <Binding Path="FoodItems"/>
+                    </BindableLayout.ItemsSource>
+                </FlexLayout>
+            </ScrollView>
+            <!-- Shopping Cart -->
+                <Image Source="shopping_cart_icon.svg" HorizontalOptions="End" Margin="20" WidthRequest="30" HeightRequest="30" Grid.Row="3">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Tapped="CartTapped"/>
                     </Image.GestureRecognizers>
                 </Image>
-            </VerticalStackLayout>
-        </ScrollView>
+        </Grid>
     </Grid>
 </ContentPage>

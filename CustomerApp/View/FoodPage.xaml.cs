@@ -9,20 +9,20 @@ public partial class FoodPage : ContentPage
     public FoodPage(FoodItemModel model)
     {
         InitializeComponent();
-        VM.Init(model);
+        VM.Init(this, model);
     }
     public FoodPage(CartModel model)
     {
         InitializeComponent();
-        VM.Init(model);
+        VM.Init(this, model);
     }
-    internal static void ShowWindow(FoodItemModel model)
+    internal static async Task ShowWindow(FoodItemModel model)
     {
-        App.GetNavigation().PushAsync(new FoodPage(model));
+        await App.GetNavigation().PushAsync(new FoodPage(model), true);
     }
-    internal static void ShowWindow(CartModel model)
+    internal static async Task ShowWindow(CartModel model)
     {
-        App.GetNavigation().PushAsync(new FoodPage(model));
+        await App.GetNavigation().PushAsync(new FoodPage(model), true);
     }
 
     private void PlusTapped(object sender, TappedEventArgs e) => VM.PlusTapped();

@@ -4,13 +4,17 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CustomerApp.Helpers;
 using CustomerApp.Model;
 using CustomerApp.Services;
+using CustomerApp.View;
+using static Android.Graphics.ColorSpace;
 
 namespace CustomerApp.ViewModel
 {
-    public class FoodPageVM : BindableObject
+    public partial class FoodPageVM : BindableObject
     {
+        public LanguageService LanguageService => LanguageService.Instance;
         public Command ToggleFlyoutCommand => AppShell.ToggleFlyoutCommand;
         public Command BackCommand => AppShell.NavigateBackCommand;
 
@@ -87,10 +91,12 @@ namespace CustomerApp.ViewModel
         }
 
 
+#pragma warning disable CS8618
         public FoodPageVM()
         {
             CartModel = new();
         }
+#pragma warning restore CS8618
         private bool _isEdit;
 
         public bool IsEditing
@@ -100,21 +106,35 @@ namespace CustomerApp.ViewModel
         }
         public bool IsNew => !IsEditing;
 
-        internal async void Init(FoodItemModel targetFood)
+        FoodPage _page;
+
+        private async Task BaseInit(FoodPage page, FoodItemModel targetFood)
         {
+            try
+            {
+                categories = (await CategoryService.Instance.GetAllAsync().MakeTaskBlocking(page)).ToDictionary(x => x._id);
+                materials = (await MaterialService.Instance.GetAllAsync().MakeTaskBlocking(page)).ToDictionary(x => x._id);
+            }
+            catch (Exception)
+            {
+                await App.ShowGenericNetworkError();
+                categories = [];
+                materials = [];
+            }
+            TargetFood = targetFood; // to force UI update
+        }
+        internal async void Init(FoodPage page, FoodItemModel targetFood)
+        {
+            _page = page;
             IsEditing = false;
-            categories = (await CategoryService.Instance.GetAllAsync()).ToDictionary(x => x._id);
-            materials = (await MaterialService.Instance.GetAllAsync()).ToDictionary(x => x._id);
-            TargetFood = targetFood;
+            await BaseInit(page, targetFood);
         }
 
-        internal async void Init(CartModel model)
+        internal async void Init(FoodPage page, CartModel model)
         {
-            IsEditing = true;
-            categories = (await CategoryService.Instance.GetAllAsync()).ToDictionary(x => x._id);
-            materials = (await MaterialService.Instance.GetAllAsync()).ToDictionary(x => x._id);
             CartModel = model;
-            TargetFood = model.Food; // to force UI updates
+            IsEditing = true;
+            await BaseInit(page, model.Food!);
         }
 
         internal void PlusTapped()
@@ -133,7 +153,7 @@ namespace CustomerApp.ViewModel
             {
                 OrderService.Instance.Cart.Add(CartModel);
             }
-            await App.GetNavigation().PopAsync();
+            await App.GetNavigation().PopAsync().MakeTaskBlocking(_page);
         }
     }
 }

@@ -88,6 +88,9 @@
 	  <MauiXaml Update="View\FoodPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="View\ForgotPasswordPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\_EmptyPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
