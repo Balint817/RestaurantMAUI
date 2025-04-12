@@ -8,7 +8,6 @@ using CustomerApp.Helpers;
 using CustomerApp.Model;
 using CustomerApp.Services;
 using CustomerApp.View;
-using static Android.Graphics.ColorSpace;
 
 namespace CustomerApp.ViewModel
 {

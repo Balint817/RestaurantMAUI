@@ -90,6 +90,8 @@ namespace CustomerApp.Helpers
                 var name = innerEx.GetType().Name;
                 switch (name)
                 {
+                    // this shows an error for some reason, despite building perfectly fine.
+                    // (nameof() expressions are evaluated to strings at compile time, so it cannot cause issues at runtime either)
                     case nameof(Java.Net.UnknownHostException):
                     case nameof(Java.Net.BindException):
                     case nameof(Java.Net.ConnectException):
