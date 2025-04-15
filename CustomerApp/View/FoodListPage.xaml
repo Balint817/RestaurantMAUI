@@ -90,6 +90,7 @@
                     <Entry Placeholder="{Binding LanguageService[SearchText].Current}"
                         PlaceholderColor="{DynamicResource TextDark}"
                         TextColor="{DynamicResource TextDark}"
+                           Text="{Binding SearchEntry}"
                         FontSize="16"
                         HorizontalOptions="FillAndExpand"
                         />

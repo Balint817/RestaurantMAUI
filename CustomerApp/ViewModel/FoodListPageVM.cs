@@ -49,9 +49,17 @@ namespace CustomerApp.ViewModel
         public string? SearchEntry
         {
             get { return _searchEntry; }
-            set { _searchEntry = value; }
+            set
+            {
+                _searchEntry = value;
+                OnPropertyChanged();
+                Refresh();
+            }
         }
-
+        private void Refresh()
+        {
+            Search(selectedSubcategory?._id);
+        }
 
         public ICommand ToggleFlyoutCommand => AppShell.ToggleFlyoutCommand;
         public ICommand BackCommand => AppShell.NavigateBackCommand;

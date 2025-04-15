@@ -78,16 +78,17 @@
                         <Image Source="banner.jpg" Aspect="AspectFit" />
                     </Frame>
                     <Frame CornerRadius="20" BackgroundColor="{DynamicResource BrandStrong}" Grid.Row="0" IsClippedToBounds="True">
-                        <HorizontalStackLayout>
+                        <HorizontalStackLayout MinimumHeightRequest="40">
                             <Image Source="search_icon.svg"
                                     WidthRequest="40"
-                                    HeightRequest="40" />
+                                    HeightRequest="40" IsVisible="Hidden"/>
                             <Entry Placeholder="{Binding LanguageService[SearchText].Current}"
                         PlaceholderColor="{DynamicResource TextDark}"
                         TextColor="{DynamicResource TextDark}"
                         Text="{Binding SearchEntry}"
                         FontSize="16"
                         HorizontalOptions="FillAndExpand"
+                                   IsVisible="Hidden"
                         />
                         </HorizontalStackLayout>
                     </Frame>
