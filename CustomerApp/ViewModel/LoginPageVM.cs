@@ -30,7 +30,7 @@ namespace CustomerApp.ViewModel
 
         private async Task DoGoogleLogin()
         {
-            App.Current!.MainPage = new GoogleLogin();
+            await App.GetNavigation().PushModalAsync(new GoogleLogin());
             //// Launch login in system browser
             //await Browser.OpenAsync("https://mateszadam.koyeb.app/user/google", BrowserLaunchMode.External);
 

@@ -29,6 +29,18 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
+                <Image 
+                    Grid.Column="0"
+                    Source="google_icon.png"
+                    HeightRequest="30"
+                    WidthRequest="30"
+                    Margin="0,5,0,0 "
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoogleLoginCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
                 <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center">
                     <Image 
                     Source="fork_knife_icon.svg" 
@@ -95,18 +107,6 @@
                         <TapGestureRecognizer Command="{Binding LoginCommand}"/>
                     </Frame.GestureRecognizers>
                 </Frame>
-                <Label 
-                    Margin="0,5,0,0"
-                    Text="{Binding LanguageService[GoogleText].Current}" 
-                    FontSize="16" 
-                    FontAttributes="Bold"
-                    TextColor="{DynamicResource BrandStrong}"
-                    VerticalOptions="End"
-                    HorizontalOptions="Start">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding GoogleLoginCommand}"/>
-                    </Label.GestureRecognizers>
-                </Label>
                 <!--<Label 
                     Margin="0,5,0,0"
                     Text="{Binding LanguageService[ForgotPassword].Current}" 

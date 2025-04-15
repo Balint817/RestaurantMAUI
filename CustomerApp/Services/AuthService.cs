@@ -155,7 +155,7 @@ namespace CustomerApp.Services
         {
 
             var url = $"{HttpService.BaseAPIUrl}/user/google/auth/{token}";
-            var r = await HttpService.PostJsonAsync(url, new { });
+            var r = await HttpService.GetAsync(url);
             UserObject user;
             string? stringContent = null;
             try
@@ -164,11 +164,7 @@ namespace CustomerApp.Services
                 user = JsonSerializer.Deserialize<UserObject>(stringContent)!;
                 if (user?.userId is null)
                 {
-                    if (user.message != null)
-                    {
-                        return new(false, user.message);
-                    }
-                    return new(false, null);
+                    return new(false, user?.message);
                 }
             }
             catch (Exception ex)
@@ -184,8 +180,8 @@ namespace CustomerApp.Services
             {
                 return new(false, null);
             }
-            
-            await SecureStorage.SetAsync(UserInfoKey, JsonSerializer.Serialize(user));
+            User = user;
+            await SaveUser(user);
             return new(await Init(), null);
             //return new(await Login(name, password), null);
         }

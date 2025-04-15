@@ -49,12 +49,16 @@ public partial class GoogleLogin : ContentPage
             var message = result.Value ?? (result.Key == true ? null :
                                               result.Key == false ? (result.Value ?? "Unknown error.") :
                                               (result.Value ?? "Internal server error. Try again later."));
-
-            await this.DisplayAlert("Google Login", message, "OK");
+            if (message != null)
+            {
+                await this.DisplayAlert("Google Login", message, "OK");
+            }
 
             // Pop the login page
-            if (Navigation.NavigationStack.Contains(this))
-                await Navigation.PopAsync();
+            if (Navigation.ModalStack.Contains(this))
+                await Navigation.PopModalAsync();
+
+            App.Current!.MainPage = new AppShell();
         }
     }
 
