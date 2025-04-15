@@ -9,6 +9,7 @@ using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace CustomerApp.Services
 {
@@ -152,41 +153,41 @@ namespace CustomerApp.Services
         }
         public async Task<KeyValuePair<bool?, string?>> GoogleLogin(string token)
         {
+
+            var url = $"{HttpService.BaseAPIUrl}/user/google/auth/{token}";
+            var r = await HttpService.PostJsonAsync(url, new { });
+            UserObject user;
+            string? stringContent = null;
             try
             {
-                var url = $"{HttpService.BaseAPIUrl}/user/google/auth/{token}";
-                var response = await HttpService.Instance.GetAsync(url);
-
-                string content = await response.Content.ReadAsStringAsync();
-                JsonObject? json = null;
-
-                try
+                stringContent = await r.Content.ReadAsStringAsync();
+                user = JsonSerializer.Deserialize<UserObject>(stringContent)!;
+                if (user?.userId is null)
                 {
-                    json = JsonSerializer.Deserialize<JsonObject>(content);
-                }
-                catch (JsonException ex)
-                {
-                    Debug.WriteLine("Failed to deserialize GoogleLogin response JSON: " + ex.Message);
-                    return new(null, null); // treat as internal server error
-                }
-
-                // Optional: dump the content for debugging
-                Debug.WriteLine("GoogleLogin response: " + content);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return new(true, json?["message"]?.ToString());
-                }
-                else
-                {
-                    return new(false, json?["message"]?.ToString() ?? "Ismeretlen hiba.");
+                    if (user.message != null)
+                    {
+                        return new(false, user.message);
+                    }
+                    return new(false, null);
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Exception in GoogleLogin: " + ex);
-                return new(null, "Nem sikerült kapcsolódni a szerverhez.");
+                Debug.WriteLine("Got an error during google login", ex.ToString());
+                if (ex is JsonException)
+                {
+                    return new(null, null);
+                }
+                return new(false, "Hiba történt.");
             }
+            if (!r.IsSuccessStatusCode)
+            {
+                return new(false, null);
+            }
+            
+            await SecureStorage.SetAsync(UserInfoKey, JsonSerializer.Serialize(user));
+            return new(await Init(), null);
+            //return new(await Login(name, password), null);
         }
 
         public async Task<KeyValuePair<bool?, string?>> Register(string name, string password, string email)
