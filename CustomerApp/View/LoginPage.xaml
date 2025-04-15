@@ -95,7 +95,7 @@
                         <TapGestureRecognizer Command="{Binding LoginCommand}"/>
                     </Frame.GestureRecognizers>
                 </Frame>
-                <!--<Label 
+                <Label 
                     Margin="0,5,0,0"
                     Text="{Binding LanguageService[GoogleText].Current}" 
                     FontSize="16" 
@@ -106,7 +106,7 @@
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding GoogleLoginCommand}"/>
                     </Label.GestureRecognizers>
-                </Label>-->
+                </Label>
                 <!--<Label 
                     Margin="0,5,0,0"
                     Text="{Binding LanguageService[ForgotPassword].Current}" 
