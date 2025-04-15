@@ -70,7 +70,7 @@
                 HeightRequest="200" 
                 WidthRequest="200" 
                 StrokeShape="Ellipse">
-                <Image Source="{Binding User.profilePicture}" Aspect="AspectFill" HeightRequest="200">
+                <Image Source="no_user.png" Aspect="AspectFill" HeightRequest="200">
                     <Image.Clip>
                         <EllipseGeometry Center="100,100" RadiusX="100" RadiusY="100"/>
                     </Image.Clip>
@@ -107,17 +107,17 @@
                                             <Grid VerticalOptions="End" 
                                               HorizontalOptions="End"
                                               Grid.Row="2">
-                                                <Label Text="{Binding LanguageService[OrderDetails].Current}"
+                                                <Label Text=""
                                                    FontSize="15" 
                                                    HorizontalOptions="Center" 
                                                    VerticalOptions="Center" 
                                                    TextColor="{DynamicResource BrandStrong}" >
-                                                    <Label.GestureRecognizers>
-                                                        <TapGestureRecognizer Tapped="OnDetailsTapped"/>
-                                                    </Label.GestureRecognizers>
                                                 </Label>
                                             </Grid>
                                         </Grid>
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnDetailsTapped"/>
+                                        </Frame.GestureRecognizers>
                                     </Frame>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
@@ -141,8 +141,7 @@
                FontSize="15" 
                HorizontalOptions="Center" 
                VerticalOptions="Center" 
-               TextColor="{DynamicResource BrandStrong}"
-                   >
+               TextColor="{DynamicResource BrandStrong}">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnLogoutTapped"/>
                 </Label.GestureRecognizers>

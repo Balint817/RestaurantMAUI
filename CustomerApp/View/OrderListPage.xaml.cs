@@ -11,7 +11,7 @@ public partial class OrderListPage : ContentPage
         InitializeComponent();
     }
 
-    private async void OnDetailsTapped(object sender, TappedEventArgs e) => await VM.OnDetailsTapped((Label)sender).MakeTaskBlocking(this);
+    private async void OnDetailsTapped(object sender, TappedEventArgs e) => await VM.OnDetailsTapped((BindableObject)sender).MakeTaskBlocking(this);
 
     private async void OnLogoutTapped(object sender, TappedEventArgs e) => await VM.OnLogout().MakeTaskBlocking(this);
 

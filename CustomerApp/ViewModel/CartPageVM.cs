@@ -63,8 +63,26 @@ namespace CustomerApp.ViewModel
             }
             var orderService = OrderService.Instance;
             orderService.Cart = orderService.DisplayedCart!;
-            await orderService.PlaceOrder().MakeTaskBlocking(Page);
-            BackCommand.Execute(null);
+            if (orderService.Cart.Count == 0)
+            {
+                await Page.DisplayAlert(LanguageService["ErrorTitle"].Current, LanguageService["EmptyCartError"].Current, LanguageService["OK"].Current);
+                return;
+            }
+            try
+            {
+                await orderService.PlaceOrder().MakeTaskBlocking(Page);
+                await Page.DisplayAlert(LanguageService["Success"].Current, LanguageService["PlaceOrderSuccess"].Current, LanguageService["OK"].Current);
+                orderService.Cart.Clear();
+                BackCommand.Execute(null);
+            }
+            catch (Exception ex)
+            {
+                await Page.DisplayAlert(LanguageService["ErrorTitle"].Current, LanguageService["PlaceOrderError"].Current, LanguageService["OK"].Current);
+            }
+            finally
+            {
+
+            }
         }
     }
 }

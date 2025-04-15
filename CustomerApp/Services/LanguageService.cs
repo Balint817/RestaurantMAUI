@@ -295,6 +295,31 @@ namespace CustomerApp.Services
                 ["hu-HU"] = "Adatok betöltése sikertelen.",
                 ["en"] = "Failed to load data."
             }),
+            ["EmptyCartError"] = new LocalString(new()
+            {
+                ["hu-HU"] = "Üres a kosár!",
+                ["en"] = "The cart is empty!"
+            }),
+            ["PlaceOrderSuccess"] = new LocalString(new()
+            {
+                ["hu-HU"] = "Rendelés sikeresen leadva.",
+                ["en"] = "Order successfully placed."
+            }),
+            ["PlaceOrderError"] = new LocalString(new()
+            {
+                ["hu-HU"] = "Hiba történt a rendelés leadásakor!",
+                ["en"] = "An error occured while placing order!"
+            }),
+            ["GoogleText"] = new LocalString(new()
+            {
+                ["hu-HU"] = "Google belépés->",
+                ["en"] = "Google login->"
+            }),
+            //[""] = new LocalString(new()
+            //{
+            //    ["hu-HU"] = "",
+            //    ["en"] = ""
+            //}),
         };
 
     }

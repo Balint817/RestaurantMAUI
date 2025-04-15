@@ -70,7 +70,7 @@ namespace CustomerApp.ViewModel
             }
         }
 
-        internal async Task OnDetailsTapped(Label sender)
+        internal async Task OnDetailsTapped(BindableObject sender)
         {
             if (sender.BindingContext is not OrderModel order)
             {

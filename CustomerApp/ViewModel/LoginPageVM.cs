@@ -18,8 +18,27 @@ namespace CustomerApp.ViewModel
         {
             LoginCommand = new Command(OnLoginButtonClicked);
             GoToRegisterCommand = new Command(OnGoRegisterClicked);
+            GoogleLoginCommand = new Command(OnGoogleLoginClicked);
             ForgotPasswordCommand = new Command(OnForgotPasswordClicked);
         }
+
+        private async void OnGoogleLoginClicked(object obj)
+        {
+            //App.Current!.MainPage = new GoogleLogin();
+            await DoGoogleLogin().MakeTaskBlocking(Page);
+        }
+
+        private async Task DoGoogleLogin()
+        {
+            //// Launch login in system browser
+            //await Browser.OpenAsync("https://mateszadam.koyeb.app/user/google", BrowserLaunchMode.External);
+
+            //// Meanwhile, wait a second and navigate to catcher
+            //// So once the browser redirects, user can return manually
+            //await Task.Delay(1000);
+            //await Application.Current.MainPage.Navigation.PushAsync(new GoogleLogin());
+        }
+
         private void OnForgotPasswordClicked(object obj)
         {
             App.Current!.MainPage = new ForgotPasswordPage();
@@ -54,6 +73,7 @@ namespace CustomerApp.ViewModel
 
         public Command LoginCommand { get; }
         public Command GoToRegisterCommand { get; }
+        public Command GoogleLoginCommand { get; }
         public Command ForgotPasswordCommand { get; }
         public LoginPage Page { get; internal set; }
 

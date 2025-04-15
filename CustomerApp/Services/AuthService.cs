@@ -150,6 +150,10 @@ namespace CustomerApp.Services
             return await Init();
         }
 
+        public async Task<KeyValuePair<bool?, string?>> GoogleLogin(string token)
+        {
+            return default;
+        }
 
         public async Task<KeyValuePair<bool?, string?>> Register(string name, string password, string email)
         {

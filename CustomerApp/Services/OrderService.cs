@@ -17,7 +17,6 @@ namespace CustomerApp.Services
         static HttpService HttpService => HttpService.Instance;
         public List<CartModel>? DisplayedCart { get; set; }
         public List<CartModel> Cart { get; set; } = new();
-
         public void AddToCart(FoodItemModel model, int count = 1)
         {
             Cart.Add(new() { Food = model, Count = count });
