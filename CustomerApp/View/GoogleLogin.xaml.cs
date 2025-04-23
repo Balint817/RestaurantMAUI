@@ -17,8 +17,10 @@ public partial class GoogleLogin : ContentPage
     {
 #if ANDROID
         var webView = new Android.Webkit.WebView(Android.App.Application.Context);
-        Android.Webkit.CookieManager.Instance.RemoveAllCookies(null);
-        Android.Webkit.CookieManager.Instance.Flush();
+        if (Android.Webkit.CookieManager.Instance is {} cookieManager) {
+            cookieManager.RemoveAllCookies(null);
+            cookieManager.Flush();
+        }
         webView.ClearCache(true);
         webView.ClearFormData();
         webView.ClearHistory();
