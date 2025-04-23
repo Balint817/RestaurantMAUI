@@ -6,13 +6,11 @@ namespace CustomerApp.View;
 public partial class GoogleLogin : ContentPage
 {
     private static readonly Regex RedirectRegex = RedirectRegexCompiled();
-
-    private const string FakeUserAgent = "Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19";
+    private static LanguageService LanguageService => LanguageService.Instance;
     public GoogleLogin()
     {
         InitializeComponent();
         ClearWebViewData();
-        LoginWebView.UserAgent = "fastFoodAuth";
         LoginWebView.Source = "https://mateszadam.koyeb.app/user/google";
     }
     private void ClearWebViewData()
@@ -27,12 +25,25 @@ public partial class GoogleLogin : ContentPage
 #elif IOS
         var websiteDataTypes = new Foundation.NSSet<Foundation.NSString>(WebKit.WKWebsiteDataStore.AllWebsiteDataTypes);
         var dateFrom = Foundation.NSDate.DistantPast;
-        WebKit.WKWebsiteDataStore.DefaultDataStore.RemoveData(websiteDataTypes, dateFrom, () => { });
+        WebKit.WKWebsiteDataStore.DefaultDataStore.RemoveDataOfTypes(websiteDataTypes, dateFrom, () => { });
 #endif
     }
 
+    bool firstLoad = true;
     private async void LoginWebView_Navigating(object sender, WebNavigatingEventArgs e)
     {
+        if (firstLoad)
+        {
+#if DEBUG
+            Console.WriteLine("UserAgent: " + LoginWebView.UserAgent);
+#endif
+            LoginWebView.UserAgent =
+                LoginWebView.UserAgent
+                .Replace("; wv)", ")")
+                .Replace("; wv", ";");
+            firstLoad = false;
+        }
+
         var match = RedirectRegex.Match(e.Url);
 
         if (match.Success)
@@ -47,11 +58,11 @@ public partial class GoogleLogin : ContentPage
 
             // Show alert using the MainPage
             var message = result.Value ?? (result.Key == true ? null :
-                                              result.Key == false ? (result.Value ?? "Unknown error.") :
-                                              (result.Value ?? "Internal server error. Try again later."));
+                                              result.Key == false ? (result.Value ?? LanguageService["UnknownError"].Current) :
+                                              (result.Value ?? LanguageService["ServerError"].Current));
             if (message != null)
             {
-                await this.DisplayAlert("Google Login", message, "OK");
+                await this.DisplayAlert(LanguageService["GoogleLoginTitle"].Current, message, LanguageService["OK"].Current);
             }
 
             // Pop the login page

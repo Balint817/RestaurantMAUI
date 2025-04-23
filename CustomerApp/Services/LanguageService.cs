@@ -315,6 +315,11 @@ namespace CustomerApp.Services
                 ["hu-HU"] = "Google belépés->",
                 ["en"] = "Google login->"
             }),
+            ["GoogleLoginTitle"] = new LocalString(new()
+            {
+                ["hu-HU"] = "Google Bejelentkezés",
+                ["en"] = "Google Login"
+            }),
             //[""] = new LocalString(new()
             //{
             //    ["hu-HU"] = "",
