@@ -23,9 +23,6 @@ namespace CustomerApp.Services
         private HttpService()
         {
             _httpClient = new HttpClient();
-            _httpClient.DefaultRequestHeaders.AcceptLanguage.Clear();
-            //_httpClient.DefaultRequestHeaders.AcceptLanguage.Add(new(CultureInfo.CurrentCulture.Name));
-            _httpClient.DefaultRequestHeaders.AcceptLanguage.Add(new("hu-HU"));
         }
 
         public void Authorize(string token)
