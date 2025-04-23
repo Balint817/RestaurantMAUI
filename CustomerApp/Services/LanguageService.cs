@@ -144,14 +144,7 @@ namespace CustomerApp.Services
         public string CurrentLanguage { get; private set; } = "en";
         public void SetLanguage(CultureInfo culture)
         {
-            if (culture.Name.StartsWith("en-"))
-            {
-                CurrentLanguage = "en";
-            }
-            else
-            {
-                CurrentLanguage = culture.Name;
-            }
+            CurrentLanguage = culture.Name.Split("-")[0].ToLower();
             foreach (var v in _localizedStrings.Values)
             {
                 v.Refresh();
@@ -180,227 +173,227 @@ namespace CustomerApp.Services
         {
             ["Title"] = new LocalString(new()
             {
-                ["hu-HU"] = "Gyorsétterem",
+                ["hu"] = "Gyorsétterem",
                 ["en"] = "Fast Food"
             }),
             ["SearchText"] = new LocalString(new()
             {
-                ["hu-HU"] = "Keress ételeink és italaink között...",
+                ["hu"] = "Keress ételeink és italaink között...",
                 ["en"] = "Search our foods and drinks..."
             }),
             ["Highlights"] = new LocalString(new()
             {
-                ["hu-HU"] = "Kiemelt Termékeink",
+                ["hu"] = "Kiemelt Termékeink",
                 ["en"] = "Our Highlights"
             }),
             ["Ingredients"] = new LocalString(new()
             {
-                ["hu-HU"] = "Hozzávalók:",
+                ["hu"] = "Hozzávalók:",
                 ["en"] = "Ingredients:"
             }),
             ["Description"] = new LocalString(new()
             {
-                ["hu-HU"] = "Leírás",
+                ["hu"] = "Leírás",
                 ["en"] = "Description"
             }),
             ["ToCart"] = new LocalString(new()
             {
-                ["hu-HU"] = "Kosárba",
+                ["hu"] = "Kosárba",
                 ["en"] = "Add"
             }),
             ["OrderDetails"] = new LocalString(new()
             {
-                ["hu-HU"] = "Részletek->",
+                ["hu"] = "Részletek->",
                 ["en"] = "Details->"
             }),
             ["LogOut"] = new LocalString(new()
             {
-                ["hu-HU"] = "Kijelentkezés",
+                ["hu"] = "Kijelentkezés",
                 ["en"] = "Log out"
             }),
             ["PlaceOrder"] = new LocalString(new()
             {
-                ["hu-HU"] = "Rendelés",
+                ["hu"] = "Rendelés",
                 ["en"] = "Place Order"
             }),
             ["CartText"] = new LocalString(new()
             {
-                ["hu-HU"] = "Kosár",
+                ["hu"] = "Kosár",
                 ["en"] = "Cart"
             }),
             ["Username"] = new LocalString(new()
             {
-                ["hu-HU"] = "Felhasználónév",
+                ["hu"] = "Felhasználónév",
                 ["en"] = "Username"
             }),
             ["Password"] = new LocalString(new()
             {
-                ["hu-HU"] = "Jelszó",
+                ["hu"] = "Jelszó",
                 ["en"] = "Password"
             }),
             ["NoAccountText"] = new LocalString(new()
             {
-                ["hu-HU"] = "Nincs még fiókom->",
+                ["hu"] = "Nincs még fiókom->",
                 ["en"] = "Not registered->"
             }),
             ["HaveAccountText"] = new LocalString(new()
             {
-                ["hu-HU"] = "Van már fiókom->",
+                ["hu"] = "Van már fiókom->",
                 ["en"] = "Already registered->"
             }),
             ["LogIn"] = new LocalString(new()
             {
-                ["hu-HU"] = "Bejelentkezés",
+                ["hu"] = "Bejelentkezés",
                 ["en"] = "Login"
             }),
             ["ForgotPassword"] = new LocalString(new()
             {
-                ["hu-HU"] = "Elfelejtett jelszó->",
+                ["hu"] = "Elfelejtett jelszó->",
                 ["en"] = "Forgotten password->"
             }),
             ["FillOutAllFields"] = new LocalString(new()
             {
-                ["hu-HU"] = "Töltsön ki minden mezőt!",
+                ["hu"] = "Töltsön ki minden mezőt!",
                 ["en"] = "Please fill all fields!"
             }),
             ["UnknownError"] = new LocalString(new()
             {
-                ["hu-HU"] = "Hiba történt.",
+                ["hu"] = "Hiba történt.",
                 ["en"] = "An error occured."
             }),
             ["NoInternet"] = new LocalString(new()
             {
-                ["hu-HU"] = "Nincs internet",
+                ["hu"] = "Nincs internet",
                 ["en"] = "No internet."
             }),
             ["Timeout"] = new LocalString(new()
             {
-                ["hu-HU"] = "A kérés lejárt.",
+                ["hu"] = "A kérés lejárt.",
                 ["en"] = "The request timed out."
             }),
             ["ErrorTitle"] = new LocalString(new()
             {
-                ["hu-HU"] = "Hiba",
+                ["hu"] = "Hiba",
                 ["en"] = "Error"
             }),
             ["IncorrectUser"] = new LocalString(new()
             {
-                ["hu-HU"] = "Hibás felhasználónév vagy jelszó!",
+                ["hu"] = "Hibás felhasználónév vagy jelszó!",
                 ["en"] = "Incorrect username or password!"
             }),
             ["ServerError"] = new LocalString(new()
             {
-                ["hu-HU"] = "Szerver hiba. Próbálja meg újra!",
+                ["hu"] = "Szerver hiba. Próbálja meg újra!",
                 ["en"] = "Server error. Try again later!"
             }),
             ["UserTooShort"] = new LocalString(new()
             {
-                ["hu-HU"] = "A névnek legalább 4 karakternek kell lennie.",
+                ["hu"] = "A névnek legalább 4 karakternek kell lennie.",
                 ["en"] = "Username must be at least 4 characters."
             }),
             ["InvalidUsername"] = new LocalString(new()
             {
-                ["hu-HU"] = "Érvénytelen felhasználónév.",
+                ["hu"] = "Érvénytelen felhasználónév.",
                 ["en"] = "Invalid username."
             }),
             ["PasswordTooShort"] = new LocalString(new()
             {
-                ["hu-HU"] = "Jelszónak legalább 8 karakternek kell lennie!",
+                ["hu"] = "Jelszónak legalább 8 karakternek kell lennie!",
                 ["en"] = "Password must be at least 8 characters!"
             }),
             ["PasswordNoLower"] = new LocalString(new()
             {
-                ["hu-HU"] = "Jelszóban kell lennie kisbetűnek.",
+                ["hu"] = "Jelszóban kell lennie kisbetűnek.",
                 ["en"] = "Password must contain lowercase letters."
             }),
             ["PasswordNoUpper"] = new LocalString(new()
             {
-                ["hu-HU"] = "Jelszóban kell lennie nagybetűnek.",
+                ["hu"] = "Jelszóban kell lennie nagybetűnek.",
                 ["en"] = "Password must contain uppercase letters."
             }),
             ["PasswordNoDigit"] = new LocalString(new()
             {
-                ["hu-HU"] = "Jelszóban kell lennie számnak.",
+                ["hu"] = "Jelszóban kell lennie számnak.",
                 ["en"] = "Password must contain digits."
             }),
             ["PasswordNoSpecial"] = new LocalString(new()
             {
-                ["hu-HU"] = "Jelszóban kell lennie speciális karakternek.",
+                ["hu"] = "Jelszóban kell lennie speciális karakternek.",
                 ["en"] = "Password must contain special characters."
             }),
             ["Register"] = new LocalString(new()
             {
-                ["hu-HU"] = "Regisztrálás",
+                ["hu"] = "Regisztrálás",
                 ["en"] = "Register"
             }),
             ["EmailPlaceholder"] = new LocalString(new()
             {
-                ["hu-HU"] = "Email",
+                ["hu"] = "Email",
                 ["en"] = "Email"
             }),
             ["InvalidEmail"] = new LocalString(new()
             {
-                ["hu-HU"] = "Hibás email.",
+                ["hu"] = "Hibás email.",
                 ["en"] = "Invalid email."
             }),
             ["Continue"] = new LocalString(new()
             {
-                ["hu-HU"] = "Tovább",
+                ["hu"] = "Tovább",
                 ["en"] = "Contine"
             }),
             ["GoBack"] = new LocalString(new()
             {
-                ["hu-HU"] = "Vissza->",
+                ["hu"] = "Vissza->",
                 ["en"] = "Back->"
             }),
             ["Success"] = new LocalString(new()
             {
-                ["hu-HU"] = "Siker",
+                ["hu"] = "Siker",
                 ["en"] = "Success"
             }),
             ["OK"] = new LocalString(new()
             {
-                ["hu-HU"] = "OK",
+                ["hu"] = "OK",
                 ["en"] = "OK"
             }),
             ["PasswordResetSuccess"] = new LocalString(new()
             {
-                ["hu-HU"] = "Jelszó helyreállító email sikeresen elküldve.",
+                ["hu"] = "Jelszó helyreállító email sikeresen elküldve.",
                 ["en"] = "Password reset email successfully sent."
             }),
             ["PleaseConnectToInternet"] = new LocalString(new()
             {
-                ["hu-HU"] = "Kérem csatlakozzon az internetre!",
+                ["hu"] = "Kérem csatlakozzon az internetre!",
                 ["en"] = "Please connect to the internet!"
             }),
             ["PageLoadError"] = new LocalString(new()
             {
-                ["hu-HU"] = "Adatok betöltése sikertelen.",
+                ["hu"] = "Adatok betöltése sikertelen.",
                 ["en"] = "Failed to load data."
             }),
             ["EmptyCartError"] = new LocalString(new()
             {
-                ["hu-HU"] = "Üres a kosár!",
+                ["hu"] = "Üres a kosár!",
                 ["en"] = "The cart is empty!"
             }),
             ["PlaceOrderSuccess"] = new LocalString(new()
             {
-                ["hu-HU"] = "Rendelés sikeresen leadva.",
+                ["hu"] = "Rendelés sikeresen leadva.",
                 ["en"] = "Order successfully placed."
             }),
             ["PlaceOrderError"] = new LocalString(new()
             {
-                ["hu-HU"] = "Hiba történt a rendelés leadásakor!",
+                ["hu"] = "Hiba történt a rendelés leadásakor!",
                 ["en"] = "An error occured while placing order!"
             }),
             ["GoogleText"] = new LocalString(new()
             {
-                ["hu-HU"] = "Google belépés->",
+                ["hu"] = "Google belépés->",
                 ["en"] = "Google login->"
             }),
             ["GoogleLoginTitle"] = new LocalString(new()
             {
-                ["hu-HU"] = "Google Bejelentkezés",
+                ["hu"] = "Google Bejelentkezés",
                 ["en"] = "Google Login"
             }),
             //[""] = new LocalString(new()
