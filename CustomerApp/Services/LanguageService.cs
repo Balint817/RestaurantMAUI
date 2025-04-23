@@ -40,6 +40,87 @@ namespace CustomerApp.Services
     }
     public sealed partial class LanguageService : BindableObject, Singleton<LanguageService>
     {
+        CultureInfo? TryCreateCulture(string cultureName)
+        {
+            try
+            {
+                return new CultureInfo(cultureName);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        CultureInfo?[] GetInputLanguages()
+        {
+            try
+            {
+#if ANDROID
+                return [TryCreateCulture(Java.Util.Locale.Default.DisplayLanguage)];
+#elif IOS
+                return GetIOSLanguages().ToArray();
+#endif
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            return [];
+        }
+
+#if IOS
+        List<CultureInfo?> GetIOSLanguages()
+        {
+            var languages = Foundation.NSLocale.PreferredLanguages;
+
+            var result = languages?.Select(x => TryCreateCulture(x)).ToList() ?? new();
+
+            var inputModes = UIKit.UITextInputMode.ActiveInputModes;
+            if (inputModes != null)
+            {
+                foreach (UIKit.UITextInputMode mode in inputModes)
+                {
+                    result.Add(TryCreateCulture(mode.PrimaryLanguage));
+                }
+            }
+
+            return result;
+        }
+#endif
+        StringWithQualityHeaderValue[]? _cachedLanguages = null;
+        public StringWithQualityHeaderValue[] GetLanguages()
+        {
+            if (_cachedLanguages is not null)
+            {
+                return _cachedLanguages;
+            }
+            var resultLanguages = new List<CultureInfo>();
+            List<CultureInfo> inputLanguages =
+            [
+                CultureInfo.CurrentCulture,
+                CultureInfo.CurrentCulture.Parent,
+
+                CultureInfo.CurrentUICulture,
+                CultureInfo.CurrentUICulture.Parent,
+
+                .. GetInputLanguages(),
+
+                CultureInfo.InstalledUICulture,
+                CultureInfo.InstalledUICulture.Parent,
+
+                .. CultureInfo.GetCultures(CultureTypes.InstalledWin32Cultures).SelectMany(x => (CultureInfo[])[x, x.Parent])
+            ];
+
+            foreach (var c in inputLanguages)
+            {
+                if (c != null && string.IsNullOrEmpty(c.Name) && !resultLanguages.Contains(c))
+                {
+                    resultLanguages.Add(c);
+                }
+            }
+
+            return _cachedLanguages = resultLanguages.DistinctBy(x => x.Name).Select((x, i) => new StringWithQualityHeaderValue(x.Name, Math.Max(1 - (i / 10d), 0))).Where(x => x.Quality != 0).ToArray();
+        }
         static LanguageService()
         {
             var indexerProp = typeof(LanguageService)

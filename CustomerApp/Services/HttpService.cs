@@ -15,28 +15,6 @@ namespace CustomerApp.Services
 {
     public sealed class HttpService : Singleton<HttpService>
     {
-        static StringWithQualityHeaderValue[] GetLanguages()
-        {
-
-            var resultLanguages = new List<CultureInfo>();
-            List<CultureInfo> inputLanguages =
-            [
-                CultureInfo.CurrentCulture,
-                CultureInfo.CurrentCulture.Parent,
-                CultureInfo.InstalledUICulture,
-                .. CultureInfo.GetCultures(CultureTypes.InstalledWin32Cultures),
-            ];
-
-            foreach (var c in inputLanguages)
-            {
-                if (c != null && c.Name != "" && !resultLanguages.Contains(c))
-                {
-                    resultLanguages.Add(c);
-                }
-            }
-
-            return resultLanguages.Select((x,i) => new StringWithQualityHeaderValue(x.Name, Math.Max(1 - (i / 10d), 0))).Where(x => x.Quality != 0).ToArray();
-        }
 
         static HttpService? _instance;
         public static HttpService Instance => _instance ??= new();
@@ -46,7 +24,7 @@ namespace CustomerApp.Services
         private HttpService()
         {
             _httpClient = new HttpClient();
-            foreach (var language in GetLanguages())
+            foreach (var language in LanguageService.Instance.GetLanguages())
             {
                 _httpClient.DefaultRequestHeaders.AcceptLanguage.Add(language);
             }
