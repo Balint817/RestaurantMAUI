@@ -128,6 +128,10 @@ namespace CustomerApp.Services
         public async Task<bool?> Login(string name, string password)
         {
             var r = await HttpService.PostJsonAsync($"{HttpService.BaseAPIUrl}/user/login", new AuthObject() { name = name, password = password });
+            if (r.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return false;
+            }
             UserObject user;
             string? stringContent = null;
             try
