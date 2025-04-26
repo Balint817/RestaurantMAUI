@@ -87,6 +87,7 @@ namespace CustomerApp.Helpers
                     case OperationCanceledException _:
                         return HttpExceptionCause.RequestLost;
                 }
+#if ANDROID
                 var name = innerEx.GetType().Name;
                 switch (name)
                 {
@@ -103,6 +104,19 @@ namespace CustomerApp.Helpers
                     case nameof(Java.Util.Concurrent.CancellationException):
                         return HttpExceptionCause.NoInternet;
                 }
+#elif IOS
+                var message = innerEx.Message;
+                
+                if (message.Contains("timed out", StringComparison.OrdinalIgnoreCase))
+                    return HttpExceptionCause.RequestLost;
+
+                if (message.Contains("offline", StringComparison.OrdinalIgnoreCase) ||
+                    message.Contains("could not connect", StringComparison.OrdinalIgnoreCase)
+                    )
+                {
+                    return HttpExceptionCause.NoInternet;
+                }
+#endif
             }
 
             return HttpExceptionCause.Unknown;
