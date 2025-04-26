@@ -71,7 +71,10 @@ public partial class GoogleLogin : ContentPage
             if (Navigation.ModalStack.Contains(this))
                 await Navigation.PopModalAsync();
 
-            App.Current!.MainPage = new AppShell();
+            if (result.Key == true)
+            {
+                App.Current!.MainPage = new AppShell();
+            }
         }
     }
 
