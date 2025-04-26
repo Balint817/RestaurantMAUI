@@ -115,7 +115,7 @@ namespace CustomerApp.Services
 
             foreach (var c in inputLanguages)
             {
-                if (c != null && string.IsNullOrEmpty(c.Name) && !resultLanguages.Contains(c))
+                if (c != null && !string.IsNullOrEmpty(c.Name) && !resultLanguages.Contains(c))
                 {
                     resultLanguages.Add(c);
                 }
