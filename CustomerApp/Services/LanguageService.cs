@@ -132,7 +132,14 @@ namespace CustomerApp.Services
         }
         public LanguageService()
         {
-            SetLanguage(CultureInfo.CurrentUICulture);
+            var languages = GetLanguages().ToList();
+            if (languages.Count < 0)
+            {
+                languages.Add(new("en-GB"));
+            }
+            var firstLanguage = languages[0];
+            var culture = new CultureInfo(firstLanguage.Value);
+            SetLanguage(culture);
         }
 
         private static string IndexerName;
